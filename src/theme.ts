@@ -19,7 +19,7 @@ const theme = createTheme({
 		},
 	},
 	typography: {
-		fontFamily: 'Source Code Pro',
+		fontFamily: 'Spectral',
 	},
 });
 

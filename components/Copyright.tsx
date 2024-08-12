@@ -25,7 +25,7 @@ export default function Copyright() {
 
 						<Typography
 							textAlign={'center'}
-							fontFamily={'Source Code Pro'}
+							fontFamily={'Spectral'}
 							variant="body2"
 							color="text.secondary">
 							&copy; {new Date().getFullYear()} Atalanta A.C., All Rights Reserved.

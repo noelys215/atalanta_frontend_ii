@@ -26,7 +26,7 @@ const Hero: React.FC = () => {
 					fontSize={'1.3rem'}
 					gutterBottom
 					textAlign={'center'}
-					fontFamily={'Source Code Pro'}
+					fontFamily={'Spectral'}
 					width={'75%'}>
 					<q>
 						The race continued as I hammered up the trail, passing rocks and trees as if
