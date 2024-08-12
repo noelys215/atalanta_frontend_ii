@@ -1,58 +1,58 @@
-import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import MobileStepper from '@mui/material/MobileStepper';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import SwipeableViews from 'react-swipeable-views';
-import { autoPlay } from 'react-swipeable-views-utils';
-import dynamic from 'next/dynamic';
-//
-import { useDispatch, useSelector } from 'react-redux';
-
+import React, { useState } from 'react';
 import {
+	Box,
+	Divider,
+	Grid,
+	Typography,
+	Button,
 	Accordion,
 	AccordionDetails,
 	AccordionSummary,
 	Container,
-	Divider,
 	List,
-	Grid,
+	MobileStepper,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { useRouter } from 'next/router';
+import { useTheme } from '@mui/material/styles';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import SwipeableViews from 'react-swipeable-views';
+import { autoPlay } from 'react-swipeable-views-utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import Head from 'next/head';
+import { Helmet } from 'react-helmet';
+import AddIcon from '@mui/icons-material/Add';
 import { cartAddItem } from '../store/slices/cartSlice';
 import { RootState } from '../store/store';
 
 interface ProductProps {
-	products?: string[];
-	image?: string;
-	product: any;
-	selectedSize?: any;
-	size?: any;
-	_key: String;
+	product: {
+		_id: string;
+		name: string;
+		price: number;
+		slug: string;
+		description: string;
+		color: string;
+		image: string[];
+		inventory: { size: string; quantity: number; _id: string }[];
+	};
 }
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-const ProductScreen = ({ product }: any): React.ReactElement<ProductProps> => {
+const ProductScreen: React.FC<ProductProps> = ({ product }) => {
 	const { cart } = useSelector((state: RootState) => state.cart);
 
-	const [state, setState] = React.useState<ProductProps>({
-		product: null,
+	const [selectedSize, setSelectedSize] = useState<string | null>(null);
+	const [state, setState] = useState({
 		size: '',
 		_key: '',
 	});
 
 	const dispatch = useDispatch();
-	const router = useRouter();
-	const [selectedSize, setSelectedSize] = React.useState(null);
+	const navigate = useNavigate();
 	const theme = useTheme();
-	const [activeStep, setActiveStep] = React.useState(0);
+	const [activeStep, setActiveStep] = useState(0);
 	const maxSteps = product?.image.length;
 
 	const handleNext = () => {
@@ -69,13 +69,11 @@ const ProductScreen = ({ product }: any): React.ReactElement<ProductProps> => {
 
 	// Add to Cart
 	const addToCartHandler = async () => {
-		const existItem = cart.cartItems.find((x: any) => x._id === product._id);
+		const existItem = cart.cartItems.find((x: { _id: string }) => x._id === product._id);
 		const quantity = existItem ? existItem.quantity + 1 : 1;
-		const path = router.asPath;
 
 		dispatch(
 			cartAddItem({
-				path,
 				_key: state._key,
 				name: product.name,
 				slug: product.slug,
@@ -88,14 +86,14 @@ const ProductScreen = ({ product }: any): React.ReactElement<ProductProps> => {
 		);
 
 		toast(`${product.name} Added to Cart`);
-		router.push('/cart');
+		navigate('/cart');
 	};
 
 	return (
 		<>
-			<Head>
+			<Helmet>
 				<title>{product?.name}</title>
-			</Head>
+			</Helmet>
 
 			<Container maxWidth="xl" sx={{ display: 'flex', flexDirection: 'column' }}>
 				<Grid
@@ -113,7 +111,7 @@ const ProductScreen = ({ product }: any): React.ReactElement<ProductProps> => {
 							index={activeStep}
 							onChangeIndex={handleStepChange}
 							enableMouseEvents>
-							{product?.image.map((step: any, index: number) => (
+							{product?.image.map((step, index) => (
 								<div key={step}>
 									{Math.abs(activeStep - index) <= 2 ? (
 										<Box
@@ -129,7 +127,6 @@ const ProductScreen = ({ product }: any): React.ReactElement<ProductProps> => {
 						</AutoPlaySwipeableViews>
 
 						<MobileStepper
-							// sx={{ width: 750 }}
 							variant="text"
 							steps={maxSteps}
 							position="static"
@@ -216,7 +213,7 @@ const ProductScreen = ({ product }: any): React.ReactElement<ProductProps> => {
 										p: 0,
 										m: 0,
 									}}>
-									{product?.inventory?.map((prod: any) => (
+									{product?.inventory?.map((prod) => (
 										<Button
 											sx={{
 												width: 'auto',
@@ -231,8 +228,8 @@ const ProductScreen = ({ product }: any): React.ReactElement<ProductProps> => {
 													backgroundColor: '#999999',
 												},
 											}}
-											onClick={(e: any) => {
-												setSelectedSize(e.target.innerText);
+											onClick={() => {
+												setSelectedSize(prod.size);
 												setState({
 													...state,
 													size: prod.size,
@@ -267,4 +264,4 @@ const ProductScreen = ({ product }: any): React.ReactElement<ProductProps> => {
 	);
 };
 
-export default dynamic(() => Promise.resolve(ProductScreen), { ssr: true });
+export default ProductScreen;

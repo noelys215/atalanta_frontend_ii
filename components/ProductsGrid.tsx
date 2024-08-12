@@ -1,17 +1,27 @@
 import { Backdrop, Box, CircularProgress, Grid, Typography } from '@mui/material';
 import axios from 'axios';
-import Image from 'next/image';
-import Link from 'next/link';
-import { ReactElement, useEffect, useState } from 'react';
-interface ProductProps {
-	manShoes?: string[];
-	womanShoes?: string[];
-	loading?: boolean;
-	error?: string;
-	type?: string;
+import React from 'react';
+import { useEffect, useState, ReactElement } from 'react';
+import { Link } from 'react-router-dom';
+
+interface Product {
+	department: string;
+	category: string;
+	_id: string;
+	name: string;
+	price: number;
+	slug: string;
+	image: string[];
 }
 
-const ProductsGrid = (): ReactElement<ProductProps> => {
+interface ProductProps {
+	manShoes?: Product[];
+	womanShoes?: Product[];
+	loading?: boolean;
+	error?: string;
+}
+
+const ProductsGrid: React.FC = (): ReactElement => {
 	const [state, setState] = useState<ProductProps>({
 		manShoes: [],
 		womanShoes: [],
@@ -23,19 +33,22 @@ const ProductsGrid = (): ReactElement<ProductProps> => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const { data } = await axios.get(`${process.env.API_URL}/products`);
 			try {
+				const { data } = await axios.get<Product[]>(
+					`${process.env.REACT_APP_API_URL}/products`
+				);
 				const manShoes = data.filter(
-					(prod: any) => prod.category === 'footwear' && prod.department === 'man'
+					(prod) => prod.category === 'footwear' && prod.department === 'man'
 				);
 
-				const womanShoes = await data.filter(
-					(prod: any) => prod.category === 'footwear' && prod.department === 'woman'
+				const womanShoes = data.filter(
+					(prod) => prod.category === 'footwear' && prod.department === 'woman'
 				);
 
-				setState({ manShoes, womanShoes, loading: false });
+				setState({ manShoes, womanShoes, loading: false, error: '' });
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			} catch (err: any) {
-				setState({ loading: false, error: err.message });
+				setState({ loading: false, error: err.message, manShoes: [], womanShoes: [] });
 			}
 		};
 
@@ -76,42 +89,40 @@ const ProductsGrid = (): ReactElement<ProductProps> => {
 						justifyContent: 'center',
 						alignItems: 'center',
 					}}>
-					{manShoes?.slice(0, 4).map((p: any) => (
-						<Grid item md={3} sm={4} xs={6} key={p?._id}>
-							<Link href={`/man/footwear/${p?.slug}`}>
-								<a>
-									<Image
-										onClick={() => setState({ loading: true })}
-										src={p?.image[0]}
-										width={450}
-										height={450}
-										alt={p?.name}
-									/>
-								</a>
+					{manShoes?.slice(0, 4).map((p) => (
+						<Grid item md={3} sm={4} xs={6} key={p._id}>
+							<Link to={`/man/footwear/${p.slug}`}>
+								<img
+									onClick={() => setState({ ...state, loading: true })}
+									src={p.image[0]}
+									width={450}
+									height={450}
+									alt={p.name}
+									style={{ width: '100%', height: 'auto' }}
+								/>
 							</Link>
 							<Box p={1}>
-								<Typography>{p?.name}</Typography>
-								<Typography>{`$${p?.price.toFixed(2)}`}</Typography>
+								<Typography>{p.name}</Typography>
+								<Typography>{`$${p.price.toFixed(2)}`}</Typography>
 							</Box>
 						</Grid>
 					))}
 
-					{womanShoes?.slice(0, 4).map((p: any) => (
-						<Grid item md={3} sm={4} xs={6} key={p?._id}>
-							<Link href={`/woman/footwear/${p?.slug}`}>
-								<a>
-									<Image
-										onClick={() => setState({ loading: true })}
-										src={p?.image[0]}
-										width={450}
-										height={450}
-										alt={p?.name}
-									/>
-								</a>
+					{womanShoes?.slice(0, 4).map((p) => (
+						<Grid item md={3} sm={4} xs={6} key={p._id}>
+							<Link to={`/woman/footwear/${p.slug}`}>
+								<img
+									onClick={() => setState({ ...state, loading: true })}
+									src={p.image[0]}
+									width={450}
+									height={450}
+									alt={p.name}
+									style={{ width: '100%', height: 'auto' }}
+								/>
 							</Link>
 							<Box p={1}>
-								<Typography>{p?.name}</Typography>
-								<Typography>{`$${p?.price.toFixed(2)}`}</Typography>
+								<Typography>{p.name}</Typography>
+								<Typography>{`$${p.price.toFixed(2)}`}</Typography>
 							</Box>
 						</Grid>
 					))}

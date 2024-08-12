@@ -1,9 +1,9 @@
 import { Box, Paper, Typography } from '@mui/material';
-import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
+import React from 'react';
 import spring from '../public/assets/springrunning.jpg';
 
-const SpringCard = () => {
+const SpringCard: React.FC = () => {
 	return (
 		<Paper
 			sx={{
@@ -21,7 +21,6 @@ const SpringCard = () => {
 			</Typography>
 			<Typography
 				variant="body2"
-				// component="body"
 				fontSize={'1.1rem'}
 				gutterBottom
 				textAlign={'center'}
@@ -31,7 +30,7 @@ const SpringCard = () => {
 					spirit
 				</q>
 			</Typography>
-			<Link href={'/account'} passHref>
+			<Link to={'/account'} style={{ textDecoration: 'none' }}>
 				<Typography
 					sx={{
 						mb: 5,
@@ -48,7 +47,11 @@ const SpringCard = () => {
 				sx={{
 					width: '60%',
 				}}>
-				<Image src={spring} alt="Person running up stairs" loader={() => ''} />
+				<img
+					src={spring}
+					alt="Person running up stairs"
+					style={{ width: '100%', height: 'auto' }}
+				/>
 			</Box>
 		</Paper>
 	);

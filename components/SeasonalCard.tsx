@@ -1,6 +1,5 @@
 import { Box, Paper, Typography } from '@mui/material';
-import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import React from 'react';
 
 interface SeasonalCardProps {
@@ -36,27 +35,27 @@ export const SeasonalCard: React.FC<SeasonalCardProps> = ({
 			<Typography variant="h2" fontSize={'1.875rem'} gutterBottom textAlign={'center'}>
 				{title}
 			</Typography>
+			{quote && (
+				<Typography
+					lineHeight={1.5}
+					variant="body2"
+					fontSize={'1.1rem'}
+					gutterBottom
+					textAlign={'center'}
+					width={'80%'}>
+					<q>{quote}</q>
+				</Typography>
+			)}
 			<Typography
 				lineHeight={1.5}
 				variant="body2"
-				// component="body"
-				fontSize={'1.1rem'}
-				gutterBottom
-				textAlign={'center'}
-				width={'80%'}>
-				<q>{quote}</q>
-			</Typography>
-			<Typography
-				lineHeight={1.5}
-				variant="body2"
-				// component="body"
 				fontSize={'1.1rem'}
 				gutterBottom
 				textAlign={'center'}
 				width={'80%'}>
 				{desc}
 			</Typography>
-			<Link href={linkToSeasonal} passHref>
+			<Link to={linkToSeasonal} style={{ textDecoration: 'none' }}>
 				<Typography
 					textAlign={'center'}
 					sx={{
@@ -74,7 +73,11 @@ export const SeasonalCard: React.FC<SeasonalCardProps> = ({
 				sx={{
 					width: '65%',
 				}}>
-				<Image src={imgSrc} alt="Person running up stairs" width={2400} height={1583} />
+				<img
+					src={imgSrc}
+					alt="Person running up stairs"
+					style={{ width: '100%', height: 'auto' }}
+				/>
 			</Box>
 		</Paper>
 	);

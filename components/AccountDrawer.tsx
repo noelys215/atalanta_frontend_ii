@@ -6,51 +6,39 @@ import {
 	InputAdornment,
 	TextField,
 	Typography,
+	Button,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import Link from '../src/Link';
+import { Link, useNavigate } from 'react-router-dom'; // Replace next/link and next/router
 import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
 import Inventory2TwoToneIcon from '@mui/icons-material/Inventory2TwoTone';
 import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
 import ManageAccountsTwoToneIcon from '@mui/icons-material/ManageAccountsTwoTone';
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import Button from '@mui/material/Button';
-import { useRouter } from 'next/router';
 import { useForm, Controller } from 'react-hook-form';
 import toast from 'react-hot-toast';
-//Redux Toolkit
+
+// Redux Toolkit
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../store/store';
 import { loginUser } from '../store/actions/loginAction';
-import { logoutUser } from '../store/slices/userSlice';
-import { reset } from '../store/slices/userSlice';
+import { logoutUser, reset } from '../store/slices/userSlice';
 import { cartClear } from '../store/slices/cartSlice';
 
-interface AccountProps {
-	email?: string[];
-	password?: string[];
-	firstName?: string;
-	lastName?: string;
-}
-
 const AccountDrawer = () => {
-	const router = useRouter();
+	const navigate = useNavigate(); // Replace useRouter with useNavigate
 	const [openDrawer, setOpenDrawer] = useState(false);
 
-	const [values, setValues] = React.useState({
-		amount: '',
+	const [values, setValues] = useState({
 		password: '',
-		weight: '',
-		weightRange: '',
 		showPassword: false,
 	});
 
 	// Toolkit
-	const dispatch = useDispatch<AppDispatch>();
-	const { userInfo } = useSelector((state: RootState) => state.userInfo);
+	const dispatch = useDispatch();
+	const { userInfo } = useSelector((state) => state.userInfo);
 
 	const {
 		handleSubmit,
@@ -58,21 +46,17 @@ const AccountDrawer = () => {
 		formState: { errors },
 	} = useForm();
 
-	const submitHandler = async ({ email, password }: AccountProps) => {
+	const submitHandler = async ({ email, password }) => {
 		try {
 			if (userInfo) {
 				return;
 			} else {
 				dispatch(loginUser({ email, password }));
 			}
-		} catch (error: any) {
+		} catch (error) {
 			toast(error.message);
 		}
 	};
-
-	// const handleChange = (prop: string) => (event: any) => {
-	// 	setValues({ ...values, [prop]: event.target.value });
-	// };
 
 	const handleClickShowPassword = () => {
 		setValues({
@@ -81,22 +65,22 @@ const AccountDrawer = () => {
 		});
 	};
 
-	const handleMouseDownPassword = (event: any) => {
+	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
 	};
 
 	const signInHandler = () => {
-		handleSubmit(submitHandler);
+		handleSubmit(submitHandler)();
 		setOpenDrawer(false);
 	};
 
 	const signOutHandler = () => {
-		dispatch(logoutUser({}));
+		dispatch(logoutUser());
+		dispatch(reset());
+		dispatch(cartClear());
 		setOpenDrawer(false);
-		reset({});
-		cartClear({});
-		if (router.asPath !== '/') {
-			router.push('/');
+		if (window.location.pathname !== '/') {
+			navigate('/');
 		}
 	};
 
@@ -116,11 +100,9 @@ const AccountDrawer = () => {
 				PaperProps={{
 					sx: {
 						width: {
-							xs: '100%', // theme.breakpoints.up('xs')
-							sm: '100%', // theme.breakpoints.up('sm')
-							md: 510, // theme.breakpoints.up('md')
-							// lg: 400, // theme.breakpoints.up('lg')
-							// xl: 500, // theme.breakpoints.up('xl')
+							xs: '100%',
+							sm: '100%',
+							md: 510,
 						},
 					},
 				}}>
@@ -140,7 +122,7 @@ const AccountDrawer = () => {
 						Account
 					</Typography>
 				</Box>
-				{/* Form */}
+
 				{userInfo === null ? (
 					<form onSubmit={handleSubmit(submitHandler)}>
 						<Box
@@ -194,7 +176,6 @@ const AccountDrawer = () => {
 										label="Password"
 										type={values.showPassword ? 'text' : 'password'}
 										autoComplete="current-password"
-										// onChange={handleChange('password')}
 										error={Boolean(errors.password)}
 										InputProps={{
 											endAdornment: (
@@ -224,7 +205,7 @@ const AccountDrawer = () => {
 								)}
 							/>
 
-							<Link href={'/'}>
+							<Link to="/" onClick={() => setOpenDrawer(false)}>
 								<Typography textAlign={'center'}>Forgot your password?</Typography>
 							</Link>
 
@@ -244,7 +225,7 @@ const AccountDrawer = () => {
 							<Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
 								<Button
 									onClick={() => {
-										router.push('/register');
+										navigate('/register');
 										setOpenDrawer(false);
 									}}
 									variant="contained"
@@ -253,15 +234,14 @@ const AccountDrawer = () => {
 								</Button>
 							</Box>
 							<Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>{`
-						With your Atalanta account, you will be able to:
-						
-						• Access your shopping cart
-						• Save your billing and delivery information to order faster
-						• Manage your address book
-						• Access all your orders
-						• Update your personal data
-						
-						`}</Typography>
+								With your Atalanta account, you will be able to:
+								
+								• Access your shopping cart
+								• Save your billing and delivery information to order faster
+								• Manage your address book
+								• Access all your orders
+								• Update your personal data
+							`}</Typography>
 						</Box>
 					</form>
 				) : (
@@ -284,10 +264,7 @@ const AccountDrawer = () => {
 								marginRight: 'auto',
 								mb: 2,
 							}}>
-							<Link
-								underline="hover"
-								href={'/account'}
-								onClick={() => setOpenDrawer(false)}>
+							<Link to="/account" onClick={() => setOpenDrawer(false)}>
 								<Typography variant="h6" gutterBottom>
 									<SettingsTwoToneIcon
 										sx={{ verticalAlign: 'middle', fontSize: 'inherit' }}
@@ -297,10 +274,7 @@ const AccountDrawer = () => {
 							</Link>
 
 							{userInfo.isAdmin ? (
-								<Link
-									underline="hover"
-									href={'/admin/orders'}
-									onClick={() => setOpenDrawer(false)}>
+								<Link to="/admin/orders" onClick={() => setOpenDrawer(false)}>
 									<Typography variant="h6" gutterBottom>
 										<Inventory2TwoToneIcon
 											sx={{ verticalAlign: 'middle', fontSize: 'inherit' }}
@@ -309,10 +283,7 @@ const AccountDrawer = () => {
 									</Typography>
 								</Link>
 							) : (
-								<Link
-									underline="hover"
-									href={'/order-history'}
-									onClick={() => setOpenDrawer(false)}>
+								<Link to="/order-history" onClick={() => setOpenDrawer(false)}>
 									<Typography variant="h6" gutterBottom>
 										<Inventory2TwoToneIcon
 											sx={{ verticalAlign: 'middle', fontSize: 'inherit' }}
@@ -323,10 +294,7 @@ const AccountDrawer = () => {
 							)}
 
 							{userInfo.isAdmin && (
-								<Link
-									underline="hover"
-									href={'/admin/user-list'}
-									onClick={() => setOpenDrawer(false)}>
+								<Link to="/admin/user-list" onClick={() => setOpenDrawer(false)}>
 									<Typography variant="h6" gutterBottom>
 										<ManageAccountsTwoToneIcon
 											sx={{ verticalAlign: 'middle', fontSize: 'inherit' }}
@@ -337,10 +305,7 @@ const AccountDrawer = () => {
 							)}
 
 							{userInfo.isAdmin && (
-								<Link
-									underline="hover"
-									href={'/admin/product-list'}
-									onClick={() => setOpenDrawer(false)}>
+								<Link to="/admin/product-list" onClick={() => setOpenDrawer(false)}>
 									<Typography variant="h6" gutterBottom>
 										<InventoryTwoToneIcon
 											sx={{ verticalAlign: 'middle', fontSize: 'inherit' }}
@@ -368,16 +333,14 @@ const AccountDrawer = () => {
 						<Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
 							<Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>
 								{`
-						Customer Service
-
-						`}
-								Call <Link href={'tel:800-825-5033'}>800-825-5033</Link>
-								{`	
-						Monday to Friday: 9am - 6pm EST
-						Saturday: 10am - 6pm EST
-						Send us an email
-						
-						`}
+									Customer Service
+								`}
+								Call <a href="tel:800-825-5033">800-825-5033</a>
+								{`
+									Monday to Friday: 9am - 6pm EST
+									Saturday: 10am - 6pm EST
+									Send us an email
+								`}
 							</Typography>
 						</Box>
 					</>

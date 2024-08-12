@@ -3,24 +3,24 @@ import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import { Dispatch, SetStateAction } from 'react';
-import { useRouter } from 'next/router';
+import { useNavigate } from 'react-router-dom'; // Replace next/router with useNavigate
 
 type ButtonProps = {
 	setOpenSearch: Dispatch<SetStateAction<boolean>>;
 };
 
 const MobileSearch: React.FC<ButtonProps> = ({ setOpenSearch }) => {
-	const router = useRouter();
+	const navigate = useNavigate(); // Replace useRouter with useNavigate
 	const [query, setQuery] = useState('');
 	const [isSubmitted, setIsSubmitted] = useState(false);
 
-	const queryChangeHandler = (e: any) => {
+	const queryChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setQuery(e.target.value);
 	};
 
-	const submitHandler = (e: any) => {
+	const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		router.push(`/search?query=${query}`);
+		navigate(`/search?query=${query}`);
 		setQuery('');
 		setIsSubmitted(true);
 	};

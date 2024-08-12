@@ -9,7 +9,6 @@ import {
 	Select,
 	Typography,
 } from '@mui/material';
-import Image from 'next/image';
 import React from 'react';
 
 interface ProductsPageProps {
@@ -52,7 +51,11 @@ export const ProductPage: React.FC<ProductsPageProps> = ({ title, productName, i
 			<Box>
 				<Grid container gap={2} justifyContent="center" mb={10}>
 					<Grid item md={2.4}>
-						<Image src={imgSrc} alt="" />
+						<img
+							src={imgSrc}
+							alt={productName}
+							style={{ width: '100%', height: 'auto' }}
+						/>
 						<Typography variant="h6">{productName}</Typography>
 						<Typography variant="body1">$ {price}</Typography>
 					</Grid>

@@ -1,8 +1,8 @@
-import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import React from 'react';
 
 interface ProductProps {
-	handleSort?: any;
+	handleSort?: (event: SelectChangeEvent) => void;
 }
 
 const Sort: React.FC<ProductProps> = ({ handleSort }) => {
@@ -21,7 +21,6 @@ const Sort: React.FC<ProductProps> = ({ handleSort }) => {
 					</MenuItem>
 					<MenuItem value={'Highest'}>Highest</MenuItem>
 					<MenuItem value={'Lowest'}>Lowest</MenuItem>
-					{/* <MenuItem value={'Trending'}>Trending</MenuItem> */}
 				</Select>
 			</FormControl>
 		</Box>

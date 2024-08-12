@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
 	Accordion,
 	AccordionDetails,
@@ -6,13 +7,12 @@ import {
 	List,
 	ListItem,
 	Typography,
+	Box,
 } from '@mui/material';
-import { Box } from '@mui/system';
-import { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
-import Link from '../src/Link';
+import { Link } from 'react-router-dom'; // Replace next/link with react-router-dom
 
 const MuiDrawer = () => {
 	const [openDrawer, setOpenDrawer] = useState(false);
@@ -30,11 +30,9 @@ const MuiDrawer = () => {
 				PaperProps={{
 					sx: {
 						width: {
-							xs: '100%', // theme.breakpoints.up('xs')
-							sm: '100%', // theme.breakpoints.up('sm')
-							md: 510, // theme.breakpoints.up('md')
-							// lg: 400, // theme.breakpoints.up('lg')
-							// xl: 500, // theme.breakpoints.up('xl')
+							xs: '100%',
+							sm: '100%',
+							md: 510,
 						},
 					},
 				}}>
@@ -67,15 +65,15 @@ const MuiDrawer = () => {
 						<AccordionDetails>
 							<List>
 								<ListItem onClick={() => setOpenDrawer(false)}>
-									<Link href={'/man/tops/tops'}>Tops</Link>
+									<Link to="/man/tops/tops">Tops</Link>
 								</ListItem>
 
 								<ListItem onClick={() => setOpenDrawer(false)}>
-									<Link href={'/man/bottoms/bottoms'}>Bottoms</Link>
+									<Link to="/man/bottoms/bottoms">Bottoms</Link>
 								</ListItem>
 
 								<ListItem onClick={() => setOpenDrawer(false)}>
-									<Link href={'/man/footwear/footwear'}>Footwear</Link>
+									<Link to="/man/footwear/footwear">Footwear</Link>
 								</ListItem>
 							</List>
 						</AccordionDetails>
@@ -92,15 +90,15 @@ const MuiDrawer = () => {
 						<AccordionDetails>
 							<List onClick={() => setOpenDrawer(false)}>
 								<ListItem>
-									<Link href={'/woman/tops/tops'}>Tops</Link>
+									<Link to="/woman/tops/tops">Tops</Link>
 								</ListItem>
 
 								<ListItem>
-									<Link href={'/woman/bottoms/bottoms'}>Bottoms</Link>
+									<Link to="/woman/bottoms/bottoms">Bottoms</Link>
 								</ListItem>
 
 								<ListItem>
-									<Link href={'/woman/footwear/footwear'}>Footwear</Link>
+									<Link to="/woman/footwear/footwear">Footwear</Link>
 								</ListItem>
 							</List>
 						</AccordionDetails>
@@ -117,11 +115,8 @@ const MuiDrawer = () => {
 						<AccordionDetails>
 							<List onClick={() => setOpenDrawer(false)}>
 								<ListItem>
-									<Link href={'/accessories/all/accessories'}>All</Link>
+									<Link to="/accessories/all/accessories">All</Link>
 								</ListItem>
-								{/* <ListItem>Towels</ListItem>
-								<ListItem>Bags</ListItem>
-								<ListItem>Headwear</ListItem> */}
 							</List>
 						</AccordionDetails>
 					</Accordion>

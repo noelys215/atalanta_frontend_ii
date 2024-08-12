@@ -1,6 +1,7 @@
+import React from 'react';
 import { Box, Typography } from '@mui/material';
 
-const Hero = () => {
+const Hero: React.FC = () => {
 	return (
 		<>
 			<Box
@@ -22,7 +23,6 @@ const Hero = () => {
 				</Typography>
 				<Typography
 					variant="body1"
-					// component="body"
 					fontSize={'1.3rem'}
 					gutterBottom
 					textAlign={'center'}
@@ -47,7 +47,9 @@ const Hero = () => {
 						src={
 							'https://res.cloudinary.com/dshviljjs/video/upload/v1670986486/Atalanta%20Uploads/STATIC/running_z2wwab.mp4'
 						}
+						type="video/mp4"
 					/>
+					Your browser does not support the video tag.
 				</video>
 			</Box>
 		</>

@@ -1,0 +1,107 @@
+*html {
+	cursor: grab;
+}
+
+.css-1o4jdh6-MuiInputBase-root-MuiOutlinedInput-root {
+	justify-content: space-between;
+	/*  */
+}
+
+.search {
+	width: 150px !important;
+	-moz-transition: none;
+	-webkit-transition: none;
+	-o-transition: color 0 ease-in;
+	transition: none;
+}
+.register {
+	/* max-width: 500px !important; */
+	width: 100% !important;
+	-moz-transition: none !important;
+	-webkit-transition: none !important;
+	-o-transition: color 0 ease-in !important;
+	transition: none !important;
+	align-self: center !important;
+}
+.register:input {
+	/* max-width: 500px !important; */
+	width: 1000px !important;
+	-moz-transition: none !important;
+	-webkit-transition: none !important;
+	-o-transition: color 0 ease-in !important;
+	transition: none !important;
+	align-self: center !important;
+}
+.register:focus {
+	/* max-width: 500px !important; */
+	width: 90% !important;
+	-moz-transition: none !important;
+	-webkit-transition: none !important;
+	-o-transition: color 0 ease-in !important;
+	transition: none !important;
+}
+.cartSelect {
+	width: 6rem !important;
+	height: 2.5rem;
+	-moz-transition: none;
+	-webkit-transition: none;
+	-o-transition: color 0 ease-in;
+	transition: none;
+}
+.search:focus {
+	width: 150px !important;
+	-moz-transition: none;
+	-webkit-transition: none;
+	-o-transition: color 0 ease-in;
+	transition: none !important;
+}
+.password {
+	width: 100% !important;
+	-moz-transition: none;
+	-webkit-transition: none;
+	-o-transition: color 0 ease-in;
+	transition: none;
+}
+.password:focus {
+	width: 100% !important;
+	-moz-transition: none;
+	-webkit-transition: none;
+	-o-transition: color 0 ease-in;
+	transition: none !important;
+}
+
+.MuiInputBase-input {
+	/* width: 120px; */
+	/* min-width: 90%; */
+	transition: width 1s ease-in-out;
+}
+
+.MuiInputBase-input:focus {
+	width: 28vw;
+	transition: width 1s ease-in-out;
+}
+
+@media only screen and (max-width: 600px) {
+	.MuiInputBase-input {
+		width: 100%;
+		transition: width 1s ease-in-out;
+	}
+
+	.MuiInputBase-input:focus {
+		width: 100%;
+		transition: width 1s ease-in-out;
+	}
+}
+@media only screen and (max-width: 768) {
+	.MuiInputBase-input {
+		width: 100%;
+		transition: width 1s ease-in-out;
+	}
+
+	.MuiInputBase-input:focus {
+		/* width: 40vw; */
+		transition: width 1s ease-in-out;
+	}
+}
+
+/*  */

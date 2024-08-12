@@ -1,42 +1,52 @@
 import { Backdrop, Box, CircularProgress, Container, Grid, Typography } from '@mui/material';
 import axios from 'axios';
-import Image from 'next/image';
-import Link from 'next/link';
-import { ReactElement, useEffect, useState } from 'react';
+import { useEffect, useState, ReactElement } from 'react';
+import { Link } from 'react-router-dom';
 import sideImage from '../public/assets/joggingwoman.jpg';
-// Framer
+import { QueryClient, dehydrate } from '@tanstack/react-query';
+import React from 'react';
 
 interface ProductProps {
-	tanks?: string[];
-	loading?: boolean;
-	error?: string;
-	type?: string;
+	tanks: Product[];
+	loading: boolean;
+	error: string;
 }
 
-export const FeaturedItems = (): ReactElement<ProductProps> => {
+interface Product {
+	_id: string;
+	name: string;
+	price: number;
+	category: string;
+	department: string;
+	slug: string;
+	image: string[];
+}
+
+export const FeaturedItems = (): ReactElement => {
 	const [state, setState] = useState<ProductProps>({
 		tanks: [],
 		error: '',
 		loading: true,
 	});
 
-	const { tanks, loading, error } = state;
+	const { tanks, loading } = state;
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const { data } = await axios.get(`${process.env.API_URL}/products`);
 			try {
-				const tanks = await data.filter(
-					(prod: any) => prod.category === 'tanks' && prod.department === 'woman'
+				const { data } = await axios.get<Product[]>(
+					`${process.env.REACT_APP_API_URL}/products`
 				);
-
-				setState({ tanks, loading: false });
-			} catch (err: any) {
-				setState({ loading: false, error: err.message });
+				const filteredTanks = data.filter(
+					(prod) => prod.category === 'tanks' && prod.department === 'woman'
+				);
+				setState({ tanks: filteredTanks, loading: false, error: '' });
+			} catch (err) {
+				setState({ loading: false, error: err.message, tanks: [] });
 			}
 		};
 		fetchData();
-	}, [error]);
+	}, []);
 
 	return (
 		<>
@@ -54,23 +64,23 @@ export const FeaturedItems = (): ReactElement<ProductProps> => {
 				</Container>
 			) : (
 				<>
-					<Box display={' flex'} flexDirection={'column'} alignItems={'center'} mb={5}>
+					<Box display="flex" flexDirection="column" alignItems="center" mb={5}>
 						{/* Title */}
 						<Typography
 							variant="h2"
-							fontSize={'1.875rem'}
+							fontSize="1.875rem"
 							gutterBottom
-							textAlign={'center'}>
+							textAlign="center">
 							A Running Tradition
 						</Typography>
-						{/* Desc */}
+						{/* Description */}
 						<Typography
 							lineHeight={1.5}
 							variant="body2"
-							fontSize={'1.1rem'}
+							fontSize="1.1rem"
 							gutterBottom
-							textAlign={'center'}
-							width={'80%'}>
+							textAlign="center"
+							width="80%">
 							On warm summer days or hanging out at the gym, a good running tank or
 							singlet is essential. Whether you need a racing singlet or a tank to
 							show off the guns at the gym, we have cultivated the best running tanks
@@ -92,27 +102,29 @@ export const FeaturedItems = (): ReactElement<ProductProps> => {
 						}}>
 						{/* Side Image */}
 						<Box sx={{ width: 'auto' }}>
-							<Image src={sideImage} alt="logo" />
+							<img
+								src={sideImage}
+								alt="Jogging Woman"
+								style={{ width: '100%', height: 'auto' }}
+							/>
 						</Box>
 						{/* Four Products */}
-
-						<Grid container gap={8} justifyContent="center" width={'auto'}>
-							{tanks?.slice(0, 4).map((p: any) => (
-								<Grid item md={5} xs={4} key={p?._id}>
-									<Link href={`/woman/tops/${p?.slug}`}>
-										<a>
-											<Image
-												onClick={() => setState({ loading: true })}
-												src={p?.image[0]}
-												width={450}
-												height={450}
-												alt={p?.name}
-											/>
-										</a>
+						<Grid container gap={8} justifyContent="center" width="auto">
+							{tanks?.slice(0, 4).map((p) => (
+								<Grid item md={5} xs={4} key={p._id}>
+									<Link to={`/woman/tops/${p.slug}`}>
+										<img
+											onClick={() => setState({ ...state, loading: true })}
+											src={p.image[0]}
+											width={450}
+											height={450}
+											alt={p.name}
+											style={{ width: '100%', height: 'auto' }}
+										/>
 									</Link>
 									<Box p={1}>
-										<Typography>{p?.name}</Typography>
-										<Typography>{`$${p?.price.toFixed(2)}`}</Typography>
+										<Typography>{p.name}</Typography>
+										<Typography>{`$${p.price.toFixed(2)}`}</Typography>
 									</Box>
 								</Grid>
 							))}
@@ -123,12 +135,3 @@ export const FeaturedItems = (): ReactElement<ProductProps> => {
 		</>
 	);
 };
-
-export function getServerSideProps(context: any) {
-	return {
-		props: {
-			slug: context.params.slug,
-			path: context.query.type,
-		},
-	};
-}

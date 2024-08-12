@@ -1,6 +1,12 @@
+import React from 'react';
 import { IMaskInput } from 'react-imask';
 
-export const PhoneInputMask = (props: any) => {
+interface PhoneInputMaskProps {
+	inputRef: React.RefObject<HTMLInputElement>;
+	// Add other props if needed
+}
+
+export const PhoneInputMask = (props: PhoneInputMaskProps) => {
 	const { inputRef, ...other } = props;
 	return (
 		<IMaskInput

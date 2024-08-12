@@ -11,29 +11,33 @@ import {
 	Grid,
 	Typography,
 } from '@mui/material';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import Sort from '../components/Sort';
 
 interface ProductCatProps {
-	products?: any[];
+	products?: Product[];
 	title?: string;
-	type?: any;
+	type?: string;
 	cat?: string;
-	department?: any;
-	sort?: any;
+	department?: string;
+	sort?: string;
 }
 
-const ProductsCat: React.FC<ProductCatProps> = ({ products, title, cat }) => {
+interface Product {
+	name: string;
+	price: number;
+	slug: string;
+	image: string[];
+	department: string;
+}
+
+const ProductsCat: React.FC<ProductCatProps> = ({ products = [], title = '', cat = '' }) => {
 	const [loading, setLoading] = useState(false);
-	const [state, setState] = useState<ProductCatProps>({
-		sort: '',
-	});
+	const [sort, setSort] = useState<string>('');
 
-	const handleSort = (e: any) => {
-		return setState({ sort: e.target.value });
+	const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		setSort(e.target.value);
 	};
-
-	const { sort } = state;
 
 	return (
 		<>
@@ -66,29 +70,26 @@ const ProductsCat: React.FC<ProductCatProps> = ({ products, title, cat }) => {
 			<Box>
 				<Grid container gap={2} justifyContent="center" mb={10}>
 					{products
-						?.sort((a, b): any => {
+						.sort((a, b) => {
 							if (sort === 'Lowest') {
 								return a.price - b.price;
 							} else if (sort === 'Highest') {
 								return b.price - a.price;
 							} else {
-								return;
+								return 0;
 							}
 						})
 						.map((product) => (
-							<Link
-								passHref
-								href={{
-									pathname: `/${product?.department}/${cat}/${product?.slug}`,
-								}}
-								key={product?.slug}>
-								<Grid item md={2.5} sm={5} lg={2.5}>
-									<Card sx={{ width: '100%' }} onClick={() => setLoading(true)}>
+							<Grid item md={2.5} sm={5} lg={2.5} key={product.slug}>
+								<Link
+									to={`/${product.department}/${cat}/${product.slug}`}
+									onClick={() => setLoading(true)}>
+									<Card sx={{ width: '100%' }}>
 										<CardActionArea>
 											<CardMedia
 												component="img"
 												image={`${product.image[0]}`}
-												title={product?.name}
+												title={product.name}
 											/>
 										</CardActionArea>
 										<CardContent
@@ -99,14 +100,13 @@ const ProductsCat: React.FC<ProductCatProps> = ({ products, title, cat }) => {
 												},
 											}}>
 											<Typography variant="h6">{product.name}</Typography>
-
-											<Typography variant="body1">{`$${product?.price.toFixed(
+											<Typography variant="body1">{`$${product.price.toFixed(
 												2
 											)}`}</Typography>
 										</CardContent>
 									</Card>
-								</Grid>
-							</Link>
+								</Link>
+							</Grid>
 						))}
 				</Grid>
 			</Box>

@@ -1,20 +1,18 @@
+import React, { useState } from 'react';
 import { Badge, Box, Container, Typography } from '@mui/material';
-import Image from 'next/image';
-import logo from '../public/assets/logo-plain.png';
 import ShoppingBagTwoToneIcon from '@mui/icons-material/ShoppingBagTwoTone';
-import Link from '../src/Link';
-import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import MobileSearch from './MobileSearch';
 import AccountDrawer from './AccountDrawer';
 import SearchBar from './SearchBar';
 import SearchIcon from '@mui/icons-material/Search';
 import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
+import logo from '../public/assets/logo-plain.png';
 
 const TopBar = () => {
-	const [openSearch, setOpenSearch] = useState<boolean>(false);
+	const [openSearch, setOpenSearch] = useState(false);
 
-	const { cart } = useSelector((state: RootState) => state.cart);
+	const { cart } = useSelector((state) => state.cart);
 
 	return (
 		<Container
@@ -51,15 +49,15 @@ const TopBar = () => {
 
 						{/* Logo */}
 						<Box>
-							<Link href={'/'}>
-								<Image src={logo} width={102} height={113} alt="logo" />
+							<Link to="/">
+								<img src={logo} width={102} height={113} alt="logo" />
 							</Link>
 						</Box>
 
 						{/* Account/Cart Links */}
 						<Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
 							<AccountDrawer />
-							<Link href={'/cart'} sx={{ textDecoration: 'none' }}>
+							<Link to="/cart" style={{ textDecoration: 'none' }}>
 								<Box display={'flex'} gap={1}>
 									<ShoppingBagTwoToneIcon />
 									<Typography sx={{ display: { xs: 'none', md: 'flex' } }}>

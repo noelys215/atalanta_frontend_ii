@@ -1,51 +1,39 @@
 import * as React from 'react';
 import clsx from 'clsx';
-import { useRouter } from 'next/router';
-import NextLink, { LinkProps as NextLinkProps } from 'next/link';
+import { Link as RouterLink, useLocation } from 'react-router-dom'; // Replace next/link and next/router
 import MuiLink, { LinkProps as MuiLinkProps } from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
 
 // Add support for the sx prop for consistency with the other branches.
 const Anchor = styled('a')({});
 
-interface NextLinkComposedProps
-	extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>,
-		Omit<NextLinkProps, 'href' | 'as'> {
-	to: NextLinkProps['href'];
-	linkAs?: NextLinkProps['as'];
+interface LinkComposedProps extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
+	to: string;
+	replace?: boolean;
+	scroll?: boolean;
+	shallow?: boolean;
+	prefetch?: boolean;
+	locale?: string;
 }
 
-export const NextLinkComposed = React.forwardRef<HTMLAnchorElement, NextLinkComposedProps>(
-	function NextLinkComposed(props, ref) {
-		const { to, linkAs, replace, scroll, shallow, prefetch, locale, ...other } = props;
+export const LinkComposed = React.forwardRef<HTMLAnchorElement, LinkComposedProps>(
+	function LinkComposed(props, ref) {
+		const { to, replace, scroll, shallow, prefetch, locale, ...other } = props;
 
-		return (
-			<NextLink
-				href={to}
-				prefetch={prefetch}
-				as={linkAs}
-				replace={replace}
-				scroll={scroll}
-				shallow={shallow}
-				passHref
-				locale={locale}>
-				<Anchor ref={ref} {...other} />
-			</NextLink>
-		);
+		return <RouterLink to={to} ref={ref} {...other} />;
 	}
 );
 
 export type LinkProps = {
 	activeClassName?: string;
-	as?: NextLinkProps['as'];
-	href: NextLinkProps['href'];
-	linkAs?: NextLinkProps['as']; // Useful when the as prop is shallow by styled().
+	as?: string;
+	href: string;
+	linkAs?: string; // Useful when the as prop is shallow by styled().
 	noLinkStyle?: boolean;
-} & Omit<NextLinkComposedProps, 'to' | 'linkAs' | 'href'> &
+} & Omit<LinkComposedProps, 'to' | 'href'> &
 	Omit<MuiLinkProps, 'href'>;
 
-// A styled version of the Next.js Link component:
-// https://nextjs.org/docs/api-reference/next/link
+// A styled version of the React Router Link component:
 const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(props, ref) {
 	const {
 		activeClassName = 'active',
@@ -53,20 +41,18 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(props,
 		className: classNameProps,
 		href,
 		linkAs: linkAsProp,
-		locale,
 		noLinkStyle,
-		prefetch,
 		replace,
-		role, // Link don't have roles.
+		role, // Link doesn't have roles.
 		scroll,
 		shallow,
 		...other
 	} = props;
 
-	const router = useRouter();
-	const pathname = typeof href === 'string' ? href : href.pathname;
+	const location = useLocation();
+	const pathname = href;
 	const className = clsx(classNameProps, {
-		[activeClassName]: router.pathname === pathname && activeClassName,
+		[activeClassName]: location.pathname === pathname && activeClassName,
 	});
 
 	const isExternal =
@@ -81,18 +67,20 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(props,
 	}
 
 	const linkAs = linkAsProp || as;
-	const nextjsProps = { to: href, linkAs, replace, scroll, shallow, prefetch, locale };
 
 	if (noLinkStyle) {
-		return <NextLinkComposed className={className} ref={ref} {...nextjsProps} {...other} />;
+		return (
+			<LinkComposed className={className} ref={ref} to={href} replace={replace} {...other} />
+		);
 	}
 
 	return (
 		<MuiLink
-			component={NextLinkComposed}
+			component={LinkComposed}
 			className={className}
 			ref={ref}
-			{...nextjsProps}
+			to={href}
+			replace={replace}
 			{...other}
 		/>
 	);

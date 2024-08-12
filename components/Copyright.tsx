@@ -1,6 +1,5 @@
 import { Box, Chip, Divider } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import Image from 'next/image';
 import image from '../public/assets/footerLogo.png';
 
 export default function Copyright() {
@@ -22,7 +21,7 @@ export default function Copyright() {
 						<Divider sx={{ mt: 2, mb: 1 }}>
 							<Chip label={<q>Run free under starlight</q>} />
 						</Divider>
-						<Image src={image} alt="Woman Running" />
+						<img src={image} alt="Woman Running" />
 
 						<Typography
 							textAlign={'center'}
