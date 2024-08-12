@@ -1,11 +1,65 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { CacheProvider } from '@emotion/react';
+import theme from './theme';
+import createEmotionCache from './createEmotionCache';
+import TopBar from '../components/TopBar';
+import Copyright from '../components/Copyright';
+import '../styles/globals.css';
+import { Box } from '@mui/material';
+import { Toaster } from 'react-hot-toast';
+import { store } from '../store/store';
+import { Provider } from 'react-redux';
+import { Outlet } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
-export default function App() {
+const clientSideEmotionCache = createEmotionCache();
+
+const App: React.FC = () => {
+	const [showChild, setShowChild] = useState(false);
+
+	useEffect(() => {
+		setShowChild(true);
+	}, []);
+
+	if (!showChild) return null;
+
 	return (
-		<div>
-			{/* Your home page or specific page content goes here */}
-			<h1>Welcome to Atalanta A.C.</h1>
-			{/* Add any other content or components specific to this page */}
-		</div>
+		<CacheProvider value={clientSideEmotionCache}>
+			<Box
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'space-between',
+					height: '100vh',
+				}}>
+				<Helmet>
+					<title>Atalanta A.C.</title>
+					<meta name="viewport" content="initial-scale=1, width=device-width" />
+				</Helmet>
+				<ThemeProvider theme={theme}>
+					<CssBaseline />
+					<Provider store={store}>
+						<Toaster
+							position="bottom-center"
+							gutter={8}
+							toastOptions={{
+								duration: 5000,
+								style: {
+									background: '#363636',
+									color: '#fff',
+								},
+							}}
+						/>
+						<TopBar />
+						<Outlet /> {/* This will render the nested routes */}
+					</Provider>
+					<Copyright />
+				</ThemeProvider>
+			</Box>
+		</CacheProvider>
 	);
-}
+};
+
+export default App;

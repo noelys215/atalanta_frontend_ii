@@ -1,17 +1,14 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Layout from '../components/Layout';
-import { Dashboard } from './routes/Dashboard';
-import Contact from './routes/Contact';
 import App from './App';
-import { QueryClient } from '@tanstack/react-query';
+import Home from './routes/Home'; // Assuming Home is the equivalent of your Next.js index.tsx
+import Contact from './routes/Contact';
 
 export const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <Layout queryClient={new QueryClient()} />,
+		element: <App />,
 		children: [
-			{ path: '/', element: <App /> },
-			{ path: '/dashboard', element: <Dashboard /> },
+			{ path: '/', element: <Home /> },
 			{ path: '/contact', element: <Contact /> },
 		],
 	},
