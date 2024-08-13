@@ -5,6 +5,9 @@ import WomanTops from './routes/woman/WomanTops';
 import ProductScreen from '../components/ProductScreen';
 import WomanBottoms from './routes/woman/WomanBottoms';
 import WomanFootwear from './routes/woman/WomanFootwear';
+import ManTops from './routes/man/ManTops';
+import ManBottoms from './routes/man/ManBottoms';
+import ManFootwear from './routes/man/ManFootwear';
 
 export const router = createBrowserRouter([
 	{
@@ -15,6 +18,9 @@ export const router = createBrowserRouter([
 			{ path: '/woman/tops', element: <WomanTops /> },
 			{ path: '/woman/bottoms', element: <WomanBottoms /> },
 			{ path: '/woman/footwear', element: <WomanFootwear /> },
+			{ path: '/man/tops', element: <ManTops /> },
+			{ path: '/man/bottoms', element: <ManBottoms /> },
+			{ path: '/man/footwear', element: <ManFootwear /> },
 			{
 				path: '/:department/:category/:slug',
 				element: <ProductScreen />,

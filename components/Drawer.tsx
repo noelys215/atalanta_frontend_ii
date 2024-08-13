@@ -65,15 +65,15 @@ const MuiDrawer = () => {
 						<AccordionDetails>
 							<List>
 								<ListItem onClick={() => setOpenDrawer(false)}>
-									<Link to="/man/tops/tops">Tops</Link>
+									<Link to="/man/tops">Tops</Link>
 								</ListItem>
 
 								<ListItem onClick={() => setOpenDrawer(false)}>
-									<Link to="/man/bottoms/bottoms">Bottoms</Link>
+									<Link to="/man/bottoms">Bottoms</Link>
 								</ListItem>
 
 								<ListItem onClick={() => setOpenDrawer(false)}>
-									<Link to="/man/footwear/footwear">Footwear</Link>
+									<Link to="/man/footwear">Footwear</Link>
 								</ListItem>
 							</List>
 						</AccordionDetails>
@@ -115,7 +115,7 @@ const MuiDrawer = () => {
 						<AccordionDetails>
 							<List onClick={() => setOpenDrawer(false)}>
 								<ListItem>
-									<Link to="/accessories/all/accessories">All</Link>
+									<Link to="/accessories/all">All</Link>
 								</ListItem>
 							</List>
 						</AccordionDetails>

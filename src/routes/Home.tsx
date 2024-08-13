@@ -44,7 +44,7 @@ const Home: React.FC = () => {
 					quote={'The tans will fade, but the memories will last forever'}
 					desc={`You can't change a 90-degree day, 100 percent humidity, or the dread of logging miles in both. But you can outfit yourself in whisper-weight, sweat-wicking apparel that helps make summer runs feel like the good kind of hot.`}
 					linkTitle={'Shop the heat 🔥'}
-					linkToSeasonal={'/man/tops/tops'}
+					linkToSeasonal={'/man/tops'}
 					imgSrc={'/assets/mantyingshoe.jpg'}
 				/>
 			</motion.div>
@@ -60,7 +60,7 @@ const Home: React.FC = () => {
 					quote={'When you come to a fork in the road, take it.'}
 					desc={`Beach towels, pareos, cushions and tote bags… bringing you all the essentials for a day by the sea.`}
 					linkTitle={'Explore Accessories'}
-					linkToSeasonal={'/accessories/all/accessories'}
+					linkToSeasonal={'/accessories/all'}
 					imgSrc={'/assets/accHero.jpg'}
 				/>
 			</motion.div>
