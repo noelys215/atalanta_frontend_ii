@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, Button, Divider, Typography } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-import Layout from '../../../../components/Layout';
-import ProductsCat from '../../../../components/ProductsCat';
-import { getProducts } from '../../../api/products';
+import Layout from '../../../components/Layout';
+import ProductsCat from '../../../components/ProductsCat';
+import { getProducts } from '../../api/products';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 

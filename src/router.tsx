@@ -1,10 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
 import Home from './routes/Home';
-import WomanTops from './routes/woman/tops/tops';
+import WomanTops from './routes/woman/WomanTops';
 import ProductScreen from '../components/ProductScreen';
-import WomanBottoms from './routes/woman/bottoms/bottoms';
-import WomanFootwear from './routes/woman/footwear/footwear';
+import WomanBottoms from './routes/woman/WomanBottoms';
+import WomanFootwear from './routes/woman/WomanFootwear';
 
 export const router = createBrowserRouter([
 	{

@@ -2,10 +2,10 @@ import { Box, Button, Divider, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import ProductsCat from '../../../../components/ProductsCat';
+import ProductsCat from '../../../components/ProductsCat';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Layout from '../../../../components/Layout';
-import { getProducts } from '../../../api/products';
+import Layout from '../../../components/Layout';
+import { getProducts } from '../../api/products';
 
 const WomanFootwear: React.FC = () => {
 	const navigate = useNavigate();
