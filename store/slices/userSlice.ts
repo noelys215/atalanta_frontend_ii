@@ -4,7 +4,6 @@ import { registerUser } from '../actions/userActions';
 import { loginUser } from '../actions/loginAction';
 import { getUserProfile } from '../actions/getUserProfile';
 import { updateUserProfile } from '../actions/updateUserProfile';
-import { updateUser } from '../actions/updateUser';
 import { ReactNode } from 'react';
 
 interface CartItem {
@@ -24,7 +23,6 @@ interface ShippingAddress {
 }
 
 interface UserInfo {
-	isAdmin: unknown;
 	lastName: ReactNode;
 	firstName: ReactNode;
 	id: string;
@@ -130,18 +128,6 @@ export const userSlice = createSlice({
 				state.users = action.payload;
 			})
 			.addCase(updateUserProfile.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.error.message || 'Update failed';
-			})
-			// Admin Update User Reducer
-			.addCase(updateUser.pending, (state) => {
-				state.loading = true;
-			})
-			.addCase(updateUser.fulfilled, (state) => {
-				state.loading = false;
-				state.success = true;
-			})
-			.addCase(updateUser.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.error.message || 'Update failed';
 			});
