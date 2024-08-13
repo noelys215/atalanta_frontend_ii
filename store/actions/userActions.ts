@@ -1,11 +1,26 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-// userAction.js
+interface RegisterUserArgs {
+	email: string;
+	password: string;
+	firstName: string;
+	lastName: string;
+	telephone: string;
+	country: string;
+	address: string;
+	addressCont: string;
+	state: string;
+	city: string;
+	postalCode: string;
+}
+
+interface ErrorResponse {
+	message: string;
+}
+
 export const registerUser = createAsyncThunk(
-	// action type string
 	'user/register',
-	// callback function
 	async (
 		{
 			email,
@@ -19,12 +34,10 @@ export const registerUser = createAsyncThunk(
 			state,
 			city,
 			postalCode,
-		},
+		}: RegisterUserArgs,
 		{ rejectWithValue }
 	) => {
 		try {
-			// configure header's Content-Type as JSON
-
 			const config = {
 				headers: {
 					'Access-Control-Allow-Credentials': true,
@@ -32,7 +45,7 @@ export const registerUser = createAsyncThunk(
 					'Content-Type': 'application/json',
 				},
 			};
-			// make request to backend
+
 			await axios.post(
 				`${process.env.API_URL}/users/`,
 				{
@@ -51,11 +64,11 @@ export const registerUser = createAsyncThunk(
 				config
 			);
 		} catch (error) {
-			// return custom error message from API if any
-			if (error.response && error.response.data.message) {
-				return rejectWithValue(error.response.data.message);
+			const err = error as AxiosError<ErrorResponse>;
+			if (err.response && err.response.data && typeof err.response.data === 'object') {
+				return rejectWithValue((err.response.data as ErrorResponse).message);
 			} else {
-				return rejectWithValue(error.message);
+				return rejectWithValue(err.message);
 			}
 		}
 	}

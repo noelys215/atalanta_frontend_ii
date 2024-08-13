@@ -9,16 +9,13 @@ import {
 	Button,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { Link, useNavigate } from 'react-router-dom'; // Replace next/link and next/router
+import { Link, useNavigate } from 'react-router-dom';
 import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
-import Inventory2TwoToneIcon from '@mui/icons-material/Inventory2TwoTone';
-import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
-import ManageAccountsTwoToneIcon from '@mui/icons-material/ManageAccountsTwoTone';
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 // Redux Toolkit
@@ -26,9 +23,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../store/actions/loginAction';
 import { logoutUser, reset } from '../store/slices/userSlice';
 import { cartClear } from '../store/slices/cartSlice';
+import { RootState } from '../store/store';
+import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
+
+// Define the types for the form inputs
+interface LoginFormInputs {
+	email: string;
+	password: string;
+}
 
 const AccountDrawer = () => {
-	const navigate = useNavigate(); // Replace useRouter with useNavigate
+	const navigate = useNavigate();
 	const [openDrawer, setOpenDrawer] = useState(false);
 
 	const [values, setValues] = useState({
@@ -37,24 +42,26 @@ const AccountDrawer = () => {
 	});
 
 	// Toolkit
-	const dispatch = useDispatch();
-	const { userInfo } = useSelector((state) => state.userInfo);
+	const dispatch = useDispatch<ThunkDispatch<RootState, void, AnyAction>>();
+	const { userInfo } = useSelector((state: RootState) => state.userInfo);
 
 	const {
 		handleSubmit,
 		control,
 		formState: { errors },
-	} = useForm();
+	} = useForm<LoginFormInputs>();
 
-	const submitHandler = async ({ email, password }) => {
+	// The submit handler now expects the correct types
+	const submitHandler: SubmitHandler<LoginFormInputs> = async ({ email, password }) => {
 		try {
 			if (userInfo) {
 				return;
 			} else {
-				dispatch(loginUser({ email, password }));
+				await dispatch(loginUser({ email, password }));
 			}
 		} catch (error) {
-			toast(error.message);
+			console.error(error);
+			toast('Login Failed');
 		}
 	};
 
@@ -65,13 +72,18 @@ const AccountDrawer = () => {
 		});
 	};
 
-	const handleMouseDownPassword = (event) => {
+	const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 	};
 
-	const signInHandler = () => {
-		handleSubmit(submitHandler)();
-		setOpenDrawer(false);
+	const signInHandler = async () => {
+		try {
+			await handleSubmit(submitHandler)();
+			setOpenDrawer(false);
+		} catch (error) {
+			console.error(error);
+			toast('Sign-in failed');
+		}
 	};
 
 	const signOutHandler = () => {
@@ -272,48 +284,6 @@ const AccountDrawer = () => {
 									Account Information
 								</Typography>
 							</Link>
-
-							{userInfo.isAdmin ? (
-								<Link to="/admin/orders" onClick={() => setOpenDrawer(false)}>
-									<Typography variant="h6" gutterBottom>
-										<Inventory2TwoToneIcon
-											sx={{ verticalAlign: 'middle', fontSize: 'inherit' }}
-										/>{' '}
-										Order List
-									</Typography>
-								</Link>
-							) : (
-								<Link to="/order-history" onClick={() => setOpenDrawer(false)}>
-									<Typography variant="h6" gutterBottom>
-										<Inventory2TwoToneIcon
-											sx={{ verticalAlign: 'middle', fontSize: 'inherit' }}
-										/>{' '}
-										Order History
-									</Typography>
-								</Link>
-							)}
-
-							{userInfo.isAdmin && (
-								<Link to="/admin/user-list" onClick={() => setOpenDrawer(false)}>
-									<Typography variant="h6" gutterBottom>
-										<ManageAccountsTwoToneIcon
-											sx={{ verticalAlign: 'middle', fontSize: 'inherit' }}
-										/>{' '}
-										User List
-									</Typography>
-								</Link>
-							)}
-
-							{userInfo.isAdmin && (
-								<Link to="/admin/product-list" onClick={() => setOpenDrawer(false)}>
-									<Typography variant="h6" gutterBottom>
-										<InventoryTwoToneIcon
-											sx={{ verticalAlign: 'middle', fontSize: 'inherit' }}
-										/>{' '}
-										Product Management
-									</Typography>
-								</Link>
-							)}
 						</Box>
 						<Box
 							sx={{

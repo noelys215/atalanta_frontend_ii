@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Sort from '../components/Sort';
+import { SelectChangeEvent } from '@mui/material'; // Import SelectChangeEvent
 
 interface ProductCatProps {
 	products?: Product[];
@@ -35,8 +36,8 @@ const ProductsCat: React.FC<ProductCatProps> = ({ products = [], title = '', cat
 	const [loading, setLoading] = useState(false);
 	const [sort, setSort] = useState<string>('');
 
-	const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		setSort(e.target.value);
+	const handleSort = (event: SelectChangeEvent) => {
+		setSort(event.target.value);
 	};
 
 	return (
@@ -100,9 +101,7 @@ const ProductsCat: React.FC<ProductCatProps> = ({ products = [], title = '', cat
 												},
 											}}>
 											<Typography variant="h6">{product.name}</Typography>
-											<Typography variant="body1">{`$${product.price.toFixed(
-												2
-											)}`}</Typography>
+											<Typography variant="body1">{`$${product.price}`}</Typography>
 										</CardContent>
 									</Card>
 								</Link>

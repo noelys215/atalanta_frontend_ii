@@ -2,12 +2,14 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 
-// userAction.js
+interface LoginPayload {
+	email: string;
+	password: string;
+}
+
 export const loginUser = createAsyncThunk(
-	// action type string
 	'user/login',
-	// callback function
-	async ({ email, password }: any, { rejectWithValue }) => {
+	async ({ email, password }: LoginPayload, { rejectWithValue }) => {
 		try {
 			const config = {
 				headers: {
@@ -17,19 +19,20 @@ export const loginUser = createAsyncThunk(
 				},
 			};
 			// make request to backend
-			const { data }: any = await axios.post(
+			const { data } = await axios.post(
 				`${process.env.API_URL}/users/login`,
 				{ email, password },
 				config
 			);
 			Cookies.set('userInfo', JSON.stringify(data));
 			return data;
-		} catch (error: any) {
-			// return custom error message from API if any
-			if (error.response && error.response.data.message) {
-				return rejectWithValue(error.response.data.message);
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				// Type assertion to specify that error.response.data is of the expected type
+				const errorMessage = (error.response?.data as { message: string }).message;
+				return rejectWithValue(errorMessage);
 			} else {
-				return rejectWithValue(error.message);
+				return rejectWithValue('An unexpected error occurred');
 			}
 		}
 	}

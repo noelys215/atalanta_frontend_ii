@@ -90,7 +90,7 @@ const MuiDrawer = () => {
 						<AccordionDetails>
 							<List onClick={() => setOpenDrawer(false)}>
 								<ListItem>
-									<Link to="/woman/tops/tops">Tops</Link>
+									<Link to="/woman">Tops</Link>
 								</ListItem>
 
 								<ListItem>

@@ -8,3 +8,12 @@ export function getProducts(department: string, category: string) {
 			throw new Error(`Failed to fetch products: ${error.message}`);
 		});
 }
+
+export function getProductBySlug(slug: string) {
+	return axios
+		.get(`http://127.0.0.1:8000/api/products/slug/${slug}`)
+		.then((response) => response.data)
+		.catch((error) => {
+			throw new Error(`Failed to fetch product: ${error.message}`);
+		});
+}

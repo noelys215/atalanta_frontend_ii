@@ -22,7 +22,7 @@ const Home: React.FC = () => {
 					quote={`Spring is far more than just a changing of seasons; it's a rebirth of the spirit`}
 					desc={`Daffodils are blooming and the evenings are getting longer, after the seemingly never-ending winter, spring is finally here.`}
 					linkTitle={'Discover the 2022 Womens Spring Collection'}
-					linkToSeasonal={'/woman/tops/tops'}
+					linkToSeasonal={'/woman'}
 					imgSrc={'/assets/nobullrunning.webp'}
 				/>
 			</motion.div>
