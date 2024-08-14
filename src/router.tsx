@@ -9,6 +9,7 @@ import ManTops from './routes/man/ManTops';
 import ManBottoms from './routes/man/ManBottoms';
 import ManFootwear from './routes/man/ManFootwear';
 import Accessories from './routes/accessories/all/accessories';
+import CartScreen from './routes/CartScreen';
 
 export const router = createBrowserRouter([
 	{
@@ -23,6 +24,7 @@ export const router = createBrowserRouter([
 			{ path: '/man/bottoms', element: <ManBottoms /> },
 			{ path: '/man/footwear', element: <ManFootwear /> },
 			{ path: '/accessories/all', element: <Accessories /> },
+			{ path: '/cart', element: <CartScreen /> },
 			{
 				path: '/:department/:category/:slug',
 				element: <ProductScreen />,

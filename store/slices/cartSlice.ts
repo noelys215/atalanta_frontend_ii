@@ -1,16 +1,24 @@
 import Cookies from 'js-cookie';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+export interface StockItem {
+	size: string | number;
+	quantity: number;
+}
+
 export interface CartItem {
-	_id: unknown;
+	_id: number;
 	_key: string;
 	name: string;
 	slug: string;
 	price: number;
-	countInStock: number;
+	path: string;
+	countInStock: StockItem[];
 	image: string;
 	quantity: number;
 	selectedSize: string;
+	department?: string;
+	category?: string;
 }
 
 interface ShippingAddress {

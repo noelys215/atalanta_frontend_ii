@@ -94,7 +94,10 @@ const ProductScreen: React.FC = () => {
 				image: product.image[0],
 				quantity,
 				selectedSize: selectedSize ?? '',
-				_id: undefined,
+				_id: product._id,
+				department: product.department,
+				category: product.category,
+				path: `/${product.department}/${product.category}/${product.slug}`,
 			})
 		);
 
