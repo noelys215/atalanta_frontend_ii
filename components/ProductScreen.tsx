@@ -60,23 +60,12 @@ const ProductScreen: React.FC = () => {
 		);
 	}
 
-	if (isError || !product) {
-		return <div>Error loading product.</div>;
-	}
+	if (isError || !product) return <div>Error loading product.</div>;
 
 	const maxSteps = product.image.length;
-
-	const handleNext = () => {
-		setActiveStep((prevActiveStep) => prevActiveStep + 1);
-	};
-
-	const handleBack = () => {
-		setActiveStep((prevActiveStep) => prevActiveStep - 1);
-	};
-
-	const handleStepChange = (step: number) => {
-		setActiveStep(step);
-	};
+	const handleNext = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
+	const handleBack = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
+	const handleStepChange = (step: number) => setActiveStep(step);
 
 	const addToCartHandler = async () => {
 		const existItem = cart.find(

@@ -15,7 +15,6 @@ import {
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import CachedIcon from '@mui/icons-material/Cached';
-// Tools
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
@@ -51,8 +50,6 @@ const CartScreen: React.FC = () => {
 
 	const { cartItems } = useSelector((state: RootState) => state.cart.cart);
 	const { userInfo } = useSelector((state: RootState) => state.userInfo);
-
-	console.log(cartItems);
 
 	return (
 		<Container
@@ -167,21 +164,45 @@ const CartScreen: React.FC = () => {
 									</Typography>
 								</ListItem>
 								<ListItem>
-									{userInfo ? (
-										<Button
-											fullWidth
-											variant="contained"
-											onClick={() => navigate('/shipping')}>
-											Checkout
-										</Button>
-									) : (
-										<Button
-											fullWidth
-											variant="contained"
-											onClick={() => navigate('/register')}>
-											Register to Checkout
-										</Button>
-									)}
+									<Box
+										sx={{
+											width: '100%',
+											display: 'flex',
+											flexDirection: 'column',
+											gap: 2,
+										}}>
+										{userInfo ? (
+											<>
+												<Button
+													fullWidth
+													variant="contained"
+													onClick={() => navigate('/shipping')}>
+													Checkout as Registered User
+												</Button>
+												<Button
+													fullWidth
+													variant="outlined"
+													onClick={() => navigate('/shipping')}>
+													Checkout as Guest
+												</Button>
+											</>
+										) : (
+											<>
+												<Button
+													fullWidth
+													variant="contained"
+													onClick={() => navigate('/shipping')}>
+													Checkout as Guest
+												</Button>
+												<Button
+													fullWidth
+													variant="outlined"
+													onClick={() => navigate('/register')}>
+													Register to Checkout
+												</Button>
+											</>
+										)}
+									</Box>
 								</ListItem>
 							</List>
 						</Card>
