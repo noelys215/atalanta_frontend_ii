@@ -11,6 +11,7 @@ import ManFootwear from './routes/man/ManFootwear';
 import CartScreen from './routes/CartScreen';
 import Accessories from './routes/accessories/all/accessories';
 import ShippingScreen from './routes/Shipping';
+import PaymentScreen from './PaymentScreen';
 
 export const router = createBrowserRouter([
 	{
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
 			{ path: '/accessories/all', element: <Accessories /> },
 			{ path: '/cart', element: <CartScreen /> },
 			{ path: '/shipping', element: <ShippingScreen /> },
+			{ path: '/payment', element: <PaymentScreen /> },
 			{
 				path: '/:department/:category/:slug',
 				element: <ProductScreen />,
