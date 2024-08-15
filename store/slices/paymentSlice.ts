@@ -1,17 +1,12 @@
 import Cookies from 'js-cookie';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ShippingAddress } from './cartSlice';
 
 // Define types for the state
-interface ShippingAddress {
-	address: string;
-	city: string;
-	postalCode: string;
-	country: string;
-}
 
 interface CartState {
 	cartItems: [];
-	shippingAddress: ShippingAddress | object;
+	shippingAddress: ShippingAddress;
 	paymentMethod: string;
 }
 

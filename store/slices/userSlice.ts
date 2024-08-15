@@ -4,7 +4,6 @@ import { registerUser } from '../actions/userActions';
 import { loginUser } from '../actions/loginAction';
 import { getUserProfile } from '../actions/getUserProfile';
 import { updateUserProfile } from '../actions/updateUserProfile';
-import { ReactNode } from 'react';
 
 interface CartItem {
 	_id: string;
@@ -15,20 +14,31 @@ interface CartItem {
 	selectedSize: string;
 }
 
-interface ShippingAddress {
+export interface ShippingAddress {
+	firstName: string;
+	lastName: string;
+	phone: string;
+	country: string;
 	address: string;
+	addressCont?: string;
+	state: string;
 	city: string;
 	postalCode: string;
-	country: string;
 }
 
 interface UserInfo {
-	lastName: ReactNode;
-	firstName: ReactNode;
+	lastName: string;
+	firstName: string;
 	id: string;
 	name: string;
 	email: string;
 	token: string;
+	address: string;
+	addressCont: string;
+	country: string;
+	state: string;
+	city: string;
+	postalCode: string;
 }
 
 interface UserState {

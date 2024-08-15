@@ -21,8 +21,9 @@ export interface CartItem {
 	category?: string;
 }
 
-interface ShippingAddress {
-	// Define the structure of the shipping address if known
+export interface ShippingAddress {
+	firstName: string;
+	lastName: string;
 	[key: string]: string;
 }
 
