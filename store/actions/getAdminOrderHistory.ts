@@ -10,7 +10,7 @@ export const getAdminOrderHistory = createAsyncThunk(
 			} = getState();
 			const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
 
-			const { data }: any = await axios.get(`${process.env.VITE_API_URL}/orders`, config);
+			const { data }: any = await axios.get(`${import.meta.env.VITE_API_URL}/orders`, config);
 
 			return data;
 		} catch (error: any) {

@@ -34,7 +34,7 @@ const initialState: ProductState = {
 
 // Fetch Products AsyncThunk
 export const fetchProducts = createAsyncThunk<Product[]>('products/fetchProducts', async () => {
-	const { data } = await axios.get(`${process.env.VITE_API_URL}/products`);
+	const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/products`);
 	return data;
 });
 

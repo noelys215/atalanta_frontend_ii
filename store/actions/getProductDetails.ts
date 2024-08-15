@@ -5,7 +5,7 @@ export const getProductDetails = createAsyncThunk(
 	'products/getProductDetails',
 	async (id: any, { getState, rejectWithValue }: any) => {
 		try {
-			const { data }: any = await axios.get(`${process.env.VITE_API_URL}/products/${id}`);
+			const { data }: any = await axios.get(`${import.meta.env.VITE_API_URL}/products/${id}`);
 			return data;
 		} catch (error: any) {
 			if (error.response && error.response.data.message) {

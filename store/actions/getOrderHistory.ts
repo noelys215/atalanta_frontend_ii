@@ -11,7 +11,7 @@ export const getOrderHistory = createAsyncThunk(
 			const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
 
 			const { data }: any = await axios.get(
-				`${process.env.VITE_API_URL}/orders/myorders`,
+				`${import.meta.env.VITE_API_URL}/orders/myorders`,
 				config
 			);
 

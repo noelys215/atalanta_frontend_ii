@@ -14,7 +14,7 @@ export const deleteUser = createAsyncThunk(
 				headers: { Authorization: `Bearer ${userInfo.token}` },
 			};
 
-			await axios.delete(`${process.env.VITE_API_URL}/users/${id}`, config);
+			await axios.delete(`${import.meta.env.VITE_API_URL}/users/${id}`, config);
 		} catch (error: any) {
 			if (error.response && error.response.data.message) {
 				return rejectWithValue(error.response.data.message);

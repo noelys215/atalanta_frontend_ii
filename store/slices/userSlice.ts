@@ -27,8 +27,9 @@ export interface ShippingAddress {
 }
 
 interface UserInfo {
-	lastName: string;
-	firstName: string;
+	user: object;
+	last_name: string;
+	first_name: string;
 	id: string;
 	name: string;
 	email: string;

@@ -21,7 +21,7 @@ export const createOrder = createAsyncThunk(
 
 			// create post request with order data
 			const { data }: any = await axios.post(
-				`${process.env.VITE_API_URL}/orders`,
+				`${import.meta.env.VITE_API_URL}/orders`,
 				order,
 				config
 			);

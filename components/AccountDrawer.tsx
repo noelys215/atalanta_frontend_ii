@@ -101,7 +101,7 @@ const AccountDrawer = () => {
 			<Box sx={{ display: 'flex', cursor: 'pointer' }} onClick={() => setOpenDrawer(true)}>
 				<PersonOutlineTwoToneIcon sx={{ mr: 1 }} />
 				<Typography sx={{ display: { xs: 'none', md: 'flex' } }}>
-					{userInfo ? userInfo.firstName : 'Account'}
+					{userInfo ? userInfo.first_name : 'Account'}
 				</Typography>
 			</Box>
 
@@ -267,7 +267,7 @@ const AccountDrawer = () => {
 								alignItems: 'center',
 							}}>
 							<Typography variant="h5" gutterBottom>
-								{userInfo.firstName} {userInfo.lastName}
+								{userInfo.first_name} {userInfo.last_name}
 							</Typography>
 						</Box>
 						<Box

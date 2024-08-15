@@ -20,7 +20,7 @@ export const updateUserProfile = createAsyncThunk(
 				},
 			};
 			const { data } = await axios.put(
-				`${process.env.VITE_API_URL}/users/profile`,
+				`${import.meta.env.VITE_API_URL}/users/profile`,
 				user,
 				config
 			);

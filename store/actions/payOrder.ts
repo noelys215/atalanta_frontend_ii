@@ -18,7 +18,7 @@ export const payOrder = createAsyncThunk(
 			};
 
 			const { data }: any = await axios.put(
-				`${process.env.VITE_API_URL}/orders/${id}/pay`,
+				`${import.meta.env.VITE_API_URL}/orders/${id}/pay`,
 				paymentResult,
 				config
 			);

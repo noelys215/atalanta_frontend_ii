@@ -18,17 +18,17 @@ export const loginUser = createAsyncThunk(
 					'Content-Type': 'application/json',
 				},
 			};
-			// make request to backend
+
 			const { data } = await axios.post(
-				`${process.env.VITE_API_URL}/users/login`,
+				`${import.meta.env.VITE_API_URL}/login`,
 				{ email, password },
 				config
 			);
-			Cookies.set('userInfo', JSON.stringify(data));
+
+			Cookies.set('userInfo', JSON.stringify(data.user));
 			return data;
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
-				// Type assertion to specify that error.response.data is of the expected type
 				const errorMessage = (error.response?.data as { message: string }).message;
 				return rejectWithValue(errorMessage);
 			} else {

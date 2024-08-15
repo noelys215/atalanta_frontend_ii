@@ -15,7 +15,7 @@ export const updateToShipped = createAsyncThunk(
 			const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
 
 			const { data }: any = await axios.put(
-				`${process.env.VITE_API_URL}/orders/${order._id}/ship`,
+				`${import.meta.env.VITE_API_URL}/orders/${order._id}/ship`,
 				{},
 				config
 			);

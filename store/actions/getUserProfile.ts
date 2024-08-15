@@ -18,7 +18,7 @@ export const getUserProfile = createAsyncThunk(
 				},
 			};
 			const { data }: any = await axios.get(
-				`${process.env.VITE_API_URL}/users/${id}`,
+				`${import.meta.env.VITE_API_URL}/users/${id}`,
 				config
 			);
 			return data;

@@ -17,7 +17,7 @@ export const getOrderDetails = createAsyncThunk(
 			};
 
 			const { data }: any = await axios.get(
-				`${process.env.VITE_API_URL}/orders/${id}`,
+				`${import.meta.env.VITE_API_URL}/orders/${id}`,
 				config
 			);
 

@@ -32,7 +32,7 @@ interface Product {
 }
 
 const fetchProducts = async (): Promise<Product[]> => {
-	const { data } = await axios.get(`${process.env.API_URL}/products`);
+	const { data } = await axios.get(`${import.meta.env.API_URL}/products`);
 	return data;
 };
 
