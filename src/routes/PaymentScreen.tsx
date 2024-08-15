@@ -15,11 +15,11 @@ import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, FormEvent } from 'react';
 import toast from 'react-hot-toast';
-import CheckoutWizard from '../components/CheckoutWizard';
+import CheckoutWizard from '../../components/CheckoutWizard';
 //Redux Toolkit
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../store/store';
-import { savePaymentMethod } from '../store/slices/paymentSlice';
+import { AppDispatch, RootState } from '../../store/store';
+import { savePaymentMethod } from '../../store/slices/paymentSlice';
 
 const PaymentScreen: React.FC = () => {
 	const [paymentMethod, setPaymentMethod] = useState<string>('');

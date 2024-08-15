@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { Link as RouterLink, useLocation } from 'react-router-dom'; // Replace next/link and next/router
 import MuiLink, { LinkProps as MuiLinkProps } from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
+import { ElementType } from 'react';
 
 // Add support for the sx prop for consistency with the other branches.
 const Anchor = styled('a')({});
@@ -18,7 +19,7 @@ interface LinkComposedProps extends Omit<React.AnchorHTMLAttributes<HTMLAnchorEl
 
 export const LinkComposed = React.forwardRef<HTMLAnchorElement, LinkComposedProps>(
 	function LinkComposed(props, ref) {
-		const { to, replace, scroll, shallow, prefetch, locale, ...other } = props;
+		const { to, ...other } = props;
 
 		return <RouterLink to={to} ref={ref} {...other} />;
 	}
@@ -26,7 +27,7 @@ export const LinkComposed = React.forwardRef<HTMLAnchorElement, LinkComposedProp
 
 export type LinkProps = {
 	activeClassName?: string;
-	as?: string;
+	as?: ElementType;
 	href: string;
 	linkAs?: string; // Useful when the as prop is shallow by styled().
 	noLinkStyle?: boolean;
@@ -37,15 +38,10 @@ export type LinkProps = {
 const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(props, ref) {
 	const {
 		activeClassName = 'active',
-		as,
 		className: classNameProps,
 		href,
-		linkAs: linkAsProp,
 		noLinkStyle,
 		replace,
-		role, // Link doesn't have roles.
-		scroll,
-		shallow,
 		...other
 	} = props;
 
@@ -65,8 +61,6 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(props,
 
 		return <MuiLink className={className} href={href} ref={ref} {...other} />;
 	}
-
-	const linkAs = linkAsProp || as;
 
 	if (noLinkStyle) {
 		return (

@@ -9,9 +9,10 @@ import ManTops from './routes/man/ManTops';
 import ManBottoms from './routes/man/ManBottoms';
 import ManFootwear from './routes/man/ManFootwear';
 import CartScreen from './routes/CartScreen';
-import Accessories from './routes/accessories/all/accessories';
-import ShippingScreen from './routes/Shipping';
-import PaymentScreen from './PaymentScreen';
+import Accessories from './routes/accessories/all/Accessories';
+import ShippingScreen from './routes/ShippingScreen';
+import PaymentScreen from './routes/PaymentScreen';
+import PlaceOrderScreen from './routes/PlaceOrderScreen';
 
 export const router = createBrowserRouter([
 	{
@@ -29,6 +30,7 @@ export const router = createBrowserRouter([
 			{ path: '/cart', element: <CartScreen /> },
 			{ path: '/shipping', element: <ShippingScreen /> },
 			{ path: '/payment', element: <PaymentScreen /> },
+			{ path: '/placeorder', element: <PlaceOrderScreen /> },
 			{
 				path: '/:department/:category/:slug',
 				element: <ProductScreen />,
