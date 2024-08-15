@@ -17,7 +17,10 @@ export const getUserProfile = createAsyncThunk(
 					Authorization: `Bearer ${userInfo.token}`,
 				},
 			};
-			const { data }: any = await axios.get(`${process.env.API_URL}/users/${id}`, config);
+			const { data }: any = await axios.get(
+				`${process.env.VITE_API_URL}/users/${id}`,
+				config
+			);
 			return data;
 		} catch (error: any) {
 			if (error.response && error.response.data.message) {

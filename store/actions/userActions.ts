@@ -47,7 +47,7 @@ export const registerUser = createAsyncThunk(
 			};
 
 			await axios.post(
-				`${process.env.API_URL}/users/`,
+				`${process.env.VITE_API_URL}/users/`,
 				{
 					email,
 					password,

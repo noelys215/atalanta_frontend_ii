@@ -17,7 +17,7 @@ export const getUserList = createAsyncThunk(
 				},
 			};
 
-			const { data }: any = await axios.get(`${process.env.API_URL}/users`, config);
+			const { data }: any = await axios.get(`${process.env.VITE_API_URL}/users`, config);
 			return data;
 		} catch (error: any) {
 			if (error.response && error.response.data.message) {

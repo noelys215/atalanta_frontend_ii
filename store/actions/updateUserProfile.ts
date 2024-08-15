@@ -19,7 +19,11 @@ export const updateUserProfile = createAsyncThunk(
 					Authorization: `Bearer ${userInfo.token}`,
 				},
 			};
-			const { data } = await axios.put(`${process.env.API_URL}/users/profile`, user, config);
+			const { data } = await axios.put(
+				`${process.env.VITE_API_URL}/users/profile`,
+				user,
+				config
+			);
 			Cookies.set('userInfo', JSON.stringify(data));
 			return data;
 		} catch (error: any) {

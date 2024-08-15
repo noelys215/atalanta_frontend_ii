@@ -10,7 +10,10 @@ export const getOrderHistory = createAsyncThunk(
 			} = getState();
 			const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
 
-			const { data }: any = await axios.get(`${process.env.API_URL}/orders/myorders`, config);
+			const { data }: any = await axios.get(
+				`${process.env.VITE_API_URL}/orders/myorders`,
+				config
+			);
 
 			return data;
 		} catch (error: any) {

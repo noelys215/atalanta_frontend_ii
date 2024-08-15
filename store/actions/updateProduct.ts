@@ -18,7 +18,7 @@ export const updateProduct = createAsyncThunk(
 				},
 			};
 			const { data } = await axios.put(
-				`${process.env.API_URL}/products/${product._id}`,
+				`${process.env.VITE_API_URL}/products/${product._id}`,
 				product,
 				config
 			);

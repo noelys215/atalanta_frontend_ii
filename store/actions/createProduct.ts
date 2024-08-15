@@ -14,7 +14,7 @@ export const createProduct = createAsyncThunk(
 				headers: { Authorization: `Bearer ${userInfo.token}` },
 			};
 
-			const { data } = await axios.post(`${process.env.API_URL}/products`, {}, config);
+			const { data } = await axios.post(`${process.env.VITE_API_URL}/products`, {}, config);
 
 			return data;
 		} catch (error: any) {
