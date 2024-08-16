@@ -31,6 +31,7 @@ interface UserInfo {
 	last_name: string;
 	first_name: string;
 	id: string;
+	telephone: string;
 	name: string;
 	email: string;
 	token: string;
@@ -59,12 +60,10 @@ interface UserState {
 const initialState: UserState = {
 	cart: {
 		cartItems: Cookies.get('cartItems') ? JSON.parse(Cookies.get('cartItems') as string) : [],
-		shippingAddress: Cookies.get('shippingAddress')
-			? JSON.parse(Cookies.get('shippingAddress') as string)
-			: {},
+		shippingAddress: {}, // No longer stored in cookies
 		paymentMethod: Cookies.get('paymentMethod') || '',
 	},
-	userInfo: Cookies.get('userInfo') ? JSON.parse(Cookies.get('userInfo') as string) : null,
+	userInfo: null, // No longer stored in cookies
 	users: [],
 	loading: false,
 	error: null,
@@ -80,9 +79,8 @@ export const userSlice = createSlice({
 			return Object.assign(state, initialState);
 		},
 		logoutUser: (state) => {
-			Cookies.remove('userInfo');
+			Cookies.remove('userToken');
 			Cookies.remove('cartItems');
-			Cookies.remove('shippingAddress');
 			Cookies.remove('paymentMethod');
 			return {
 				...state,
@@ -134,9 +132,9 @@ export const userSlice = createSlice({
 			.addCase(updateUserProfile.pending, (state) => {
 				state.loading = true;
 			})
-			.addCase(updateUserProfile.fulfilled, (state, action: PayloadAction<UserInfo[]>) => {
+			.addCase(updateUserProfile.fulfilled, (state, action: PayloadAction<UserInfo>) => {
 				state.loading = false;
-				state.users = action.payload;
+				state.userInfo = action.payload;
 			})
 			.addCase(updateUserProfile.rejected, (state, action) => {
 				state.loading = false;

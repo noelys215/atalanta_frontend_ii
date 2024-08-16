@@ -14,6 +14,7 @@ import ShippingScreen from './routes/ShippingScreen';
 import PaymentScreen from './routes/PaymentScreen';
 import PlaceOrderScreen from './routes/PlaceOrderScreen';
 import RegisterScreen from './routes/RegisterScreen';
+import AccountScreen from './routes/AccountScreen';
 
 export const router = createBrowserRouter([
 	{
@@ -33,6 +34,7 @@ export const router = createBrowserRouter([
 			{ path: '/payment', element: <PaymentScreen /> },
 			{ path: '/placeorder', element: <PlaceOrderScreen /> },
 			{ path: '/register', element: <RegisterScreen /> },
+			{ path: '/account', element: <AccountScreen /> },
 			{
 				path: '/:department/:category/:slug',
 				element: <ProductScreen />,
