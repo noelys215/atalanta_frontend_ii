@@ -1,11 +1,13 @@
-import Cookies from 'js-cookie';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ShippingAddress } from './cartSlice';
 
-// Define types for the state
+export interface ShippingAddress {
+	firstName: string;
+	lastName: string;
+	[key: string]: string;
+}
 
 interface CartState {
-	cartItems: [];
+	cartItems: []; // Assuming this will be managed elsewhere
 	shippingAddress: ShippingAddress;
 	paymentMethod: string;
 }
@@ -25,13 +27,14 @@ interface PaymentState {
 // Initialize the state with types
 const initialState: PaymentState = {
 	cart: {
-		cartItems: Cookies.get('cartItems') ? JSON.parse(Cookies.get('cartItems') as string) : [],
-		shippingAddress: Cookies.get('shippingAddress')
-			? JSON.parse(Cookies.get('shippingAddress') as string)
-			: {},
-		paymentMethod: Cookies.get('paymentMethod') || '',
+		cartItems: [], // Initialize with an empty array
+		shippingAddress: {
+			firstName: '',
+			lastName: '',
+		}, // Initialize with an empty object
+		paymentMethod: '', // Initialize with an empty string
 	},
-	userInfo: Cookies.get('userInfo') ? JSON.parse(Cookies.get('userInfo') as string) : null,
+	userInfo: null, // Initialize with null
 };
 
 export const paymentSlice = createSlice({
@@ -39,11 +42,9 @@ export const paymentSlice = createSlice({
 	initialState,
 	reducers: {
 		saveShippingAddress: (state, action: PayloadAction<ShippingAddress>) => {
-			Cookies.set('shippingAddress', JSON.stringify(action.payload));
 			state.cart.shippingAddress = action.payload;
 		},
 		savePaymentMethod: (state, action: PayloadAction<string>) => {
-			Cookies.set('paymentMethod', action.payload);
 			state.cart.paymentMethod = action.payload;
 		},
 	},

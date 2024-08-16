@@ -48,9 +48,11 @@ const CartScreen: React.FC = () => {
 		toast(`${item.name} REMOVED`);
 	};
 
-	const { cartItems } = useSelector((state: RootState) => state.cart.cart);
+	// Safely extract cartItems with a fallback to an empty array if undefined
+	const { cartItems = [] } = useSelector((state: RootState) => state.cart || {});
 	const { userInfo } = useSelector((state: RootState) => state.userInfo);
 
+	console.log(cartItems);
 	return (
 		<Container
 			maxWidth="xl"

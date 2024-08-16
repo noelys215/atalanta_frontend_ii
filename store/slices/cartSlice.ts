@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface StockItem {
@@ -8,7 +7,7 @@ export interface StockItem {
 
 export interface CartItem {
 	_id: number;
-	_key: string;
+	_key: string; // you may eventually remove this if unnecessary
 	name: string;
 	slug: string;
 	price: number;
@@ -21,32 +20,19 @@ export interface CartItem {
 	category?: string;
 }
 
-export interface ShippingAddress {
-	firstName: string;
-	lastName: string;
-	[key: string]: string;
-}
-
 interface CartState {
 	cartItems: CartItem[];
-	cart: {
-		cartItems: CartItem[];
-		shippingAddress: ShippingAddress;
-		paymentMethod: string;
-	};
-	userInfo: unknown;
+	paymentMethod: string;
 }
 
+// Load cart items from localStorage if available
+const cartItemsFromStorage = localStorage.getItem('cartItems')
+	? JSON.parse(localStorage.getItem('cartItems') as string)
+	: [];
+
 const initialState: CartState = {
-	cart: {
-		cartItems: Cookies.get('cartItems') ? JSON.parse(Cookies.get('cartItems')!) : [],
-		shippingAddress: Cookies.get('shippingAddress')
-			? JSON.parse(Cookies.get('shippingAddress')!)
-			: {},
-		paymentMethod: Cookies.get('paymentMethod') || '',
-	},
-	userInfo: Cookies.get('userInfo') ? JSON.parse(Cookies.get('userInfo')!) : null,
-	cartItems: [],
+	cartItems: cartItemsFromStorage, // Initialize with items from localStorage
+	paymentMethod: '',
 };
 
 export const cartSlice = createSlice({
@@ -56,34 +42,52 @@ export const cartSlice = createSlice({
 		cartAddItem: (state, action: PayloadAction<CartItem>) => {
 			const newItem = action.payload;
 
-			const existItem = state.cart.cartItems.find(
-				(item) => item._key === newItem._key && item.selectedSize === newItem.selectedSize
+			// Match based on slug and selected size
+			const existItem = state.cartItems.find(
+				(item) => item.slug === newItem.slug && item.selectedSize === newItem.selectedSize
 			);
 
-			const cartItems = existItem
-				? state.cart.cartItems.map((item) =>
-						item._key === existItem._key ? newItem : item
-				  )
-				: [...state.cart.cartItems, newItem];
+			if (existItem) {
+				// Update the quantity of the existing item
+				state.cartItems = state.cartItems.map((item) =>
+					item.slug === existItem.slug && item.selectedSize === existItem.selectedSize
+						? { ...item, quantity: newItem.quantity }
+						: item
+				);
+			} else {
+				// Add new item to the cart
+				state.cartItems = [...state.cartItems, newItem];
+			}
 
-			Cookies.set('cartItems', JSON.stringify(cartItems));
-
-			state.cart.cartItems = cartItems;
+			// Save to localStorage
+			localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
 		},
 		cartRemoveItem: (state, action: PayloadAction<CartItem>) => {
-			const cartItems = state.cart.cartItems.filter(
-				(item) => item._key !== action.payload._key
+			// Remove based on slug and selected size
+			state.cartItems = state.cartItems.filter(
+				(item) =>
+					!(
+						item.slug === action.payload.slug &&
+						item.selectedSize === action.payload.selectedSize
+					)
 			);
-			Cookies.set('cartItems', JSON.stringify(cartItems));
-			state.cart.cartItems = cartItems;
+
+			// Update localStorage
+			localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
 		},
 		cartClear: (state) => {
-			Cookies.remove('cartItems');
-			state.cart.cartItems = [];
+			state.cartItems = [];
+			// Clear cart items from localStorage
+			localStorage.removeItem('cartItems');
+		},
+		setPaymentMethod: (state, action: PayloadAction<string>) => {
+			state.paymentMethod = action.payload;
+			// Optionally, save payment method to localStorage
+			localStorage.setItem('paymentMethod', action.payload);
 		},
 	},
 });
 
-export const { cartAddItem, cartRemoveItem, cartClear } = cartSlice.actions;
+export const { cartAddItem, cartRemoveItem, cartClear, setPaymentMethod } = cartSlice.actions;
 
 export default cartSlice.reducer;

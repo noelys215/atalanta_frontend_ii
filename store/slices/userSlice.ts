@@ -38,7 +38,7 @@ interface UserInfo {
 	country: string;
 	state: string;
 	city: string;
-	postalCode: string;
+	postal_code: string;
 }
 
 interface UserState {
@@ -58,7 +58,7 @@ interface UserState {
 const initialState: UserState = {
 	cart: {
 		cartItems: Cookies.get('cartItems') ? JSON.parse(Cookies.get('cartItems') as string) : [],
-		shippingAddress: {}, // No longer stored in cookies
+		shippingAddress: {},
 		paymentMethod: Cookies.get('paymentMethod') || '',
 	},
 	userInfo: null, // No longer stored in cookies
@@ -137,7 +137,7 @@ export const userSlice = createSlice({
 						country: action.payload.user.country,
 						state: action.payload.user.state,
 						city: action.payload.user.city,
-						postalCode: action.payload.user.postalCode,
+						postal_code: action.payload.user.postalCode,
 					};
 
 					state.userInfo = updatedUserInfo;

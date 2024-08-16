@@ -80,7 +80,7 @@ const AccountScreen: React.FC = () => {
 			setValue('addressCont', userInfo.addressCont || '');
 			setValue('state', userInfo.state);
 			setValue('city', userInfo.city);
-			setValue('postalCode', userInfo.postalCode);
+			setValue('postalCode', userInfo.postal_code);
 		}
 	}, [userInfo, setValue]);
 

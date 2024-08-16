@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Badge, Box, Container, Typography } from '@mui/material';
 import ShoppingBagTwoToneIcon from '@mui/icons-material/ShoppingBagTwoTone';
 import { Link } from 'react-router-dom';
@@ -8,11 +8,14 @@ import SearchBar from './SearchBar';
 import SearchIcon from '@mui/icons-material/Search';
 import { useSelector } from 'react-redux';
 import logo from '../public/assets/logo-plain.png';
+import { RootState } from '../store/store'; // Make sure this is the correct path to your store
 
 const TopBar = () => {
 	const [openSearch, setOpenSearch] = useState(false);
 
-	const { cart } = useSelector((state) => state.cart);
+	// Specify the RootState type for the state
+	const cart = useSelector((state: RootState) => state.cart);
+	const cartItems = cart?.cartItems || [];
 
 	return (
 		<Container
@@ -61,10 +64,8 @@ const TopBar = () => {
 								<Box display={'flex'} gap={1}>
 									<ShoppingBagTwoToneIcon />
 									<Typography sx={{ display: { xs: 'none', md: 'flex' } }}>
-										{cart.cartItems.length > 0 ? (
-											<Badge
-												color="primary"
-												badgeContent={cart.cartItems.length}>
+										{cartItems.length > 0 ? (
+											<Badge color="primary" badgeContent={cartItems.length}>
 												Cart
 											</Badge>
 										) : (

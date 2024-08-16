@@ -4,12 +4,12 @@ import { Box } from '@mui/system';
 import CheckoutWizard from '../../components/CheckoutWizard';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-//Redux Toolkit
+// Redux Toolkit
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { saveShippingAddress } from '../../store/slices/paymentSlice';
 import { Helmet } from 'react-helmet';
-import { ShippingAddress } from '../../store/slices/cartSlice';
+import { ShippingAddress } from '../../store/slices/paymentSlice';
 
 export default function ShippingScreen() {
 	const navigate = useNavigate();
@@ -27,18 +27,20 @@ export default function ShippingScreen() {
 
 	useEffect(() => {
 		// Set form values based on existing shipping address or userInfo
-		setValue('firstName', shippingAddress.firstName || userInfo?.firstName || '');
-		setValue('lastName', shippingAddress.lastName || userInfo?.lastName || '');
+		setValue('firstName', shippingAddress.firstName || userInfo?.first_name || '');
+		setValue('lastName', shippingAddress.lastName || userInfo?.last_name || '');
 		setValue('country', shippingAddress.country || userInfo?.country || '');
 		setValue('address', shippingAddress.address || userInfo?.address || '');
 		setValue('addressCont', shippingAddress.addressCont || userInfo?.addressCont || '');
 		setValue('state', shippingAddress.state || userInfo?.state || '');
 		setValue('city', shippingAddress.city || userInfo?.city || '');
-		setValue('postalCode', shippingAddress.postalCode || userInfo?.postalCode || '');
+		setValue('postalCode', shippingAddress.postalCode || userInfo?.postal_code || '');
 	}, [setValue, userInfo, shippingAddress]);
 
 	const submitHandler = (data: ShippingAddress) => {
+		// Save shipping address to the Redux state
 		dispatch(saveShippingAddress(data));
+		// Navigate to the payment screen
 		navigate('/payment');
 	};
 
