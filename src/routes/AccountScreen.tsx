@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { Controller, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -17,8 +17,8 @@ import { Helmet } from 'react-helmet';
 import { useMutation } from '@tanstack/react-query';
 import { getError } from '../../utils/error';
 import { updateUserProfile } from '../../store/actions/updateUserProfile';
-import { RootState } from '../../store/store';
-import { useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '../../store/store';
+import { useSelector, useDispatch } from 'react-redux';
 
 interface RegisterProps {
 	firstName: string;
@@ -36,22 +36,27 @@ interface RegisterProps {
 }
 
 const AccountScreen: React.FC = () => {
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
+	const dispatch = useDispatch<AppDispatch>();
 	const [edit, setEdit] = useState(false);
 	const [values, setValues] = useState({ password: '', showPassword: false });
 
 	// Access user info from Redux state
 	const { userInfo } = useSelector((state: RootState) => state.userInfo);
-	console.log(userInfo);
+
+	// Wrapper function to update user profile using the dispatch
+	const updateUserProfileWrapper = async (userData: RegisterProps) => {
+		return dispatch(updateUserProfile(userData)).unwrap();
+	};
 
 	// Mutation for updating user profile
 	const mutation = useMutation({
-		mutationFn: updateUserProfile,
+		mutationFn: updateUserProfileWrapper,
 		onSuccess: () => {
 			toast.success('Profile Updated');
 			setEdit(false);
 		},
-		onError: (error) => {
+		onError: (error: unknown) => {
 			toast.error(getError(error));
 		},
 	});
@@ -79,7 +84,7 @@ const AccountScreen: React.FC = () => {
 		}
 	}, [userInfo, setValue]);
 
-	const submitHandler = async (data: RegisterProps) => {
+	const submitHandler = (data: RegisterProps) => {
 		if (data.password && data.password !== data.confirmPassword) {
 			toast.error("Passwords don't match");
 			return;
@@ -88,10 +93,10 @@ const AccountScreen: React.FC = () => {
 	};
 
 	const handleClickShowPassword = () => {
-		setValues({
-			...values,
-			showPassword: !values.showPassword,
-		});
+		setValues((prevValues) => ({
+			...prevValues,
+			showPassword: !prevValues.showPassword,
+		}));
 	};
 
 	const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -136,6 +141,7 @@ const AccountScreen: React.FC = () => {
 							<TextField
 								disabled={!edit}
 								sx={{ mb: 2.5 }}
+								className="register"
 								required
 								id="firstName"
 								label="First Name"
@@ -164,6 +170,7 @@ const AccountScreen: React.FC = () => {
 							<TextField
 								disabled={!edit}
 								sx={{ mb: 2.5 }}
+								className="register"
 								required
 								id="lastName"
 								label="Last Name"
@@ -203,6 +210,7 @@ const AccountScreen: React.FC = () => {
 										width: 500,
 									},
 								}}
+								className="register"
 								required
 								id="email"
 								label="Email"
@@ -225,7 +233,7 @@ const AccountScreen: React.FC = () => {
 						control={control}
 						rules={{
 							validate: (value) =>
-								value === '' || value.length > 5 || 'Password Too Short',
+								value === '' || (value?.length ?? 0) > 5 || 'Password Too Short',
 						}}
 						render={({ field }) => (
 							<TextField
@@ -234,6 +242,7 @@ const AccountScreen: React.FC = () => {
 								sx={{ mb: 2.5 }}
 								id="password"
 								label="Password"
+								className="register"
 								type={values.showPassword ? 'text' : 'password'}
 								autoComplete="current-password"
 								error={Boolean(errors.password)}
@@ -265,7 +274,7 @@ const AccountScreen: React.FC = () => {
 						rules={{
 							validate: (value) =>
 								value === '' ||
-								value.length > 5 ||
+								(value?.length ?? 0) > 5 ||
 								'Password length is greater than 5',
 						}}
 						render={({ field }) => (
@@ -275,6 +284,7 @@ const AccountScreen: React.FC = () => {
 								sx={{ mb: 2.5 }}
 								id="confirmPassword"
 								label="Confirm Password"
+								className="register"
 								type={values.showPassword ? 'text' : 'password'}
 								autoComplete="current-password"
 								error={Boolean(errors.confirmPassword)}
@@ -322,6 +332,7 @@ const AccountScreen: React.FC = () => {
 								}}
 								disabled={!edit}
 								sx={{ mb: 2.5 }}
+								className="register"
 								required
 								id="telephone"
 								label="Phone"
@@ -349,6 +360,7 @@ const AccountScreen: React.FC = () => {
 							<TextField
 								disabled={!edit}
 								sx={{ mb: 2.5 }}
+								className="register"
 								required
 								id="country"
 								label="Country"
@@ -377,6 +389,7 @@ const AccountScreen: React.FC = () => {
 							<TextField
 								disabled={!edit}
 								sx={{ mb: 2.5 }}
+								className="register"
 								required
 								id="address"
 								label="Address"
@@ -406,6 +419,7 @@ const AccountScreen: React.FC = () => {
 								sx={{ mb: 2.5 }}
 								id="addressCont"
 								label="Address Cont.."
+								className="register"
 								inputProps={{ type: 'text' }}
 								error={Boolean(errors.addressCont)}
 								helperText={
@@ -431,6 +445,7 @@ const AccountScreen: React.FC = () => {
 							<TextField
 								disabled={!edit}
 								sx={{ mb: 2.5 }}
+								className="register"
 								required
 								id="state"
 								label="State"
@@ -460,6 +475,7 @@ const AccountScreen: React.FC = () => {
 								<TextField
 									disabled={!edit}
 									sx={{ mb: 2.5 }}
+									className="register"
 									required
 									id="city"
 									label="City"
@@ -489,6 +505,7 @@ const AccountScreen: React.FC = () => {
 								<TextField
 									disabled={!edit}
 									sx={{ mb: 2.5 }}
+									className="register"
 									required
 									id="postalCode"
 									label="Postal Code"

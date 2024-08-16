@@ -2,8 +2,7 @@ import Cookies from 'js-cookie';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { registerUser } from '../actions/userActions';
 import { loginUser } from '../actions/loginAction';
-import { getUserProfile } from '../actions/getUserProfile';
-import { updateUserProfile } from '../actions/updateUserProfile';
+import { updateUserProfile, UserProfileResponse } from '../actions/updateUserProfile';
 
 interface CartItem {
 	_id: string;
@@ -27,7 +26,6 @@ export interface ShippingAddress {
 }
 
 interface UserInfo {
-	user: object;
 	last_name: string;
 	first_name: string;
 	id: string;
@@ -116,26 +114,35 @@ export const userSlice = createSlice({
 				state.loading = false;
 				state.error = action.error.message || 'Login failed';
 			})
-			// Get Single User Profile Reducer
-			.addCase(getUserProfile.pending, (state) => {
-				state.loading = true;
-			})
-			.addCase(getUserProfile.fulfilled, (state, action: PayloadAction<UserInfo>) => {
-				state.loading = false;
-				state.userInfo = action.payload;
-			})
-			.addCase(getUserProfile.rejected, (state, action) => {
-				state.loading = false;
-				state.error = action.error.message || 'Failed to load user profile';
-			})
 			// Update User Profile Reducer
 			.addCase(updateUserProfile.pending, (state) => {
 				state.loading = true;
 			})
-			.addCase(updateUserProfile.fulfilled, (state, action: PayloadAction<UserInfo>) => {
-				state.loading = false;
-				state.userInfo = action.payload;
-			})
+			.addCase(
+				updateUserProfile.fulfilled,
+				(state, action: PayloadAction<UserProfileResponse>) => {
+					state.loading = false;
+
+					// Transform UserProfileResponse into UserInfo
+					const updatedUserInfo: UserInfo = {
+						last_name: action.payload.user.lastName,
+						first_name: action.payload.user.firstName,
+						id: state.userInfo?.id || '', // Preserve id if it's already in state
+						telephone: action.payload.user.telephone,
+						name: `${action.payload.user.firstName} ${action.payload.user.lastName}`,
+						email: action.payload.user.email,
+						token: action.payload.token,
+						address: action.payload.user.address,
+						addressCont: action.payload.user.addressCont || '',
+						country: action.payload.user.country,
+						state: action.payload.user.state,
+						city: action.payload.user.city,
+						postalCode: action.payload.user.postalCode,
+					};
+
+					state.userInfo = updatedUserInfo;
+				}
+			)
 			.addCase(updateUserProfile.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.error.message || 'Update failed';
