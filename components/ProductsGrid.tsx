@@ -93,7 +93,7 @@ const ProductsGrid: React.FC = (): ReactElement => {
 					alignItems: 'center',
 				}}>
 				{manShoes.slice(0, 4).map((p) => (
-					<Grid item md={3} sm={4} xs={6} key={p._id}>
+					<Grid item md={3} sm={4} xs={6} key={p.slug}>
 						<Link to={`/man/footwear/${p.slug}`}>
 							<img
 								src={p.image[0]}
@@ -111,7 +111,7 @@ const ProductsGrid: React.FC = (): ReactElement => {
 				))}
 
 				{womanShoes.slice(0, 4).map((p) => (
-					<Grid item md={3} sm={4} xs={6} key={p._id}>
+					<Grid item md={3} sm={4} xs={6} key={p.slug}>
 						<Link to={`/woman/footwear/${p.slug}`}>
 							<img
 								src={p.image[0]}

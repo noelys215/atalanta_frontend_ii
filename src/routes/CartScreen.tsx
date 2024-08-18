@@ -26,14 +26,13 @@ const CartScreen: React.FC = () => {
 	const navigate = useNavigate();
 
 	const { cartItems = [] } = useSelector((state: RootState) => state.cart || {});
-	// const { userInfo } = useSelector((state: RootState) => state.userInfo);
+	const { userInfo } = useSelector((state: RootState) => state.userInfo);
 
 	const createCheckoutSession = async () => {
 		try {
-			// Prepare the line items based on the cartItems
 			const lineItems = cartItems.map((item) => ({
 				price_data: {
-					currency: 'usd', // or the currency you are using
+					currency: 'usd',
 					product_data: {
 						name: item.name,
 						images: [item.image],
@@ -42,34 +41,22 @@ const CartScreen: React.FC = () => {
 							selectedSize: item.selectedSize,
 						},
 					},
-					unit_amount: Math.round(item.price * 100), // price should be in cents
+					unit_amount: Math.round(item.price * 100),
 				},
 				quantity: item.quantity,
 			}));
 
-			// Make the request to create a checkout session
 			const response = await fetch(
 				`${import.meta.env.VITE_API_URL}/stripe/create-checkout-session`,
 				{
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({ line_items: lineItems }),
+					body: JSON.stringify({ line_items: lineItems, user_info: userInfo || null }),
 				}
 			);
 
-			// Log the raw response for debugging
-			console.log('Raw response:', response);
-
-			// Check if the response is okay
-			if (!response.ok) {
-				const errorText = await response.text();
-				throw new Error(`Error: ${response.status} - ${errorText}`);
-			}
-
-			// Parse the JSON response
 			const data = await response.json();
 
-			// Ensure sessionId exists in the response
 			const sessionId = data.sessionId;
 			const clientSecret = data.clientSecret;
 
@@ -77,12 +64,10 @@ const CartScreen: React.FC = () => {
 				throw new Error('Session ID or Client Secret not found in response');
 			}
 
-			// Navigate to PlaceOrderScreen with sessionId and clientSecret
 			navigate(`/placeorder?sessionId=${sessionId}`, {
 				state: { clientSecret },
 			});
 		} catch (error) {
-			// Log the full error and show a toast message
 			console.error('Failed to create checkout session:', error);
 			toast.error('Failed to create checkout session. Please try again.');
 		}

@@ -96,7 +96,7 @@ export const FeaturedItems = (): ReactElement => {
 				{/* Four Products */}
 				<Grid container gap={8} justifyContent="center" sx={{ width: { lg: '55%' } }}>
 					{products.slice(0, 4).map((p) => (
-						<Grid item md={5} xs={4} key={p._id}>
+						<Grid item md={5} xs={4} key={p.slug}>
 							<Link to={`/woman/tops/${p.slug}`}>
 								<img
 									src={p.image[0]}
