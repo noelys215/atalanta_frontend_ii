@@ -53,7 +53,7 @@ const App: React.FC = () => {
 							}}
 						/>
 						<TopBar />
-						<Outlet /> {/* This will render the nested routes */}
+						<Outlet />
 					</Provider>
 					<Copyright />
 				</ThemeProvider>

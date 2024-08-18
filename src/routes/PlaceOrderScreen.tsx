@@ -8,27 +8,24 @@ import { getError } from '../../utils/error';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { createOrder } from '../../store/actions/createOrder';
-import Cookies from 'js-cookie';
+import { payOrder } from '../../store/actions/payOrder';
+import { cartClear } from '../../store/slices/cartSlice';
+import { reset } from '../../store/slices/orderSlice';
 import { Helmet } from 'react-helmet';
-import { CartItem, ShippingAddress } from '../../store/slices/cartSlice';
+import { PayPalButton } from 'react-paypal-button-v2';
+import Cookies from 'js-cookie';
+import { CartItem } from '../../store/slices/cartSlice';
 import Link from '../Link';
 
 const PlaceOrderScreen: React.FC = () => {
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(false);
+	const [sdkReady, setSdkReady] = useState(false);
 	const dispatch = useDispatch<AppDispatch>();
 
-	const { order } = useSelector((state: RootState) => state.order);
-	console.log(order);
 	const { userInfo } = useSelector((state: RootState) => state.userInfo);
-
-	// Explicitly typing cartItems as an array of CartItem
-	const { cartItems, shippingAddress } = useSelector(
-		(state: RootState) => state.payment.cart
-	) as {
-		cartItems: CartItem[];
-		shippingAddress: ShippingAddress;
-	};
+	const { cartItems = [] } = useSelector((state: RootState) => state.cart || {});
+	const { shippingAddress } = useSelector((state: RootState) => state.payment.cart);
 
 	const paymentMethod = Cookies.get('paymentMethod');
 
@@ -40,33 +37,62 @@ const PlaceOrderScreen: React.FC = () => {
 
 	useEffect(() => {
 		if (cartItems.length === 0) {
-			setLoading(true);
-			window.location.reload();
+			navigate('/cart');
 		}
 		if (!paymentMethod) {
 			navigate('/payment');
 		}
 	}, [cartItems, paymentMethod, navigate]);
 
+	useEffect(() => {
+		// Load PayPal script
+		const addPayPalScript = async () => {
+			const clientId = `${import.meta.env.VITE_PAYPAL_CLIENT_ID}`;
+			const script = document.createElement('script');
+			script.type = 'text/javascript';
+			script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+			script.async = true;
+			script.onload = () => setSdkReady(true);
+			document.body.appendChild(script);
+		};
+
+		if (!window.paypal) {
+			addPayPalScript();
+		} else {
+			setSdkReady(true);
+		}
+	}, []);
+
 	const placeOrderHandler = async () => {
 		try {
 			setLoading(true);
-			await dispatch(
+			const order = await dispatch(
 				createOrder({
 					orderItems: cartItems,
 					shippingAddress,
-					paymentMethod,
+					paymentMethod: paymentMethod || '',
 					itemsPrice,
 					shippingPrice,
 					taxPrice,
 					totalPrice,
 					user: userInfo,
 				})
-			)
-				.unwrap()
-				.then((order) => {
-					navigate(`/order/${order._id}`);
-				});
+			).unwrap();
+			navigate(`/order/${order._id}`);
+			setLoading(false);
+		} catch (error) {
+			setLoading(false);
+			toast(getError(error));
+		}
+	};
+
+	const successPaymentHandler = async (paymentResult: any) => {
+		try {
+			setLoading(true);
+			await dispatch(payOrder({ orderId: order._id, paymentResult })).unwrap();
+			dispatch(cartClear({}));
+			dispatch(reset());
+			navigate(`/order/${order._id}`);
 			setLoading(false);
 		} catch (error) {
 			setLoading(false);
@@ -105,18 +131,18 @@ const PlaceOrderScreen: React.FC = () => {
 					xs={12}
 					sx={{ width: { md: '90%', xs: '100%' } }}
 					m={'auto'}>
-					<Typography sx={{ mt: 4 }}>Place Order</Typography>
+					<Typography sx={{ mt: 4 }}>Shipping Address</Typography>
 					<Divider sx={{ mb: 1, justifySelf: 'center' }} />
 					<List>
 						<ListItem>
 							<Typography>Shipping Address:</Typography>
 						</ListItem>
 						<ListItem sx={{ whiteSpace: 'pre-line' }}>
-							{`${shippingAddress.firstName} ${shippingAddress.lastName}
-						${shippingAddress.address} 
-						${shippingAddress.city} ${shippingAddress.state}
-						${shippingAddress.postalCode} 
-						${shippingAddress.country}`}
+							{`${shippingAddress?.firstName} ${shippingAddress?.lastName}
+						${shippingAddress?.address} 
+						${shippingAddress?.city} ${shippingAddress?.state}
+						${shippingAddress?.postalCode} 
+						${shippingAddress?.country}`}
 						</ListItem>
 						<ListItem>
 							<Button
@@ -223,6 +249,7 @@ const PlaceOrderScreen: React.FC = () => {
 								Edit
 							</Button>
 						</ListItem>
+
 						{/* Place Order */}
 						<ListItem>
 							<Button
@@ -235,6 +262,22 @@ const PlaceOrderScreen: React.FC = () => {
 								Place Order
 							</Button>
 						</ListItem>
+
+						{/* PayPal Button */}
+						{!sdkReady ? (
+							<ListItem>
+								<CircularProgress />
+							</ListItem>
+						) : (
+							<ListItem>
+								<PayPalButton
+									amount={totalPrice}
+									onSuccess={successPaymentHandler}
+									onError={(err) => toast(getError(err))}
+								/>
+							</ListItem>
+						)}
+
 						{loading && (
 							<ListItem>
 								<CircularProgress />

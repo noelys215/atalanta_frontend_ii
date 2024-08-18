@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, FormEvent } from 'react';
 import toast from 'react-hot-toast';
 import CheckoutWizard from '../../components/CheckoutWizard';
-//Redux Toolkit
+// Redux Toolkit
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { savePaymentMethod } from '../../store/slices/paymentSlice';
@@ -41,7 +41,9 @@ const PaymentScreen: React.FC = () => {
 		if (!paymentMethod) {
 			toast('Payment method is required');
 		} else {
+			// Save payment method to Redux state and cookie
 			dispatch(savePaymentMethod(paymentMethod));
+			Cookies.set('paymentMethod', paymentMethod);
 			navigate('/placeorder');
 		}
 	};

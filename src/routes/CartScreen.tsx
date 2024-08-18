@@ -52,7 +52,6 @@ const CartScreen: React.FC = () => {
 	const { cartItems = [] } = useSelector((state: RootState) => state.cart || {});
 	const { userInfo } = useSelector((state: RootState) => state.userInfo);
 
-	console.log(cartItems);
 	return (
 		<Container
 			maxWidth="xl"
