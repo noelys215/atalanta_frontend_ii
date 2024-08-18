@@ -19,50 +19,78 @@ import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
-import { cartAddItem, CartItem, cartRemoveItem, StockItem } from '../../store/slices/cartSlice';
+import { cartAddItem, CartItem, cartRemoveItem } from '../../store/slices/cartSlice';
 
 const CartScreen: React.FC = () => {
 	const dispatch = useDispatch<AppDispatch>();
 	const navigate = useNavigate();
 
-	const updateCartHandler = async (item: CartItem, quantity: number) => {
-		dispatch(
-			cartAddItem({
-				_id: item._id,
-				_key: item._key,
-				name: item.name,
-				countInStock: item.countInStock,
-				slug: item.slug,
-				price: item.price,
-				image: item.image,
-				path: item.path,
-				selectedSize: item.selectedSize,
-				quantity,
-			})
-		);
-		toast(`${item.name} UPDATED`);
-	};
-
-	const removeItemHandler = (item: CartItem) => {
-		dispatch(cartRemoveItem(item));
-		toast(`${item.name} REMOVED`);
-	};
-
-	// Safely extract cartItems with a fallback to an empty array if undefined
 	const { cartItems = [] } = useSelector((state: RootState) => state.cart || {});
-	const { userInfo } = useSelector((state: RootState) => state.userInfo);
+	// const { userInfo } = useSelector((state: RootState) => state.userInfo);
+
+	const createCheckoutSession = async () => {
+		try {
+			// Prepare the line items based on the cartItems
+			const lineItems = cartItems.map((item) => ({
+				price_data: {
+					currency: 'usd', // or the currency you are using
+					product_data: {
+						name: item.name,
+						images: [item.image],
+						metadata: {
+							slug: item.slug,
+							selectedSize: item.selectedSize,
+						},
+					},
+					unit_amount: Math.round(item.price * 100), // price should be in cents
+				},
+				quantity: item.quantity,
+			}));
+
+			// Make the request to create a checkout session
+			const response = await fetch(
+				`${import.meta.env.VITE_API_URL}/stripe/create-checkout-session`,
+				{
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ line_items: lineItems }),
+				}
+			);
+
+			// Log the raw response for debugging
+			console.log('Raw response:', response);
+
+			// Check if the response is okay
+			if (!response.ok) {
+				const errorText = await response.text();
+				throw new Error(`Error: ${response.status} - ${errorText}`);
+			}
+
+			// Parse the JSON response
+			const data = await response.json();
+
+			// Ensure sessionId exists in the response
+			const sessionId = data.sessionId;
+			const clientSecret = data.clientSecret;
+
+			if (!sessionId || !clientSecret) {
+				throw new Error('Session ID or Client Secret not found in response');
+			}
+
+			// Navigate to PlaceOrderScreen with sessionId and clientSecret
+			navigate(`/placeorder?sessionId=${sessionId}`, {
+				state: { clientSecret },
+			});
+		} catch (error) {
+			// Log the full error and show a toast message
+			console.error('Failed to create checkout session:', error);
+			toast.error('Failed to create checkout session. Please try again.');
+		}
+	};
 
 	return (
-		<Container
-			maxWidth="xl"
-			sx={{
-				display: 'flex',
-				flexDirection: 'column',
-				justifyContent: 'space-evenly',
-				alignItems: 'center',
-				mb: 'auto',
-			}}>
-			<Typography variant="h6" fontWeight={'bold'} mr={'auto'} gutterBottom>
+		<Container maxWidth="xl" sx={{ mb: 'auto' }}>
+			<Typography variant="h6" fontWeight={'bold'} gutterBottom>
 				You have {cartItems.reduce((a, c) => a + c.quantity, 0)} items in your cart.
 			</Typography>
 			{cartItems.length === 0 ? (
@@ -75,21 +103,13 @@ const CartScreen: React.FC = () => {
 				<Grid container gap={2} sx={{ justifyContent: 'space-between' }}>
 					<Grid item md={7} sm={12} xs={12}>
 						<Divider />
-						<Box
-							sx={{
-								display: 'flex',
-								flexDirection: 'column',
-								gap: 1.5,
-							}}>
+						<Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
 							{cartItems.map((item: CartItem) => (
 								<Card
-									key={item._key}
+									key={item.slug}
 									elevation={0}
-									sx={{
-										display: 'flex',
-										backgroundColor: '#fffcf7',
-									}}>
-									<Box mb={-1}>
+									sx={{ display: 'flex', backgroundColor: '#fffcf7' }}>
+									<Box>
 										<Link to={item.path}>
 											<img
 												src={item.image}
@@ -120,32 +140,43 @@ const CartScreen: React.FC = () => {
 												mt: 2.5,
 											}}>
 											<Select
-												className="cartSelect"
 												value={item?.quantity}
-												onChange={(e) =>
-													updateCartHandler(item, Number(e.target.value))
-												}>
-												{[
-													...Array(
-														+item?.countInStock
-															.filter(
-																(c: StockItem) =>
-																	c?.size ===
-																		+item?.selectedSize ||
-																	c?.size === item?.selectedSize
-															)
-															.map((d: StockItem) => d?.quantity)
-													).keys(),
-												].map((x) => (
-													<MenuItem key={x + 1} value={x + 1}>
-														{x + 1}
+												onChange={(e) => {
+													if (
+														item &&
+														item.selectedSize &&
+														item.countInStock
+													) {
+														dispatch(
+															cartAddItem({
+																...item,
+																quantity: Number(e.target.value),
+															})
+														);
+													}
+												}}>
+												{item?.countInStock?.length ? (
+													[
+														...Array(
+															item.countInStock.find(
+																(c) => c.size === item.selectedSize
+															)?.quantity || 0
+														).keys(),
+													].map((_, x) => (
+														<MenuItem key={x + 1} value={x + 1}>
+															{x + 1}
+														</MenuItem>
+													))
+												) : (
+													<MenuItem value={0} disabled>
+														Out of Stock
 													</MenuItem>
-												))}
+												)}
 											</Select>
 
 											<Button
 												variant="contained"
-												onClick={() => removeItemHandler(item)}>
+												onClick={() => dispatch(cartRemoveItem(item))}>
 												X
 											</Button>
 										</Box>
@@ -172,37 +203,12 @@ const CartScreen: React.FC = () => {
 											flexDirection: 'column',
 											gap: 2,
 										}}>
-										{userInfo ? (
-											<>
-												<Button
-													fullWidth
-													variant="contained"
-													onClick={() => navigate('/shipping')}>
-													Checkout as Registered User
-												</Button>
-												<Button
-													fullWidth
-													variant="outlined"
-													onClick={() => navigate('/shipping')}>
-													Checkout as Guest
-												</Button>
-											</>
-										) : (
-											<>
-												<Button
-													fullWidth
-													variant="contained"
-													onClick={() => navigate('/shipping')}>
-													Checkout as Guest
-												</Button>
-												<Button
-													fullWidth
-													variant="outlined"
-													onClick={() => navigate('/register')}>
-													Register to Checkout
-												</Button>
-											</>
-										)}
+										<Button
+											fullWidth
+											variant="contained"
+											onClick={createCheckoutSession}>
+											Proceed to Checkout
+										</Button>
 									</Box>
 								</ListItem>
 							</List>

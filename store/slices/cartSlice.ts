@@ -16,8 +16,8 @@ export interface CartItem {
 	image: string;
 	quantity: number;
 	selectedSize: string;
-	department?: string;
-	category?: string;
+	department: string;
+	category: string;
 }
 
 interface CartState {

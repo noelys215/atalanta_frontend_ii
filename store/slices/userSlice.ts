@@ -43,7 +43,7 @@ interface UserInfo {
 
 interface UserState {
 	cart: {
-		cartItems: CartItem[];
+		cartItems?: CartItem[];
 		shippingAddress: ShippingAddress | object;
 		paymentMethod: string;
 	};
