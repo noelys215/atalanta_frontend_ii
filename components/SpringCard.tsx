@@ -30,7 +30,7 @@ const SpringCard: React.FC = () => {
 					spirit
 				</q>
 			</Typography>
-			<Link to={'/account'} style={{ textDecoration: 'none' }}>
+			<Link to={'/account'} style={{ color: 'inherit', textDecoration: 'none' }}>
 				<Typography
 					sx={{
 						mb: 5,

@@ -84,6 +84,11 @@
 	transition: width 1s ease-in-out;
 }
 
+a:-webkit-any-link {
+	text-decoration: none;
+	color: inherit;
+}
+
 @media only screen and (max-width: 600px) {
 	.MuiInputBase-input {
 		width: 100%;

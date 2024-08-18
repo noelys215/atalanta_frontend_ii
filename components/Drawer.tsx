@@ -12,8 +12,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
-import { Link } from 'react-router-dom'; // Replace next/link with react-router-dom
-
+import { Link } from 'react-router-dom';
 const MuiDrawer = () => {
 	const [openDrawer, setOpenDrawer] = useState(false);
 

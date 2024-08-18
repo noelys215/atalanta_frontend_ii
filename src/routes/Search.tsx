@@ -13,12 +13,10 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { useQuery } from '@tanstack/react-query';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
-import Link from '../Link';
 
-// Define Product Type
 interface Product {
 	_id: string;
 	name: string;
@@ -31,15 +29,17 @@ interface Product {
 	price: number;
 }
 
-const fetchProducts = async (): Promise<Product[]> => {
-	const { data } = await axios.get(`${import.meta.env.API_URL}/products`);
+const fetchProducts = async (searchQuery: string): Promise<Product[]> => {
+	const { data } = await axios.get(
+		`${import.meta.env.VITE_API_URL}/products?search=${searchQuery}`
+	);
 	return data;
 };
 
 export default function SearchScreen() {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const query = new URLSearchParams(location.search).get('query') || 'all';
+	const query = new URLSearchParams(location.search).get('query') || '';
 
 	const {
 		data: products = [],
@@ -47,18 +47,9 @@ export default function SearchScreen() {
 		isError,
 		error,
 	} = useQuery<Product[]>({
-		queryKey: ['products'],
-		queryFn: fetchProducts,
-		select: (data) => {
-			if (query === 'all') return data;
-			return data.filter(
-				(prod) =>
-					prod.category.toLowerCase() === query.toLowerCase() ||
-					prod.department.toLowerCase() === query.toLowerCase() ||
-					prod.brand.toLowerCase() === query.toLowerCase() ||
-					prod.name.toLowerCase() === query.toLowerCase()
-			);
-		},
+		queryKey: ['products', query],
+		queryFn: () => fetchProducts(query),
+		enabled: query !== '',
 	});
 
 	return (
@@ -76,9 +67,12 @@ export default function SearchScreen() {
 						alignItems: 'center',
 					}}>
 					<Typography ml={1} variant="h5" display={'flex'}>
-						{products.length !== 0 ? products.length : 'No'} Results
-						{query !== 'all' && query !== '' && ' : ' + query}
-						{query !== 'all' && query !== '' ? (
+						{query === ''
+							? 'Looking for something? Start your search here!'
+							: `${products.length !== 0 ? products.length : 'No'} Results ${
+									query !== '' ? `: ${query}` : ''
+							  }`}
+						{query !== '' ? (
 							<Button onClick={() => navigate('/search')}>X</Button>
 						) : null}
 					</Typography>
@@ -90,47 +84,45 @@ export default function SearchScreen() {
 					<Alert severity="error">{(error as Error).message}</Alert>
 				) : (
 					<Box>
-						<Grid container gap={3} justifyContent="center" width={'auto'}>
+						<Grid container spacing={3} justifyContent="center">
 							{products.map((product) => (
-								<Link
-									href={`/${product.department.toLowerCase()}/${
-										product.category === 'shirts' ||
-										product.category === 'tanks' ||
-										product.category === 'jackets'
-											? 'tops'
-											: product.category === 'shorts' ||
-											  product.category === 'pants'
-											? 'bottoms'
-											: 'all'
-									}/${product.slug}`}
-									key={product._id}>
-									<Grid item md={2.5} sm={5} lg={2}>
-										<Card sx={{ width: '100%', p: 0.5 }}>
+								<Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
+									<Link
+										to={`/${product.department.toLowerCase()}/${
+											product.category === 'shirts' ||
+											product.category === 'tanks' ||
+											product.category === 'jackets'
+												? 'tops'
+												: product.category === 'shorts' ||
+												  product.category === 'pants'
+												? 'bottoms'
+												: 'all'
+										}/${product.slug}`}>
+										<Card sx={{ height: '100%' }}>
 											<CardActionArea>
 												<CardMedia
 													component="img"
 													image={product.image[0]}
 													title={product.name}
+													sx={{ height: 300 }}
 												/>
+												<CardContent>
+													<Typography variant="h6" noWrap>
+														{product.name}
+													</Typography>
+													<Typography
+														variant="body2"
+														color="textSecondary">
+														{`(${product.department})`}
+													</Typography>
+													<Typography variant="body1" fontWeight="bold">
+														{`$${product.price}`}
+													</Typography>
+												</CardContent>
 											</CardActionArea>
-											<CardContent
-												sx={{
-													height: {
-														md: 'auto',
-														lg: 170,
-													},
-												}}>
-												<Typography variant="h6">{product.name}</Typography>
-												<Typography variant="body1">
-													({product.gender})
-												</Typography>
-												<Typography variant="body1">{`$${product.price.toFixed(
-													2
-												)}`}</Typography>
-											</CardContent>
 										</Card>
-									</Grid>
-								</Link>
+									</Link>
+								</Grid>
 							))}
 						</Grid>
 					</Box>

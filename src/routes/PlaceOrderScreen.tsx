@@ -1,7 +1,7 @@
 import { Button, CircularProgress, Divider, Grid, List, ListItem, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import CheckoutWizard from '../../components/CheckoutWizard';
 import { getError } from '../../utils/error';
@@ -15,7 +15,6 @@ import { Helmet } from 'react-helmet';
 import { PayPalButton } from 'react-paypal-button-v2';
 import Cookies from 'js-cookie';
 import { CartItem } from '../../store/slices/cartSlice';
-import Link from '../Link';
 
 const PlaceOrderScreen: React.FC = () => {
 	const navigate = useNavigate();
@@ -209,7 +208,7 @@ const PlaceOrderScreen: React.FC = () => {
 									display={'flex'}
 									sx={{ cursor: 'pointer' }}
 									mb={2}>
-									<Link href={item?.path}>
+									<Link to={item?.path}>
 										<Box>
 											<img
 												src={item?.image}
