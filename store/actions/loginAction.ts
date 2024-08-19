@@ -26,7 +26,6 @@ export const loginUser = createAsyncThunk(
 			);
 
 			Cookies.set('userToken', JSON.stringify(data.token)); // Store only token in cookies
-			console.log(data.user);
 
 			return data.user; // Return userInfo to store in Redux state
 		} catch (error) {

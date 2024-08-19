@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	Accordion,
 	AccordionDetails,
@@ -13,8 +13,17 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import { Link } from 'react-router-dom';
+
 const MuiDrawer = () => {
 	const [openDrawer, setOpenDrawer] = useState(false);
+
+	useEffect(() => {
+		if (openDrawer) {
+			document.body.setAttribute('aria-hidden', 'false');
+		} else {
+			document.body.removeAttribute('aria-hidden');
+		}
+	}, [openDrawer]);
 
 	return (
 		<>

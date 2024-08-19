@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Container } from '@mui/material';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 interface LayoutProps {
 	children: ReactNode;

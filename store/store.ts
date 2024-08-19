@@ -7,6 +7,7 @@ import paymentReducer from './slices/paymentSlice';
 import orderReducer from './slices/orderSlice';
 import orderPayReducer from './slices/orderPaySlice';
 import orderHistoryReducer from './slices/orderHistorySlice';
+import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 
 // Combine all reducers
 const rootReducer = combineReducers({
@@ -31,6 +32,15 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({
 	reducer: persistedReducer,
 	devTools: true,
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware({
+			serializableCheck: {
+				// Ignore these action types
+				ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+				// Ignore paths that include non-serializable values
+				ignoredPaths: ['register'],
+			},
+		}),
 });
 
 // Create a persistor to persist the store

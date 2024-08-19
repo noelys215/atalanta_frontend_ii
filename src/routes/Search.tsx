@@ -14,7 +14,7 @@ import {
 import { Box } from '@mui/system';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
 
 interface Product {

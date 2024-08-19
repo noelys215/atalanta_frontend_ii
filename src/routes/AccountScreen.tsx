@@ -9,11 +9,10 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { Controller, useForm } from 'react-hook-form';
-// import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useMutation } from '@tanstack/react-query';
 import { getError } from '../../utils/error';
 import { updateUserProfile } from '../../store/actions/updateUserProfile';
@@ -36,7 +35,6 @@ interface RegisterProps {
 }
 
 const AccountScreen: React.FC = () => {
-	// const navigate = useNavigate();
 	const dispatch = useDispatch<AppDispatch>();
 	const [edit, setEdit] = useState(false);
 	const [values, setValues] = useState({ password: '', showPassword: false });
@@ -66,21 +64,36 @@ const AccountScreen: React.FC = () => {
 		control,
 		formState: { errors },
 		setValue,
-	} = useForm<RegisterProps>();
+	} = useForm<RegisterProps>({
+		defaultValues: {
+			firstName: '',
+			lastName: '',
+			email: '',
+			telephone: '',
+			country: '',
+			address: '',
+			addressCont: '',
+			state: '',
+			city: '',
+			postalCode: '',
+			password: '',
+			confirmPassword: '',
+		},
+	});
 
 	// Prefill user data on form fields
 	useEffect(() => {
 		if (userInfo) {
-			setValue('firstName', userInfo.first_name);
-			setValue('lastName', userInfo.last_name);
-			setValue('email', userInfo.email);
-			setValue('telephone', userInfo.telephone);
-			setValue('country', userInfo.country);
-			setValue('address', userInfo.address);
+			setValue('firstName', userInfo.first_name || '');
+			setValue('lastName', userInfo.last_name || '');
+			setValue('email', userInfo.email || '');
+			setValue('telephone', userInfo.telephone || '');
+			setValue('country', userInfo.country || '');
+			setValue('address', userInfo.address || '');
 			setValue('addressCont', userInfo.addressCont || '');
-			setValue('state', userInfo.state);
-			setValue('city', userInfo.city);
-			setValue('postalCode', userInfo.postal_code);
+			setValue('state', userInfo.state || '');
+			setValue('city', userInfo.city || '');
+			setValue('postalCode', userInfo.postal_code || '');
 		}
 	}, [userInfo, setValue]);
 
@@ -323,7 +336,7 @@ const AccountScreen: React.FC = () => {
 						}}
 						render={({ field }) => (
 							<TextField
-								value={field.value}
+								value={field.value || ''}
 								onChange={(e) => {
 									const formatted = e.target.value
 										.replace(/\D/g, '')

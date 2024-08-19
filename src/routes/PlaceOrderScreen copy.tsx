@@ -11,7 +11,7 @@ import { createOrder } from '../../store/actions/createOrder';
 import { payOrder } from '../../store/actions/payOrder';
 import { cartClear } from '../../store/slices/cartSlice';
 import { reset } from '../../store/slices/orderSlice';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { PayPalButton } from 'react-paypal-button-v2';
 import Cookies from 'js-cookie';
 import { CartItem } from '../../store/slices/cartSlice';

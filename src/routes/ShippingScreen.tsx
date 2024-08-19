@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { saveShippingAddress } from '../../store/slices/paymentSlice';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { ShippingAddress } from '../../store/slices/paymentSlice';
 
 export default function ShippingScreen() {

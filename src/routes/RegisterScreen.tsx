@@ -17,7 +17,7 @@ import { useForm, Controller } from 'react-hook-form';
 import jsCookie from 'js-cookie';
 import { getError } from '../../utils/error';
 import toast from 'react-hot-toast';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 // Redux Toolkit
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
@@ -56,6 +56,19 @@ const RegisterScreen: React.FC = () => {
 		formState: { errors, isValid },
 	} = useForm<RegisterProps>({
 		mode: 'onChange', // This ensures validation is triggered on each change
+		defaultValues: {
+			email: '',
+			password: '',
+			firstName: '',
+			lastName: '',
+			telephone: '',
+			country: '',
+			address: '',
+			addressCont: '',
+			state: '',
+			city: '',
+			postalCode: '',
+		},
 	});
 
 	const [verified, setVerified] = useState(false);
@@ -64,7 +77,7 @@ const RegisterScreen: React.FC = () => {
 	const [telephone, setTelephone] = useState('');
 
 	const formatPhoneNumber = (value: string) => {
-		if (!value) return value;
+		if (!value) return '';
 
 		const phoneNumber = value.replace(/[^\d]/g, '');
 		const phoneNumberLength = phoneNumber.length;
@@ -300,12 +313,12 @@ const RegisterScreen: React.FC = () => {
 									required: true,
 									minLength: 8,
 								}}
-								render={({ field: { onChange } }) => (
+								render={({ field }) => (
 									<TextField
 										value={telephone}
 										onChange={(e) => {
 											handleTelephoneChange(e);
-											onChange(e); // Trigger react-hook-form's change handler
+											field.onChange(e); // Trigger react-hook-form's change handler
 										}}
 										sx={{ mb: 2.5 }}
 										className="register"

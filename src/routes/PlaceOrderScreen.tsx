@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Box, CircularProgress, Divider, Grid, Typography } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { loadStripe } from '@stripe/stripe-js';
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
 import toast from 'react-hot-toast';

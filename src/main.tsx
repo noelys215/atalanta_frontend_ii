@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client'; // Import createRoot instead of ReactDOM
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './router';
@@ -9,7 +9,10 @@ import { persistor, store } from '../store/store';
 
 const queryClient = new QueryClient();
 
-ReactDOM.render(
+const container = document.getElementById('root'); // Get the root element
+const root = createRoot(container!); // Create a root for React
+
+root.render(
 	<React.StrictMode>
 		<QueryClientProvider client={queryClient}>
 			<Provider store={store}>
@@ -18,6 +21,5 @@ ReactDOM.render(
 				</PersistGate>
 			</Provider>
 		</QueryClientProvider>
-	</React.StrictMode>,
-	document.getElementById('root')
+	</React.StrictMode>
 );

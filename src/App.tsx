@@ -12,7 +12,7 @@ import { Toaster } from 'react-hot-toast';
 import { store } from '../store/store';
 import { Provider } from 'react-redux';
 import { Outlet } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import { HelmetProvider } from 'react-helmet-async'; // Import HelmetProvider
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -27,37 +27,37 @@ const App: React.FC = () => {
 
 	return (
 		<CacheProvider value={clientSideEmotionCache}>
-			<Box
-				sx={{
-					display: 'flex',
-					flexDirection: 'column',
-					justifyContent: 'space-between',
-					height: '100vh',
-				}}>
-				<Helmet>
-					<title>Atalanta A.C.</title>
-					<meta name="viewport" content="initial-scale=1, width=device-width" />
-				</Helmet>
-				<ThemeProvider theme={theme}>
-					<CssBaseline />
-					<Provider store={store}>
-						<Toaster
-							position="bottom-center"
-							gutter={8}
-							toastOptions={{
-								duration: 5000,
-								style: {
-									background: '#363636',
-									color: '#fff',
-								},
-							}}
-						/>
-						<TopBar />
-						<Outlet />
-					</Provider>
-					<Copyright />
-				</ThemeProvider>
-			</Box>
+			<HelmetProvider>
+				{' '}
+				{/* Wrap the app with HelmetProvider */}
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: 'column',
+						justifyContent: 'space-between',
+						height: '100vh',
+					}}>
+					<ThemeProvider theme={theme}>
+						<CssBaseline />
+						<Provider store={store}>
+							<Toaster
+								position="bottom-center"
+								gutter={8}
+								toastOptions={{
+									duration: 5000,
+									style: {
+										background: '#363636',
+										color: '#fff',
+									},
+								}}
+							/>
+							<TopBar />
+							<Outlet />
+						</Provider>
+						<Copyright />
+					</ThemeProvider>
+				</Box>
+			</HelmetProvider>
 		</CacheProvider>
 	);
 };
