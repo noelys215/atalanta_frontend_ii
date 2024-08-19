@@ -14,6 +14,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Link, useNavigate } from 'react-router-dom';
 import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
+import HistoryTwoToneIcon from '@mui/icons-material/HistoryTwoTone';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -129,10 +130,10 @@ const AccountDrawer = () => {
 						alignItems: 'center',
 						gap: 2,
 					}}>
-					<CloseIcon sx={{ cursor: 'pointer' }} onClick={() => setOpenDrawer(false)} />
 					<Typography variant="h4" component="div">
 						Account
 					</Typography>
+					<CloseIcon sx={{ cursor: 'pointer' }} onClick={() => setOpenDrawer(false)} />
 				</Box>
 
 				{userInfo === null ? (
@@ -282,6 +283,15 @@ const AccountDrawer = () => {
 										sx={{ verticalAlign: 'middle', fontSize: 'inherit' }}
 									/>{' '}
 									Account Information
+								</Typography>
+							</Link>
+							{/* New Order History Link */}
+							<Link to="/orderhistory" onClick={() => setOpenDrawer(false)}>
+								<Typography variant="h6" gutterBottom>
+									<HistoryTwoToneIcon
+										sx={{ verticalAlign: 'middle', fontSize: 'inherit' }}
+									/>{' '}
+									Order History
 								</Typography>
 							</Link>
 						</Box>

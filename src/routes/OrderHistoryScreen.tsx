@@ -1,5 +1,4 @@
 import {
-	Alert,
 	Button,
 	CircularProgress,
 	Divider,
@@ -48,8 +47,6 @@ const OrderHistoryScreen = () => {
 	});
 
 	if (isLoading) return <CircularProgress color="primary" />;
-	if (isError || !orders || orders.length === 0)
-		return <Alert severity="error">No orders found.</Alert>;
 
 	return (
 		<Layout title="Order History">
@@ -71,57 +68,75 @@ const OrderHistoryScreen = () => {
 				</Typography>
 				<Divider sx={{ mb: 4, justifySelf: 'center' }} />
 
-				<TableContainer>
-					<Table
+				{isError || !orders || orders.length === 0 ? (
+					<Box
 						sx={{
 							width: { md: '80%', sm: '100%' },
 							whiteSpace: 'nowrap',
 							m: 'auto',
+							backgroundColor: '#fff',
+							borderRadius: 2,
+							boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+							padding: 3,
+							textAlign: 'center',
 						}}>
-						<TableHead>
-							<TableRow>
-								<TableCell>ID</TableCell>
-								<TableCell>DATE</TableCell>
-								<TableCell>TOTAL</TableCell>
-								<TableCell>PAID</TableCell>
-								<TableCell>ACTIONS</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{orders.map((order: Order) => (
-								<TableRow key={order.id}>
-									<TableCell>{order.id}</TableCell>
-									<TableCell>
-										{new Date(order.created * 1000).toLocaleDateString(
-											'en-US',
-											{
-												weekday: 'long',
-												year: 'numeric',
-												month: 'long',
-												day: 'numeric',
-												hour: '2-digit',
-												minute: '2-digit',
-											}
-										)}
-									</TableCell>
-									<TableCell>$ {order.total_price}</TableCell>
-									<TableCell>
-										{order.status === 'complete' ? 'Paid' : 'Not Paid'}
-									</TableCell>
-									<TableCell>
-										<Button
-											variant="contained"
-											onClick={() =>
-												navigate(`/return?session_id=${order.id}`)
-											}>
-											Details
-										</Button>
-									</TableCell>
+						<Typography variant="body1" sx={{ color: 'rgb(68, 68, 68)' }}>
+							No orders found.
+						</Typography>
+					</Box>
+				) : (
+					<TableContainer>
+						<Table
+							sx={{
+								width: { md: '80%', sm: '100%' },
+								whiteSpace: 'nowrap',
+								m: 'auto',
+							}}>
+							<TableHead>
+								<TableRow>
+									<TableCell>ID</TableCell>
+									<TableCell>DATE</TableCell>
+									<TableCell>TOTAL</TableCell>
+									<TableCell>PAID</TableCell>
+									<TableCell>ACTIONS</TableCell>
 								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-				</TableContainer>
+							</TableHead>
+							<TableBody>
+								{orders.map((order: Order) => (
+									<TableRow key={order.id}>
+										<TableCell>{order.id}</TableCell>
+										<TableCell>
+											{new Date(order.created * 1000).toLocaleDateString(
+												'en-US',
+												{
+													weekday: 'long',
+													year: 'numeric',
+													month: 'long',
+													day: 'numeric',
+													hour: '2-digit',
+													minute: '2-digit',
+												}
+											)}
+										</TableCell>
+										<TableCell>$ {order.total_price}</TableCell>
+										<TableCell>
+											{order.status === 'complete' ? 'Paid' : 'Not Paid'}
+										</TableCell>
+										<TableCell>
+											<Button
+												variant="contained"
+												onClick={() =>
+													navigate(`/return?session_id=${order.id}`)
+												}>
+												Details
+											</Button>
+										</TableCell>
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
+					</TableContainer>
+				)}
 			</Box>
 		</Layout>
 	);

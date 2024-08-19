@@ -18,6 +18,7 @@ import AccountScreen from './routes/AccountScreen';
 import SearchScreen from './routes/Search';
 import OrderDetailsScreen from './routes/OrderDetailsScreen';
 import OrderHistoryScreen from './routes/OrderHistoryScreen';
+import OrderSearchScreen from './routes/OrderSearchScreen';
 
 export const router = createBrowserRouter([
 	{
@@ -40,6 +41,7 @@ export const router = createBrowserRouter([
 			{ path: '/account', element: <AccountScreen /> },
 			{ path: '/search', element: <SearchScreen /> },
 			{ path: '/orderhistory', element: <OrderHistoryScreen /> },
+			{ path: '/ordersearch', element: <OrderSearchScreen /> },
 			{
 				path: '/:department/:category/:slug',
 				element: <ProductScreen />,
