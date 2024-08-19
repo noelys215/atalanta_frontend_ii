@@ -16,7 +16,6 @@ const TopBar = () => {
 	// Specify the RootState type for the state
 	const cart = useSelector((state: RootState) => state.cart);
 	const cartItems = cart?.cartItems || [];
-	console.log(cartItems);
 
 	return (
 		<Container

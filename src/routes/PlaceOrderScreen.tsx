@@ -2,11 +2,8 @@ import React, { useEffect } from 'react';
 import { Box, CircularProgress, Divider, Grid, Typography } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-// import { useSelector } from 'react-redux';
 import { loadStripe } from '@stripe/stripe-js';
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
-// import { RootState } from '../../store/store';
-import CheckoutWizard from '../../components/CheckoutWizard';
 import toast from 'react-hot-toast';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string);
@@ -14,8 +11,6 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as 
 const PlaceOrderScreen: React.FC = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
-	// const { cartItems = [] } = useSelector((state: RootState) => state.cart || {});
-	// const { shippingAddress } = useSelector((state: RootState) => state.payment.cart);
 
 	const sessionId = new URLSearchParams(location.search).get('sessionId');
 	const clientSecret = location.state?.clientSecret;
@@ -46,18 +41,23 @@ const PlaceOrderScreen: React.FC = () => {
 					<Helmet>
 						<title>Checkout - Atalanta A.C.</title>
 					</Helmet>
-					<Box mt={10}>
-						<CheckoutWizard activeStep={3} />
-					</Box>
 
 					<Grid
 						item
 						md={12}
 						sm={12}
 						xs={12}
-						sx={{ width: { md: '90%', xs: '100%' } }}
+						sx={{
+							width: {
+								md: '100%',
+								xs: '100%',
+								borderRadius: 12,
+							},
+							border: 'solid black 1px',
+							p: 1,
+						}}
 						m={'auto'}>
-						<Typography sx={{ mt: 4 }}>Ordered Items:</Typography>
+						<Typography sx={{ p: 1, fontSize: '1.3rem' }}>Ordered Items:</Typography>
 						<Divider sx={{ mb: 1, justifySelf: 'center' }} />
 						<EmbeddedCheckoutProvider stripe={stripePromise} options={{ clientSecret }}>
 							<EmbeddedCheckout />

@@ -16,6 +16,7 @@ import PlaceOrderScreen from './routes/PlaceOrderScreen';
 import RegisterScreen from './routes/RegisterScreen';
 import AccountScreen from './routes/AccountScreen';
 import SearchScreen from './routes/Search';
+import OrderDetailsScreen from './routes/OrderDetailsScreen';
 
 export const router = createBrowserRouter([
 	{
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
 			{
 				path: '/:department/:category/:slug',
 				element: <ProductScreen />,
+			},
+			{
+				path: '/return', // The route for the OrderDetailsScreen
+				element: <OrderDetailsScreen />,
 			},
 		],
 	},
