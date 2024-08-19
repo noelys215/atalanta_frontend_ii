@@ -17,6 +17,7 @@ import RegisterScreen from './routes/RegisterScreen';
 import AccountScreen from './routes/AccountScreen';
 import SearchScreen from './routes/Search';
 import OrderDetailsScreen from './routes/OrderDetailsScreen';
+import OrderHistoryScreen from './routes/OrderHistoryScreen';
 
 export const router = createBrowserRouter([
 	{
@@ -38,6 +39,7 @@ export const router = createBrowserRouter([
 			{ path: '/register', element: <RegisterScreen /> },
 			{ path: '/account', element: <AccountScreen /> },
 			{ path: '/search', element: <SearchScreen /> },
+			{ path: '/orderhistory', element: <OrderHistoryScreen /> },
 			{
 				path: '/:department/:category/:slug',
 				element: <ProductScreen />,
