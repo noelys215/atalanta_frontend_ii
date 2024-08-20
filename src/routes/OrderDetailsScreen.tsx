@@ -66,8 +66,19 @@ const OrderDetailsScreen = () => {
 		enabled: !!sessionId,
 	});
 
-	if (isLoading) return <CircularProgress color="primary" variant="determinate" />;
-	if (isError) return <Typography variant="h6">Failed to load order details</Typography>;
+	if (isLoading)
+		return (
+			<Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+				<CircularProgress color="primary" />
+			</Box>
+		);
+
+	if (isError)
+		return (
+			<Typography variant="h6" textAlign="center" mt={4}>
+				Failed to load order details
+			</Typography>
+		);
 
 	// Convert the Unix timestamp to a readable date format
 	const orderDate = new Date((order?.order_date ?? 0) * 1000).toLocaleDateString('en-US', {
@@ -86,68 +97,86 @@ const OrderDetailsScreen = () => {
 					container
 					maxWidth="lg"
 					sx={{
-						p: 5,
+						p: { xs: 2, sm: 3, md: 5 },
 						minHeight: 1000,
 						mt: 10,
 						ml: 'auto',
 						mr: 'auto',
 						backgroundColor: '#fffcf7',
 					}}>
-					<Grid item md={12} sm={12} xs={12}>
-						<Typography variant="h6" sx={{ mt: 4 }}>
-							Order Summary: #{sessionId?.toUpperCase()}
-						</Typography>
+					<Grid item xs={12}>
+						<Box sx={{ wordWrap: 'break-word', wordBreak: 'break-all', mt: 4 }}>
+							<Typography variant="h6">Order Summary:</Typography>
+							<Typography variant="body1">{sessionId?.toUpperCase()}</Typography>
+						</Box>
 						<Divider sx={{ mb: 4, justifySelf: 'center' }} />
 					</Grid>
-					<Grid item md={6} sm={12} xs={12}>
+					<Grid item xs={12} md={6}>
 						<Typography sx={{ mt: 4 }}>Order Date</Typography>
 						<Divider sx={{ mb: 2, justifySelf: 'center' }} />
 						<Typography>{orderDate}</Typography>
 					</Grid>
-					<Grid item md={6} sm={12} xs={12}>
+					<Grid item xs={12} md={6}>
 						<Typography sx={{ mt: 4 }}>Shipping Address</Typography>
 						<Divider sx={{ mb: 2, justifySelf: 'center' }} />
 						<List>
-							<ListItem>{order?.shipping_address?.name}</ListItem>
-							<ListItem>{order?.shipping_address?.address.line1}</ListItem>
-							<ListItem>
-								{order?.shipping_address?.address.city},{' '}
-								{order?.shipping_address?.address.state}{' '}
+							<ListItem disableGutters sx={{ py: 0, px: 0 }}>
+								{order?.shipping_address?.name}
+							</ListItem>
+							<ListItem disableGutters sx={{ py: 0, px: 0 }}>
+								{order?.shipping_address?.address.line1}
+							</ListItem>
+							<ListItem disableGutters sx={{ py: 0, px: 0 }}>
+								{order?.shipping_address?.address.city},
+								{order?.shipping_address?.address.state}
 								{order?.shipping_address?.address.postal_code}
 							</ListItem>
-							<ListItem>{order?.shipping_address?.address.country}</ListItem>
-							<ListItem>
-								Status:{' '}
+							<ListItem disableGutters sx={{ py: 0, px: 0 }}>
+								{order?.shipping_address?.address.country}
+							</ListItem>
+							<ListItem disableGutters sx={{ py: 0, px: 0 }}>
+								Status:
 								{order?.status === 'complete' ? 'Delivered' : 'Not delivered'}
 							</ListItem>
 						</List>
 					</Grid>
-					<Grid item md={6} sm={12} xs={12}>
+					<Grid item xs={12} md={6}>
 						<Typography sx={{ mt: 4 }}>Payment Method</Typography>
 						<Divider sx={{ mb: 2, justifySelf: 'center' }} />
 						<List>
-							<ListItem>Credit Card</ListItem>
-							<ListItem>
+							<ListItem disableGutters sx={{ py: 0, px: 0 }}>
+								Credit Card
+							</ListItem>
+							<ListItem disableGutters sx={{ py: 0, px: 0 }}>
 								Status: {order?.status === 'complete' ? 'Paid' : 'Not paid'}
 							</ListItem>
 						</List>
 					</Grid>
-					<Grid item md={12} sm={12} xs={12}>
+					<Grid item xs={12}>
 						<Typography sx={{ mt: 4 }}>Ordered Items</Typography>
 						<Divider sx={{ mb: 2, justifySelf: 'center' }} />
 					</Grid>
 					{order?.order_details?.line_items.map((item, index) => (
-						<Grid item md={4} sm={12} xs={12} key={index} display={'flex'} mb={2}>
+						<Grid
+							item
+							xs={12}
+							sm={12}
+							md={4}
+							key={index}
+							display="flex"
+							mb={2}
+							flexDirection={{ xs: 'column', md: 'row' }}>
 							<Box>
 								<img
 									src={item.image}
 									alt={item.description}
 									width={180}
 									height={180}
+									style={{ maxWidth: '100%', height: 'auto' }}
 								/>
 							</Box>
 
-							<Box ml={2.5} width={'60%'}>
+							<Box ml={{ md: 2.5 }} width="100%" mt={{ xs: 1.5, md: 0 }}>
 								<Typography variant="body1" gutterBottom>
 									<q>{item.description}</q>
 								</Typography>
@@ -158,13 +187,13 @@ const OrderDetailsScreen = () => {
 							</Box>
 						</Grid>
 					))}
-					<Grid item md={12} sm={12} xs={12}>
+					<Grid item xs={12}>
 						<Typography sx={{ mt: 4 }}>Order Summary</Typography>
 						<Divider sx={{ mb: 2, justifySelf: 'center' }} />
-						<Grid container gap={3} justifyContent={'center'} height={'auto'}>
-							<Grid item md={4} sm={12} xs={12}>
+						<Grid container gap={3} justifyContent="center" height="auto">
+							<Grid item xs={12} sm={12} md={4}>
 								<List>
-									<ListItem>
+									<ListItem disableGutters sx={{ py: 0, px: 0 }}>
 										<Grid container>
 											<Grid item xs={6}>
 												<Typography>Items Price: </Typography>
@@ -180,7 +209,7 @@ const OrderDetailsScreen = () => {
 											</Grid>
 										</Grid>
 									</ListItem>
-									<ListItem>
+									<ListItem disableGutters sx={{ py: 0, px: 0 }}>
 										<Grid container>
 											<Grid item xs={6}>
 												<Typography>Tax:</Typography>
@@ -192,7 +221,7 @@ const OrderDetailsScreen = () => {
 											</Grid>
 										</Grid>
 									</ListItem>
-									<ListItem>
+									<ListItem disableGutters sx={{ py: 0, px: 0 }}>
 										<Grid container>
 											<Grid item xs={6}>
 												<Typography>Shipping:</Typography>
@@ -204,7 +233,7 @@ const OrderDetailsScreen = () => {
 											</Grid>
 										</Grid>
 									</ListItem>
-									<ListItem>
+									<ListItem disableGutters sx={{ py: 0, px: 0 }}>
 										<Grid container>
 											<Grid item xs={6}>
 												<Typography>
