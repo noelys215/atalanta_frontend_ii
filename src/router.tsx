@@ -19,6 +19,8 @@ import SearchScreen from './routes/Search';
 import OrderDetailsScreen from './routes/OrderDetailsScreen';
 import OrderHistoryScreen from './routes/OrderHistoryScreen';
 import OrderSearchScreen from './routes/OrderSearchScreen';
+import ForgotPasswordScreen from './routes/ForgotPasswordScreen';
+import ResetPasswordScreen from './routes/ResetPasswordScreen';
 
 export const router = createBrowserRouter([
 	{
@@ -42,6 +44,8 @@ export const router = createBrowserRouter([
 			{ path: '/search', element: <SearchScreen /> },
 			{ path: '/orderhistory', element: <OrderHistoryScreen /> },
 			{ path: '/ordersearch', element: <OrderSearchScreen /> },
+			{ path: '/forgot-password', element: <ForgotPasswordScreen /> },
+			{ path: '/reset-password', element: <ResetPasswordScreen /> },
 			{
 				path: '/:department/:category/:slug',
 				element: <ProductScreen />,

@@ -15,6 +15,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone';
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
 import HistoryTwoToneIcon from '@mui/icons-material/HistoryTwoTone';
+import ContentPasteSearchTwoToneIcon from '@mui/icons-material/ContentPasteSearchTwoTone';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -218,7 +219,7 @@ const AccountDrawer = () => {
 								)}
 							/>
 
-							<Link to="/" onClick={() => setOpenDrawer(false)}>
+							<Link to="/forgot-password" onClick={() => setOpenDrawer(false)}>
 								<Typography textAlign={'center'}>Forgot your password?</Typography>
 							</Link>
 
@@ -292,6 +293,15 @@ const AccountDrawer = () => {
 										sx={{ verticalAlign: 'middle', fontSize: 'inherit' }}
 									/>{' '}
 									Order History
+								</Typography>
+							</Link>
+							{/* New Order Search Link */}
+							<Link to="/ordersearch" onClick={() => setOpenDrawer(false)}>
+								<Typography variant="h6" gutterBottom>
+									<ContentPasteSearchTwoToneIcon
+										sx={{ verticalAlign: 'middle', fontSize: 'inherit' }}
+									/>{' '}
+									Search Orders
 								</Typography>
 							</Link>
 						</Box>
