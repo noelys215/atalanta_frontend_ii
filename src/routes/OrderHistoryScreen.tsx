@@ -51,8 +51,6 @@ const OrderHistoryScreen = () => {
 		);
 	}
 
-	console.log(orders);
-
 	return (
 		<Layout title="Order History">
 			<Box
@@ -142,7 +140,13 @@ const OrderHistoryScreen = () => {
 										variant="contained"
 										fullWidth
 										sx={{ mt: 2 }}
-										onClick={() => navigate(`/return?session_id=${order.id}`)}>
+										onClick={() =>
+											navigate(
+												`/return?session_id=${
+													order?.short_order_id || order.id
+												}`
+											)
+										}>
 										Details
 									</Button>
 								</CardContent>

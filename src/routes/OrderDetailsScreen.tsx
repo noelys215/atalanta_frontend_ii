@@ -67,8 +67,6 @@ const OrderDetailsScreen = () => {
 		enabled: !!sessionId,
 	});
 
-	console.log(order);
-
 	if (isLoading)
 		return (
 			<Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
