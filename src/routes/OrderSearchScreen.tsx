@@ -32,7 +32,8 @@ const OrderSearchScreen: React.FC = () => {
 			);
 
 			if (response.data) {
-				navigate(`/return?session_id=${data.order_id}`);
+				// Pass the short_order_id into the query string for fetching details
+				navigate(`/return?session_id=${response.data.short_order_id}`);
 			}
 		} catch {
 			toast.error('Order not found. Please check your details and try again.');

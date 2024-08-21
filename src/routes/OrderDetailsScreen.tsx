@@ -34,6 +34,7 @@ interface Order {
 	customer_name: string;
 	customer_email: string;
 	billing_address: Address;
+	short_order_id: string;
 	shipping_address: {
 		address: Address;
 		name: string;
@@ -65,6 +66,8 @@ const OrderDetailsScreen = () => {
 		queryFn: () => fetchOrderDetails(sessionId as string),
 		enabled: !!sessionId,
 	});
+
+	console.log(order);
 
 	if (isLoading)
 		return (
@@ -107,7 +110,10 @@ const OrderDetailsScreen = () => {
 					<Grid item xs={12}>
 						<Box sx={{ wordWrap: 'break-word', wordBreak: 'break-all', mt: 4 }}>
 							<Typography variant="h6">Order Summary:</Typography>
-							<Typography variant="body1">{sessionId?.toUpperCase()}</Typography>
+							<Typography variant="subtitle1">
+								Order No:{' '}
+								{order?.short_order_id || sessionId?.toUpperCase() || '[REDACTED]'}
+							</Typography>
 						</Box>
 						<Divider sx={{ mb: 4, justifySelf: 'center' }} />
 					</Grid>

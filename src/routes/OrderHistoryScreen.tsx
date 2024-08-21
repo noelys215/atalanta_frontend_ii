@@ -19,6 +19,7 @@ interface Order {
 	created: number;
 	total_price: number;
 	status: string;
+	short_order_id: string;
 }
 
 const fetchOrderHistory = async (email: string) => {
@@ -49,6 +50,8 @@ const OrderHistoryScreen = () => {
 			</Box>
 		);
 	}
+
+	console.log(orders);
 
 	return (
 		<Layout title="Order History">
@@ -113,7 +116,7 @@ const OrderHistoryScreen = () => {
 										variant="subtitle2"
 										gutterBottom
 										sx={{ wordWrap: 'break-word', wordBreak: 'break-all' }}>
-										{order.id}
+										{order?.short_order_id || order.id}
 									</Typography>
 									<Typography variant="body2" gutterBottom>
 										Date:{' '}
