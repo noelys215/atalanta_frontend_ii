@@ -18,6 +18,7 @@ interface Address {
 interface LineItem {
 	description: string;
 	quantity: number;
+	size: string;
 	price: number;
 	image?: string;
 }
@@ -80,6 +81,8 @@ const OrderDetailsScreen = () => {
 				Failed to load order details
 			</Typography>
 		);
+
+	console.log(order);
 
 	// Convert the Unix timestamp to a readable date format
 	const orderDate = new Date((order?.order_date ?? 0) * 1000).toLocaleDateString('en-US', {
@@ -185,6 +188,7 @@ const OrderDetailsScreen = () => {
 									<q>{item.description}</q>
 								</Typography>
 								<Typography variant="body2">Quantity: {item.quantity}</Typography>
+								<Typography variant="body2">Size: {item?.size}</Typography>
 								<Typography variant="body2">
 									Price: ${item.price.toFixed(2)}
 								</Typography>
