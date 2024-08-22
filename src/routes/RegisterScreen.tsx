@@ -17,7 +17,7 @@ import { useForm, Controller } from 'react-hook-form';
 import jsCookie from 'js-cookie';
 import { getError } from '../../utils/error';
 import toast from 'react-hot-toast';
-import { Helmet } from 'react-helmet-async';
+import Layout from '../../components/Layout'; // Import the Layout component
 // Redux Toolkit
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
@@ -124,358 +124,327 @@ const RegisterScreen: React.FC = () => {
 	};
 
 	return (
-		<Box mb={'auto'}>
-			<Helmet>
-				<title>Register - Atalanta A.C.</title>
-			</Helmet>
-			<Grid
-				container
-				maxWidth="lg"
-				m="auto"
-				sx={{ backgroundColor: '#fffcf7', pl: 5, pt: 5 }}>
-				<Typography variant="h5" gutterBottom>
-					Create An Account
-				</Typography>
-			</Grid>
-
-			<Grid
-				container
-				maxWidth="lg"
-				sx={{
-					p: 2,
-					minHeight: 1000,
-					ml: 'auto',
-					mr: 'auto',
-					backgroundColor: '#fffcf7',
-				}}>
-				{/* Login Information */}
+		<Layout title="Register">
+			<Box mb={'auto'}>
 				<Grid
-					item
-					md={6}
-					sm={12}
-					xs={12}
-					display={'flex'}
-					flexDirection={'column'}
-					alignItems={'center'}
-					pr={3}
-					pl={3}>
-					<FormControl fullWidth>
-						<form onSubmit={handleSubmit(submitHandler)}>
-							<Typography sx={{ mt: 4 }}>Login Information</Typography>
-							<Divider sx={{ mb: 4, justifySelf: 'center' }} />
-							{/* Email */}
-							<Controller
-								name="email"
-								control={control}
-								rules={{
-									required: true,
-									pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-								}}
-								render={({ field }) => (
-									<TextField
-										sx={{
-											mb: 2.5,
-											'& .MuiInput-input': {
-												width: 500,
-											},
-											'& 	.Mui-focused': {
-												width: '500 !important',
-											},
-											'& 	.MuiInput-root': {
-												width: 500,
-											},
-										}}
-										className="register"
-										required
-										id="email"
-										label="Email"
-										inputProps={{ type: 'email' }}
-										error={Boolean(errors.email)}
-										helperText={
-											errors.email
-												? errors.email.type === 'pattern'
-													? 'Invalid Email'
-													: 'Email Required'
-												: ''
-										}
-										{...field}
-									/>
-								)}
-							/>
-							{/* Password */}
-							<Controller
-								name="password"
-								control={control}
-								rules={{
-									required: true,
-									minLength: 6,
-								}}
-								render={({ field }) => (
-									<TextField
-										sx={{ mb: 2.5 }}
-										className="register"
-										required
-										id="password"
-										label="Password"
-										type={values.showPassword ? 'text' : 'password'}
-										autoComplete="current-password"
-										error={Boolean(errors.password)}
-										InputProps={{
-											endAdornment: (
-												<InputAdornment position="end">
-													<IconButton
-														aria-label="toggle password visibility"
-														onClick={handleClickShowPassword}
-														onMouseDown={handleMouseDownPassword}>
-														{values.showPassword ? (
-															<Visibility />
-														) : (
-															<VisibilityOff />
-														)}
-													</IconButton>
-												</InputAdornment>
-											),
-										}}
-										helperText={
-											errors.password
-												? errors.password.type === 'minLength'
-													? 'Password Too Short'
-													: 'Password Required'
-												: ''
-										}
-										{...field}
-									/>
-								)}
-							/>
-							<Typography sx={{ mt: 4 }}>Personal Information</Typography>
-							<Divider sx={{ mb: 4, justifySelf: 'center' }} />
-							{/* First Name */}
-							<Controller
-								name="firstName"
-								control={control}
-								rules={{
-									required: true,
-									minLength: 1,
-								}}
-								render={({ field }) => (
-									<TextField
-										sx={{ mb: 2.5 }}
-										className="register"
-										required
-										id="firstName"
-										label="First Name"
-										inputProps={{ type: 'text' }}
-										error={Boolean(errors.firstName)}
-										helperText={
-											errors.firstName
-												? errors.firstName.type === 'minLength'
-													? 'Invalid Name'
-													: 'First Name Required'
-												: ''
-										}
-										{...field}
-									/>
-								)}
-							/>
-							{/* Last Name */}
-							<Controller
-								name="lastName"
-								control={control}
-								rules={{
-									required: true,
-									minLength: 1,
-								}}
-								render={({ field }) => (
-									<TextField
-										sx={{ mb: 2.5 }}
-										className="register"
-										required
-										id="lastName"
-										label="Last Name"
-										inputProps={{ type: 'text' }}
-										error={Boolean(errors.lastName)}
-										helperText={
-											errors.lastName
-												? errors.lastName.type === 'minLength'
-													? 'Invalid Name'
-													: 'Last Name Required'
-												: ''
-										}
-										{...field}
-									/>
-								)}
-							/>
-							{/* Telephone */}
-							<Controller
-								name="telephone"
-								control={control}
-								rules={{
-									required: true,
-									minLength: 8,
-								}}
-								render={({ field }) => (
-									<TextField
-										value={telephone}
-										onChange={(e) => {
-											handleTelephoneChange(e);
-											field.onChange(e); // Trigger react-hook-form's change handler
-										}}
-										sx={{ mb: 2.5 }}
-										className="register"
-										required
-										id="telephone"
-										label="Phone"
-										inputProps={{ type: 'tel' }}
-										error={Boolean(errors.telephone)}
-										helperText={
-											errors.telephone
-												? errors.telephone.type === 'minLength'
-													? 'Invalid Telephone'
-													: 'Telephone Required'
-												: ''
-										}
-									/>
-								)}
-							/>
-						</form>
-					</FormControl>
+					container
+					maxWidth="lg"
+					m="auto"
+					sx={{ backgroundColor: '#fffcf7', pl: 5, pt: 5 }}>
+					<Typography variant="h5" gutterBottom>
+						Create An Account
+					</Typography>
 				</Grid>
 
-				{/* Billing Info */}
 				<Grid
-					item
-					md={6}
-					sm={12}
-					xs={12}
-					display={'flex'}
-					flexDirection={'column'}
-					alignItems={'center'}
-					pr={3}
-					pl={3}>
-					<FormControl fullWidth>
-						<form onSubmit={handleSubmit(submitHandler)}>
-							<Typography sx={{ mt: 4, ml: 3, mr: 3 }}>
-								Billing Information
-							</Typography>
-							<Divider sx={{ mb: 4, ml: 3, mr: 3, justifySelf: 'center' }} />
-
-							{/* Country */}
-							<Controller
-								name="country"
-								control={control}
-								rules={{
-									required: true,
-									minLength: 1,
-								}}
-								render={({ field }) => (
-									<TextField
-										sx={{ mb: 2.5 }}
-										className="register"
-										required
-										id="country"
-										label="Country"
-										inputProps={{ type: 'text' }}
-										error={Boolean(errors.country)}
-										helperText={
-											errors.country
-												? errors.country.type === 'minLength'
-													? 'Invalid Country'
-													: 'Country Required'
-												: ''
-										}
-										{...field}
-									/>
-								)}
-							/>
-
-							{/* Address */}
-							<Controller
-								name="address"
-								control={control}
-								rules={{
-									required: true,
-									minLength: 1,
-								}}
-								render={({ field }) => (
-									<TextField
-										sx={{ mb: 2.5 }}
-										className="register"
-										required
-										id="address"
-										label="Address"
-										inputProps={{ type: 'text' }}
-										error={Boolean(errors.address)}
-										helperText={
-											errors.address
-												? errors.address.type === 'minLength'
-													? 'Invalid Address'
-													: 'Address Required'
-												: ''
-										}
-										{...field}
-									/>
-								)}
-							/>
-
-							{/* Address Cont */}
-							<Controller
-								name="addressCont"
-								control={control}
-								rules={{
-									minLength: 1,
-								}}
-								render={({ field }) => (
-									<TextField
-										sx={{ mb: 2.5 }}
-										id="addressCont"
-										label="Address Cont.."
-										inputProps={{ type: 'text' }}
-										error={Boolean(errors.addressCont)}
-										helperText={
-											errors.addressCont
-												? errors.addressCont.type === 'minLength'
-													? 'Invalid Address'
-													: ''
-												: ''
-										}
-										{...field}
-									/>
-								)}
-							/>
-
-							{/* State */}
-							<Controller
-								name="state"
-								control={control}
-								rules={{
-									required: true,
-									minLength: 2,
-								}}
-								render={({ field }) => (
-									<TextField
-										sx={{ mb: 2.5 }}
-										className="register"
-										required
-										id="state"
-										label="State"
-										inputProps={{ type: 'text' }}
-										error={Boolean(errors.state)}
-										helperText={
-											errors.state
-												? errors.state.type === 'minLength'
-													? 'Invalid State'
-													: 'State Required'
-												: ''
-										}
-										{...field}
-									/>
-								)}
-							/>
-
-							<Box className="register" display={'flex'} gap={2.5}>
-								{/* City */}
+					container
+					maxWidth="lg"
+					sx={{
+						p: 2,
+						minHeight: 1000,
+						ml: 'auto',
+						mr: 'auto',
+						backgroundColor: '#fffcf7',
+					}}>
+					{/* Login Information */}
+					<Grid
+						item
+						md={6}
+						sm={12}
+						xs={12}
+						display={'flex'}
+						flexDirection={'column'}
+						alignItems={'center'}
+						pr={3}
+						pl={3}>
+						<FormControl fullWidth>
+							<form onSubmit={handleSubmit(submitHandler)}>
+								<Typography sx={{ mt: 4 }}>Login Information</Typography>
+								<Divider sx={{ mb: 4, justifySelf: 'center' }} />
+								{/* Email */}
 								<Controller
-									name="city"
+									name="email"
+									control={control}
+									rules={{
+										required: true,
+										pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+									}}
+									render={({ field }) => (
+										<TextField
+											sx={{
+												mb: 2.5,
+												'& .MuiInput-input': {
+													width: 500,
+												},
+												'& 	.Mui-focused': {
+													width: '500 !important',
+												},
+												'& 	.MuiInput-root': {
+													width: 500,
+												},
+											}}
+											className="register"
+											required
+											id="email"
+											label="Email"
+											inputProps={{ type: 'email' }}
+											error={Boolean(errors.email)}
+											helperText={
+												errors.email
+													? errors.email.type === 'pattern'
+														? 'Invalid Email'
+														: 'Email Required'
+													: ''
+											}
+											{...field}
+										/>
+									)}
+								/>
+								{/* Password */}
+								<Controller
+									name="password"
+									control={control}
+									rules={{
+										required: true,
+										minLength: 6,
+									}}
+									render={({ field }) => (
+										<TextField
+											sx={{ mb: 2.5 }}
+											className="register"
+											required
+											id="password"
+											label="Password"
+											type={values.showPassword ? 'text' : 'password'}
+											autoComplete="current-password"
+											error={Boolean(errors.password)}
+											InputProps={{
+												endAdornment: (
+													<InputAdornment position="end">
+														<IconButton
+															aria-label="toggle password visibility"
+															onClick={handleClickShowPassword}
+															onMouseDown={handleMouseDownPassword}>
+															{values.showPassword ? (
+																<Visibility />
+															) : (
+																<VisibilityOff />
+															)}
+														</IconButton>
+													</InputAdornment>
+												),
+											}}
+											helperText={
+												errors.password
+													? errors.password.type === 'minLength'
+														? 'Password Too Short'
+														: 'Password Required'
+													: ''
+											}
+											{...field}
+										/>
+									)}
+								/>
+								<Typography sx={{ mt: 4 }}>Personal Information</Typography>
+								<Divider sx={{ mb: 4, justifySelf: 'center' }} />
+								{/* First Name */}
+								<Controller
+									name="firstName"
+									control={control}
+									rules={{
+										required: true,
+										minLength: 1,
+									}}
+									render={({ field }) => (
+										<TextField
+											sx={{ mb: 2.5 }}
+											className="register"
+											required
+											id="firstName"
+											label="First Name"
+											inputProps={{ type: 'text' }}
+											error={Boolean(errors.firstName)}
+											helperText={
+												errors.firstName
+													? errors.firstName.type === 'minLength'
+														? 'Invalid Name'
+														: 'First Name Required'
+													: ''
+											}
+											{...field}
+										/>
+									)}
+								/>
+								{/* Last Name */}
+								<Controller
+									name="lastName"
+									control={control}
+									rules={{
+										required: true,
+										minLength: 1,
+									}}
+									render={({ field }) => (
+										<TextField
+											sx={{ mb: 2.5 }}
+											className="register"
+											required
+											id="lastName"
+											label="Last Name"
+											inputProps={{ type: 'text' }}
+											error={Boolean(errors.lastName)}
+											helperText={
+												errors.lastName
+													? errors.lastName.type === 'minLength'
+														? 'Invalid Name'
+														: 'Last Name Required'
+													: ''
+											}
+											{...field}
+										/>
+									)}
+								/>
+								{/* Telephone */}
+								<Controller
+									name="telephone"
+									control={control}
+									rules={{
+										required: true,
+										minLength: 8,
+									}}
+									render={({ field }) => (
+										<TextField
+											value={telephone}
+											onChange={(e) => {
+												handleTelephoneChange(e);
+												field.onChange(e); // Trigger react-hook-form's change handler
+											}}
+											sx={{ mb: 2.5 }}
+											className="register"
+											required
+											id="telephone"
+											label="Phone"
+											inputProps={{ type: 'tel' }}
+											error={Boolean(errors.telephone)}
+											helperText={
+												errors.telephone
+													? errors.telephone.type === 'minLength'
+														? 'Invalid Telephone'
+														: 'Telephone Required'
+													: ''
+											}
+										/>
+									)}
+								/>
+							</form>
+						</FormControl>
+					</Grid>
+
+					{/* Billing Info */}
+					<Grid
+						item
+						md={6}
+						sm={12}
+						xs={12}
+						display={'flex'}
+						flexDirection={'column'}
+						alignItems={'center'}
+						pr={3}
+						pl={3}>
+						<FormControl fullWidth>
+							<form onSubmit={handleSubmit(submitHandler)}>
+								<Typography sx={{ mt: 4, ml: 3, mr: 3 }}>
+									Billing Information
+								</Typography>
+								<Divider sx={{ mb: 4, ml: 3, mr: 3, justifySelf: 'center' }} />
+
+								{/* Country */}
+								<Controller
+									name="country"
+									control={control}
+									rules={{
+										required: true,
+										minLength: 1,
+									}}
+									render={({ field }) => (
+										<TextField
+											sx={{ mb: 2.5 }}
+											className="register"
+											required
+											id="country"
+											label="Country"
+											inputProps={{ type: 'text' }}
+											error={Boolean(errors.country)}
+											helperText={
+												errors.country
+													? errors.country.type === 'minLength'
+														? 'Invalid Country'
+														: 'Country Required'
+													: ''
+											}
+											{...field}
+										/>
+									)}
+								/>
+
+								{/* Address */}
+								<Controller
+									name="address"
+									control={control}
+									rules={{
+										required: true,
+										minLength: 1,
+									}}
+									render={({ field }) => (
+										<TextField
+											sx={{ mb: 2.5 }}
+											className="register"
+											required
+											id="address"
+											label="Address"
+											inputProps={{ type: 'text' }}
+											error={Boolean(errors.address)}
+											helperText={
+												errors.address
+													? errors.address.type === 'minLength'
+														? 'Invalid Address'
+														: 'Address Required'
+													: ''
+											}
+											{...field}
+										/>
+									)}
+								/>
+
+								{/* Address Cont */}
+								<Controller
+									name="addressCont"
+									control={control}
+									rules={{
+										minLength: 1,
+									}}
+									render={({ field }) => (
+										<TextField
+											sx={{ mb: 2.5 }}
+											className="register"
+											id="addressCont"
+											label="Address Cont.."
+											inputProps={{ type: 'text' }}
+											error={Boolean(errors.addressCont)}
+											helperText={
+												errors.addressCont
+													? errors.addressCont.type === 'minLength'
+														? 'Invalid Address'
+														: ''
+													: ''
+											}
+											{...field}
+										/>
+									)}
+								/>
+
+								{/* State */}
+								<Controller
+									name="state"
 									control={control}
 									rules={{
 										required: true,
@@ -486,15 +455,15 @@ const RegisterScreen: React.FC = () => {
 											sx={{ mb: 2.5 }}
 											className="register"
 											required
-											id="city"
-											label="City"
+											id="state"
+											label="State"
 											inputProps={{ type: 'text' }}
-											error={Boolean(errors.city)}
+											error={Boolean(errors.state)}
 											helperText={
-												errors.city
-													? errors.city.type === 'minLength'
-														? 'Invalid City'
-														: 'City Required'
+												errors.state
+													? errors.state.type === 'minLength'
+														? 'Invalid State'
+														: 'State Required'
 													: ''
 											}
 											{...field}
@@ -502,61 +471,96 @@ const RegisterScreen: React.FC = () => {
 									)}
 								/>
 
-								{/* Zip Code */}
-								<Controller
-									name="postalCode"
-									control={control}
-									rules={{
-										required: true,
-										minLength: 2,
-									}}
-									render={({ field }) => (
-										<TextField
-											sx={{ mb: 2.5 }}
-											className="register"
-											required
-											id="postalCode"
-											label="Postal Code"
-											inputProps={{ type: 'text' }}
-											error={Boolean(errors.postalCode)}
-											helperText={
-												errors.postalCode
-													? errors.postalCode.type === 'minLength'
-														? 'Invalid Postal Code'
-														: 'Postal Code Required'
-													: ''
-											}
-											{...field}
-										/>
-									)}
-								/>
-							</Box>
+								<Box className="register" display={'flex'} gap={2.5}>
+									{/* City */}
+									<Controller
+										name="city"
+										control={control}
+										rules={{
+											required: true,
+											minLength: 2,
+										}}
+										render={({ field }) => (
+											<TextField
+												sx={{ mb: 2.5 }}
+												className="register"
+												required
+												id="city"
+												label="City"
+												inputProps={{ type: 'text' }}
+												error={Boolean(errors.city)}
+												helperText={
+													errors.city
+														? errors.city.type === 'minLength'
+															? 'Invalid City'
+															: 'City Required'
+														: ''
+												}
+												{...field}
+											/>
+										)}
+									/>
 
-							<Box
-								className="register"
-								display={'flex'}
-								mb={2.5}
-								justifyContent={'center'}>
-								<ReCAPTCHA
-									badge="inline"
-									sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-									onChange={() => setVerified(true)}
-								/>
-							</Box>
+									{/* Zip Code */}
+									<Controller
+										name="postalCode"
+										control={control}
+										rules={{
+											required: true,
+											minLength: 2,
+										}}
+										render={({ field }) => (
+											<TextField
+												sx={{ mb: 2.5 }}
+												className="register"
+												required
+												id="postalCode"
+												label="Postal Code"
+												inputProps={{ type: 'text' }}
+												error={Boolean(errors.postalCode)}
+												helperText={
+													errors.postalCode
+														? errors.postalCode.type === 'minLength'
+															? 'Invalid Postal Code'
+															: 'Postal Code Required'
+														: ''
+												}
+												{...field}
+											/>
+										)}
+									/>
+								</Box>
 
-							<Button
-								type="submit"
-								disabled={!verified || !isValid}
-								className="register"
-								variant="contained"
-								sx={{ width: '75%', backgroundColor: 'rgb(68, 68, 68)', mb: 2 }}>
-								Create Account
-							</Button>
-						</form>
-					</FormControl>
+								<Box
+									className="register"
+									display={'flex'}
+									mb={2.5}
+									justifyContent={'center'}>
+									<ReCAPTCHA
+										badge="inline"
+										sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+										onChange={() => setVerified(true)}
+									/>
+								</Box>
+
+								<Button
+									type="submit"
+									disabled={!verified || !isValid}
+									className="register"
+									variant="contained"
+									sx={{
+										width: '75%',
+										backgroundColor: 'rgb(68, 68, 68)',
+										mb: 2,
+									}}>
+									Create Account
+								</Button>
+							</form>
+						</FormControl>
+					</Grid>
 				</Grid>
-			</Grid>
-		</Box>
+			</Box>
+		</Layout>
 	);
 };
 

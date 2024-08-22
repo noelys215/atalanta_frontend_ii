@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Box, CircularProgress, Divider, Grid, Typography } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { loadStripe } from '@stripe/stripe-js';
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
 import toast from 'react-hot-toast';
+import Layout from '../../components/Layout'; // Import the Layout component
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string);
 
@@ -23,7 +23,7 @@ const PlaceOrderScreen: React.FC = () => {
 	}, [sessionId, clientSecret, navigate]);
 
 	return (
-		<>
+		<Layout title="Checkout">
 			{!sessionId || !clientSecret ? (
 				<CircularProgress />
 			) : (
@@ -38,10 +38,6 @@ const PlaceOrderScreen: React.FC = () => {
 						flexDirection: 'column',
 						width: '100%',
 					}}>
-					<Helmet>
-						<title>Checkout - Atalanta A.C.</title>
-					</Helmet>
-
 					<Grid
 						item
 						md={12}
@@ -65,7 +61,7 @@ const PlaceOrderScreen: React.FC = () => {
 					</Grid>
 				</Box>
 			)}
-		</>
+		</Layout>
 	);
 };
 

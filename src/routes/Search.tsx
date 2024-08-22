@@ -14,8 +14,8 @@ import {
 import { Box } from '@mui/system';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
+import Layout from '../../components/Layout';
 
 interface Product {
 	_id: string;
@@ -53,10 +53,7 @@ export default function SearchScreen() {
 	});
 
 	return (
-		<>
-			<Helmet>
-				<title>Results - Atalanta A.C.</title>
-			</Helmet>
+		<Layout title={query || 'Search'}>
 			<Container maxWidth="xl" sx={{ mb: 'auto' }}>
 				<Box
 					sx={{
@@ -128,6 +125,6 @@ export default function SearchScreen() {
 					</Box>
 				)}
 			</Container>
-		</>
+		</Layout>
 	);
 }
