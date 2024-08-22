@@ -247,6 +247,19 @@ const AccountDrawer = () => {
 									Create Account
 								</Button>
 							</Box>
+
+							<Divider sx={{ alignItems: 'flex-start', m: 2 }}></Divider>
+
+							<Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+								<Link to="/ordersearch" onClick={() => setOpenDrawer(false)}>
+									<Typography variant="h6" gutterBottom>
+										<ContentPasteSearchTwoToneIcon
+											sx={{ verticalAlign: 'middle', fontSize: 'inherit' }}
+										/>{' '}
+										Search Orders
+									</Typography>
+								</Link>
+							</Box>
 							<Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>{`
 								With your Atalanta account, you will be able to:
 								
