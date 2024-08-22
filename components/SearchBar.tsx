@@ -1,5 +1,5 @@
 import { Box, InputAdornment, TextField } from '@mui/material';
-import DepartmentDrawer from './Drawer';
+import DepartmentDrawer from './DepartmentDrawer';
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Replace next/router with useNavigate

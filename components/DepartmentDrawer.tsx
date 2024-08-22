@@ -72,16 +72,22 @@ const DepartmentDrawer = () => {
 
 						<AccordionDetails>
 							<List>
-								<ListItem onClick={() => setOpenDrawer(false)}>
-									<Link to="/man/tops">Tops</Link>
+								<ListItem>
+									<Link to="/man/tops" onClick={() => setOpenDrawer(false)}>
+										Tops
+									</Link>
 								</ListItem>
 
-								<ListItem onClick={() => setOpenDrawer(false)}>
-									<Link to="/man/bottoms">Bottoms</Link>
+								<ListItem>
+									<Link to="/man/bottoms" onClick={() => setOpenDrawer(false)}>
+										Bottoms
+									</Link>
 								</ListItem>
 
-								<ListItem onClick={() => setOpenDrawer(false)}>
-									<Link to="/man/footwear">Footwear</Link>
+								<ListItem>
+									<Link to="/man/footwear" onClick={() => setOpenDrawer(false)}>
+										Footwear
+									</Link>
 								</ListItem>
 							</List>
 						</AccordionDetails>
@@ -96,17 +102,23 @@ const DepartmentDrawer = () => {
 						</AccordionSummary>
 
 						<AccordionDetails>
-							<List onClick={() => setOpenDrawer(false)}>
+							<List>
 								<ListItem>
-									<Link to="/woman/tops">Tops</Link>
+									<Link to="/woman/tops" onClick={() => setOpenDrawer(false)}>
+										Tops
+									</Link>
 								</ListItem>
 
 								<ListItem>
-									<Link to="/woman/bottoms">Bottoms</Link>
+									<Link to="/woman/bottoms" onClick={() => setOpenDrawer(false)}>
+										Bottoms
+									</Link>
 								</ListItem>
 
 								<ListItem>
-									<Link to="/woman/footwear">Footwear</Link>
+									<Link to="/woman/footwear" onClick={() => setOpenDrawer(false)}>
+										Footwear
+									</Link>
 								</ListItem>
 							</List>
 						</AccordionDetails>
@@ -121,9 +133,13 @@ const DepartmentDrawer = () => {
 						</AccordionSummary>
 
 						<AccordionDetails>
-							<List onClick={() => setOpenDrawer(false)}>
+							<List>
 								<ListItem>
-									<Link to="/accessories/all">All</Link>
+									<Link
+										to="/accessories/all"
+										onClick={() => setOpenDrawer(false)}>
+										All
+									</Link>
 								</ListItem>
 							</List>
 						</AccordionDetails>
