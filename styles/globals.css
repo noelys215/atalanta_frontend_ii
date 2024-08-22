@@ -69,17 +69,6 @@
 	transition: none !important;
 }
 
-.MuiInputBase-input {
-	/* width: 120px; */
-	/* min-width: 90%; */
-	transition: width 1s ease-in-out;
-}
-
-.MuiInputBase-input:focus {
-	width: 28vw;
-	transition: width 1s ease-in-out;
-}
-
 a:-webkit-any-link {
 	text-decoration: none;
 	color: inherit;
@@ -101,11 +90,4 @@ a:-webkit-any-link {
 		width: 100%;
 		transition: width 1s ease-in-out;
 	}
-
-	.MuiInputBase-input:focus {
-		/* width: 40vw; */
-		transition: width 1s ease-in-out;
-	}
 }
-
-/*  */

@@ -1,5 +1,5 @@
 import { Box, InputAdornment, TextField } from '@mui/material';
-import MuiDrawer from './Drawer';
+import DepartmentDrawer from './Drawer';
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Replace next/router with useNavigate
@@ -22,7 +22,7 @@ export default function SearchBar() {
 
 	return (
 		<Box display={'flex'} gap={2}>
-			<MuiDrawer />
+			<DepartmentDrawer />
 			<form onSubmit={submitHandler}>
 				<TextField
 					sx={{
@@ -30,7 +30,7 @@ export default function SearchBar() {
 							xs: 'none',
 							md: 'flex',
 							'& .MuiInput-input': {
-								width: 100,
+								width: 300,
 							},
 						},
 					}}

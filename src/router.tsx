@@ -51,7 +51,7 @@ export const router = createBrowserRouter([
 				element: <ProductScreen />,
 			},
 			{
-				path: '/return', // The route for the OrderDetailsScreen
+				path: '/return',
 				element: <OrderDetailsScreen />,
 			},
 		],

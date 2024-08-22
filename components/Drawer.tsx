@@ -14,7 +14,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import { Link } from 'react-router-dom';
 
-const MuiDrawer = () => {
+const DepartmentDrawer = () => {
 	const [openDrawer, setOpenDrawer] = useState(false);
 
 	useEffect(() => {
@@ -134,4 +134,4 @@ const MuiDrawer = () => {
 	);
 };
 
-export default MuiDrawer;
+export default DepartmentDrawer;

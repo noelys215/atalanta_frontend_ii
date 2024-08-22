@@ -8,7 +8,7 @@ import SearchBar from './SearchBar';
 import SearchIcon from '@mui/icons-material/Search';
 import { useSelector } from 'react-redux';
 import logo from '../public/assets/logo-plain.png';
-import { RootState } from '../store/store'; // Make sure this is the correct path to your store
+import { RootState } from '../store/store';
 
 const TopBar = () => {
 	const [openSearch, setOpenSearch] = useState(false);
@@ -26,6 +26,7 @@ const TopBar = () => {
 				top: 0,
 				zIndex: 99,
 				backgroundColor: '#F6F1EB',
+				paddingY: 2, // Adjust padding to increase the height of the top bar
 			}}>
 			{openSearch ? (
 				<MobileSearch setOpenSearch={setOpenSearch} />
@@ -36,29 +37,30 @@ const TopBar = () => {
 					}}>
 					<Box
 						sx={{
-							backgroundColor: 'inherit',
 							display: 'flex',
-							flexDirection: 'row',
 							justifyContent: 'space-between',
 							alignItems: 'center',
 							height: 'auto',
+							py: 2, // Adjust padding to increase the height of the top bar
 						}}>
 						{/* Search/Menu Bar */}
-						<SearchBar />
-						<SearchIcon
-							onClick={() => setOpenSearch(!openSearch)}
-							sx={{ display: { xs: 'flex', md: 'none' } }}
-						/>
+						<Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
+							<SearchBar />
+							<SearchIcon
+								onClick={() => setOpenSearch(!openSearch)}
+								sx={{ display: { xs: 'flex', md: 'none' } }}
+							/>
+						</Box>
 
 						{/* Logo */}
-						<Box>
+						<Box sx={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
 							<Link to="/">
 								<img src={logo} width={102} height={113} alt="logo" />
 							</Link>
 						</Box>
 
 						{/* Account/Cart Links */}
-						<Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+						<Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
 							<AccountDrawer />
 							<Link to="/cart" style={{ textDecoration: 'none' }}>
 								<Box display={'flex'} gap={1}>
