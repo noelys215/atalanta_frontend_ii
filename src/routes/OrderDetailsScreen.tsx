@@ -4,6 +4,8 @@ import { useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Layout from '../../components/Layout';
+import { useDispatch } from 'react-redux';
+import { cartClear } from '../../store/slices/cartSlice';
 
 // Define types for the expected order details structure
 interface Address {
@@ -44,17 +46,20 @@ interface Order {
 	order_details: OrderDetails;
 }
 
-const fetchOrderDetails = async (sessionId: string): Promise<Order> => {
-	const { data } = await axios.post(
-		`${import.meta.env.VITE_API_URL}/stripe/retrieve-checkout-session`,
-		{
-			session_id: sessionId,
-		}
-	);
-	return data;
-};
-
 const OrderDetailsScreen = () => {
+	const dispatch = useDispatch();
+
+	const fetchOrderDetails = async (sessionId: string) => {
+		const response = await axios.post(
+			`${import.meta.env.VITE_API_URL}/stripe/retrieve-checkout-session`,
+			{ session_id: sessionId }
+		);
+
+		if (response.headers['x-clear-cart'] === 'true') dispatch(cartClear());
+
+		return response.data;
+	};
+
 	const location = useLocation();
 	const sessionId = new URLSearchParams(location.search).get('session_id');
 
