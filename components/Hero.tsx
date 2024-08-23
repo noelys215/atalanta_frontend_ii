@@ -12,7 +12,7 @@ const Hero: React.FC = () => {
 					justifyContent: 'center',
 					alignItems: 'center',
 				}}>
-				{/* Name */}
+				{/* Title */}
 				<Typography
 					variant="h3"
 					component="h1"
@@ -21,6 +21,7 @@ const Hero: React.FC = () => {
 					width={'100%'}>
 					Atalanta Athletic Club
 				</Typography>
+				{/* Subtitle */}
 				<Typography
 					variant="body1"
 					fontSize={'1.3rem'}

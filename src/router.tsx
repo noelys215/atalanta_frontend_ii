@@ -15,7 +15,7 @@ import PaymentScreen from './routes/PaymentScreen';
 import PlaceOrderScreen from './routes/PlaceOrderScreen';
 import RegisterScreen from './routes/RegisterScreen';
 import AccountScreen from './routes/AccountScreen';
-import SearchScreen from './routes/Search';
+import SearchScreen from './routes/SearchScreen';
 import OrderDetailsScreen from './routes/OrderDetailsScreen';
 import OrderHistoryScreen from './routes/OrderHistoryScreen';
 import OrderSearchScreen from './routes/OrderSearchScreen';

@@ -32,9 +32,11 @@ export const SeasonalCard: React.FC<SeasonalCardProps> = ({
 				mb: 10,
 				p: 2.5,
 			}}>
+			{/* Title */}
 			<Typography variant="h2" fontSize={'1.875rem'} gutterBottom textAlign={'center'}>
 				{title}
 			</Typography>
+			{/* Subtitle */}
 			{quote && (
 				<Typography
 					lineHeight={1.5}
