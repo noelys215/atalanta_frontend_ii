@@ -12,7 +12,7 @@ const Home: React.FC = () => {
 		<Layout title="Home">
 			<Container maxWidth="xl">
 				<motion.div animate={{ opacity: 1 }} initial={{ opacity: 0 }}>
-					<Hero />
+					<Hero slug="atalanta-athletic-club" />
 				</motion.div>
 
 				{/* Spring Collection */}

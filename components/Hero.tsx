@@ -1,7 +1,30 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
-const Hero: React.FC = () => {
+interface HeroProps {
+	slug: string;
+}
+
+const Hero: React.FC<HeroProps> = ({ slug }) => {
+	const fetchHeroCard = async () => {
+		const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/hero-cards/${slug}`);
+		return data;
+	};
+
+	const {
+		data: heroCard,
+		isLoading,
+		error,
+	} = useQuery({
+		queryKey: ['heroCard', slug],
+		queryFn: fetchHeroCard,
+	});
+
+	if (isLoading) return <p>Loading...</p>;
+	if (error) return <p>An error occurred: {error.message}</p>;
+
 	return (
 		<>
 			<Box
@@ -19,7 +42,7 @@ const Hero: React.FC = () => {
 					fontFamily={'Cinzel'}
 					textAlign="center"
 					width={'100%'}>
-					Atalanta Athletic Club
+					{heroCard.title}
 				</Typography>
 				{/* Subtitle */}
 				<Typography
@@ -29,10 +52,7 @@ const Hero: React.FC = () => {
 					textAlign={'center'}
 					fontFamily={'Spectral'}
 					width={'75%'}>
-					<q>
-						The race continued as I hammered up the trail, passing rocks and trees as if
-						they were standing still.
-					</q>
+					<q>{heroCard.subtitle}</q>
 				</Typography>
 			</Box>
 
@@ -43,15 +63,24 @@ const Hero: React.FC = () => {
 					alignItems: 'center',
 					mb: 15,
 				}}>
-				<video controls={true} autoPlay={true} loop={true} muted width={'100%'} playsInline>
-					<source
-						src={
-							'https://res.cloudinary.com/dshviljjs/video/upload/v1670986486/Atalanta%20Uploads/STATIC/running_z2wwab.mp4'
-						}
-						type="video/mp4"
+				{heroCard.video_src ? (
+					<video
+						controls={true}
+						autoPlay={true}
+						loop={true}
+						muted
+						width={'100%'}
+						playsInline>
+						<source src={heroCard.video_src} type="video/mp4" />
+						Your browser does not support the video tag.
+					</video>
+				) : (
+					<img
+						src={heroCard.image_src}
+						alt={heroCard.title}
+						style={{ width: '100%', height: 'auto' }}
 					/>
-					Your browser does not support the video tag.
-				</video>
+				)}
 			</Box>
 		</>
 	);
