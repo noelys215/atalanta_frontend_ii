@@ -1,24 +1,29 @@
 import { Box, Paper, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 interface SeasonalCardProps {
-	title: string;
-	desc: string;
-	linkToSeasonal: string;
-	linkTitle: string;
-	imgSrc: string;
-	quote?: string;
+	slug: string;
 }
 
-export const SeasonalCard: React.FC<SeasonalCardProps> = ({
-	title,
-	desc,
-	linkToSeasonal,
-	linkTitle,
-	imgSrc,
-	quote,
-}) => {
+export const SeasonalCard: React.FC<SeasonalCardProps> = ({ slug }) => {
+	const fetchSeasonalCard = async (slug: string) => {
+		const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/seasonal-cards/${slug}`);
+		return data;
+	};
+
+	const { data, isLoading, error } = useQuery({
+		queryKey: ['seasonalCard', slug],
+		queryFn: () => fetchSeasonalCard(slug),
+	});
+
+	if (isLoading) return <p>Loading...</p>;
+	if (error) return <p>An error occurred: {error.message}</p>;
+
+	console.log(data);
+
 	return (
 		<Paper
 			sx={{
@@ -34,10 +39,10 @@ export const SeasonalCard: React.FC<SeasonalCardProps> = ({
 			}}>
 			{/* Title */}
 			<Typography variant="h2" fontSize={'1.875rem'} gutterBottom textAlign={'center'}>
-				{title}
+				{data.title}
 			</Typography>
 			{/* Subtitle */}
-			{quote && (
+			{data.subtitle && (
 				<Typography
 					lineHeight={1.5}
 					variant="body2"
@@ -45,7 +50,7 @@ export const SeasonalCard: React.FC<SeasonalCardProps> = ({
 					gutterBottom
 					textAlign={'center'}
 					width={'80%'}>
-					<q>{quote}</q>
+					<q>{data.subtitle}</q>
 				</Typography>
 			)}
 			<Typography
@@ -55,9 +60,9 @@ export const SeasonalCard: React.FC<SeasonalCardProps> = ({
 				gutterBottom
 				textAlign={'center'}
 				width={'80%'}>
-				{desc}
+				{data.description}
 			</Typography>
-			<Link to={linkToSeasonal} style={{ textDecoration: 'none' }}>
+			<Link to={data.link} style={{ textDecoration: 'none' }}>
 				<Typography
 					textAlign={'center'}
 					sx={{
@@ -68,7 +73,7 @@ export const SeasonalCard: React.FC<SeasonalCardProps> = ({
 							textDecoration: 'none',
 						},
 					}}>
-					{linkTitle}
+					{data.link_title}
 				</Typography>
 			</Link>
 			<Box
@@ -76,8 +81,8 @@ export const SeasonalCard: React.FC<SeasonalCardProps> = ({
 					width: '65%',
 				}}>
 				<img
-					src={imgSrc}
-					alt="Person running up stairs"
+					src={data.image_src}
+					alt={data.title}
 					style={{ width: '100%', height: 'auto' }}
 				/>
 			</Box>
