@@ -22,8 +22,6 @@ export const SeasonalCard: React.FC<SeasonalCardProps> = ({ slug }) => {
 	if (isLoading) return <p>Loading...</p>;
 	if (error) return <p>An error occurred: {error.message}</p>;
 
-	console.log(data);
-
 	return (
 		<Paper
 			sx={{

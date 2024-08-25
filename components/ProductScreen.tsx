@@ -9,15 +9,9 @@ import {
 	AccordionDetails,
 	AccordionSummary,
 	Container,
-	List,
-	MobileStepper,
 	CircularProgress,
+	List,
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import SwipeableViews from 'react-swipeable-views';
-import { autoPlay } from 'react-swipeable-views-utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -26,8 +20,17 @@ import { cartAddItem, CartItem } from '../store/slices/cartSlice';
 import { RootState } from '../store/store';
 import { useQuery } from '@tanstack/react-query';
 import { getProductBySlug } from '../src/api/products';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import { Navigation } from 'swiper/modules';
+import '../styles/globals.css';
 
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
+// Define the custom type for Swiper's style
+interface SwiperCustomStyle extends React.CSSProperties {
+	'--swiper-navigation-color'?: string;
+	'--swiper-navigation-size'?: string;
+}
 
 const ProductScreen: React.FC = () => {
 	const { slug } = useParams<{ slug: string }>();
@@ -49,8 +52,6 @@ const ProductScreen: React.FC = () => {
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const theme = useTheme();
-	const [activeStep, setActiveStep] = useState(0);
 
 	if (isLoading) {
 		return (
@@ -61,11 +62,6 @@ const ProductScreen: React.FC = () => {
 	}
 
 	if (isError || !product) return <div>Error loading product.</div>;
-
-	const maxSteps = product.image.length;
-	const handleNext = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
-	const handleBack = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
-	const handleStepChange = (step: number) => setActiveStep(step);
 
 	const addToCartHandler = async () => {
 		const existItem = cart.find(
@@ -94,6 +90,12 @@ const ProductScreen: React.FC = () => {
 		navigate('/cart');
 	};
 
+	// Use the custom type here
+	const swiperStyle: SwiperCustomStyle = {
+		'--swiper-navigation-color': 'black',
+		'--swiper-navigation-size': '25px',
+	};
+
 	return (
 		<Container maxWidth="xl" sx={{ display: 'flex', flexDirection: 'column' }}>
 			<Grid
@@ -104,61 +106,31 @@ const ProductScreen: React.FC = () => {
 					mb: 5,
 				}}>
 				<Grid item md={8} xs={12} width={'100%'}>
-					<AutoPlaySwipeableViews
-						interval={60000 * 2}
-						axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-						index={activeStep}
-						onChangeIndex={handleStepChange}
-						enableMouseEvents>
+					<Swiper
+						loop={true}
+						spaceBetween={50}
+						slidesPerView={1}
+						navigation={true}
+						modules={[Navigation]}
+						pagination={true}
+						style={swiperStyle} // Apply the style here
+					>
 						{product.image.map((step: string, index: number) => (
-							<div key={step}>
-								{Math.abs(activeStep - index) <= 2 ? (
-									<Box
-										loading="lazy"
-										component={'img'}
-										src={step}
-										alt={product.slug}
-										width={'100%'}
-									/>
-								) : null}
-							</div>
+							<SwiperSlide key={index}>
+								<Box
+									component={'img'}
+									src={step}
+									alt={product.slug}
+									width={'100%'}
+								/>
+							</SwiperSlide>
 						))}
-					</AutoPlaySwipeableViews>
-
-					<MobileStepper
-						variant="text"
-						steps={maxSteps}
-						position="static"
-						activeStep={activeStep}
-						nextButton={
-							<Button
-								size="medium"
-								onClick={handleNext}
-								disabled={activeStep === maxSteps - 1}>
-								{theme.direction === 'rtl' ? (
-									<KeyboardArrowLeft />
-								) : (
-									<KeyboardArrowRight />
-								)}
-							</Button>
-						}
-						backButton={
-							<Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-								{theme.direction === 'rtl' ? (
-									<KeyboardArrowRight />
-								) : (
-									<KeyboardArrowLeft />
-								)}
-							</Button>
-						}
-					/>
+					</Swiper>
 				</Grid>
 
 				<Grid maxHeight={992} item md={3} sx={{ backgroundColor: '#fffcf7', p: 3 }}>
 					<Typography variant="h6">{product.name}</Typography>
-					<Typography variant="body1" sx={{ wordSpacing: -8 }}>
-						$ {product.price}
-					</Typography>
+					<Typography variant="body1">$ {product.price}</Typography>
 					<Divider />
 					<Box
 						sx={{

@@ -91,3 +91,15 @@ a:-webkit-any-link {
 		transition: width 1s ease-in-out;
 	}
 }
+
+/* Custom Swiper Navigation Arrows with Increased Specificity */
+.swiper-container .swiper-button-next,
+.swiper-container .swiper-button-prev {
+	color: black !important; /* Force the color to black */
+	opacity: 0.75; /* Optional: Slightly reduce opacity for a softer look */
+}
+
+.swiper-container .swiper-button-next:hover,
+.swiper-container .swiper-button-prev:hover {
+	opacity: 1; /* Full opacity on hover */
+}
