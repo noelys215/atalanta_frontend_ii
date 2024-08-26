@@ -29,11 +29,9 @@ export const orderHistory = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(getOrderHistory.pending, (state) => {
-				console.log('Get Order History Pending');
 				state.loading = true;
 			})
 			.addCase(getOrderHistory.fulfilled, (state, action: PayloadAction<Order[]>) => {
-				console.log('Get Order History Fulfilled');
 				state.orders = action.payload;
 				state.loading = false;
 			})
@@ -54,7 +52,6 @@ export const orderHistory = createSlice({
 						SerializedError
 					>
 				) => {
-					console.log('Get Order History Rejected');
 					state.loading = false;
 					state.error =
 						typeof action.payload === 'string' ? action.payload : 'An error occurred';

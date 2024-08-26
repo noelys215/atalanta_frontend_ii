@@ -55,8 +55,6 @@ export const updateUserProfile = createAsyncThunk<
 
 		if (!userToken) throw new Error('User is not authenticated');
 
-		console.log('Using token:', userToken);
-
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
@@ -64,15 +62,11 @@ export const updateUserProfile = createAsyncThunk<
 			},
 		};
 
-		console.log('Request Headers:', config.headers);
-
 		const { data } = await axios.put<UserProfileResponse>(
 			`${import.meta.env.VITE_API_URL}/profile`,
 			user,
 			config
 		);
-
-		console.log('API Response:', data);
 
 		return data;
 	} catch (error) {

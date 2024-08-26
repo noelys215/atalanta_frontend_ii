@@ -23,11 +23,9 @@ export const orderPaySlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(payOrder.pending, (state) => {
-				console.log('Paid Order Pending');
 				state.loading = true;
 			})
 			.addCase(payOrder.fulfilled, (state) => {
-				console.log('Paid Order Fulfilled');
 				state.loading = false;
 				state.success = true;
 			})
@@ -48,7 +46,6 @@ export const orderPaySlice = createSlice({
 						SerializedError
 					>
 				) => {
-					console.log('Paid Order Rejected');
 					state.loading = false;
 					state.error = (action.payload as string) || 'Payment failed';
 				}

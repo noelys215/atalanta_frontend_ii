@@ -41,7 +41,6 @@ export const orderSlice = createSlice({
 				state.success = true;
 			})
 			.addCase(createOrder.rejected, (state, action: PayloadAction<unknown>) => {
-				console.log('Order Rejected');
 				state.loading = false;
 				state.error =
 					typeof action.payload === 'string' ? action.payload : 'Failed to create order';
@@ -55,7 +54,6 @@ export const orderSlice = createSlice({
 				state.loading = false;
 			})
 			.addCase(getOrderDetails.rejected, (state, action: PayloadAction<unknown>) => {
-				console.log('Get Order Rejected');
 				state.loading = false;
 				state.error =
 					typeof action.payload === 'string'

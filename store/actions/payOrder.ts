@@ -1,36 +1,48 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+import { RootState } from '../../store/store'; // Adjust the import path based on your project structure
 
-export const payOrder = createAsyncThunk(
-	'order/payOrder',
-	async (data: any, { getState, rejectWithValue }: any) => {
-		const { orderId: id, paymentResult } = data;
-		try {
-			// get user data from store
-			const {
-				userInfo: { userInfo },
-			} = getState();
+interface PayOrderInput {
+	orderId: string;
+	paymentResult: object;
+}
 
-			// configure authorization header with user's token
-			const config = {
+interface PayOrderResponse {
+	id: string;
+}
+
+export const payOrder = createAsyncThunk<
+	PayOrderResponse,
+	PayOrderInput,
+	{ state: RootState; rejectValue: string }
+>('order/payOrder', async (data: PayOrderInput, { getState, rejectWithValue }) => {
+	const { orderId: id, paymentResult } = data;
+
+	try {
+		const {
+			userInfo: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
 				'Content-Type': 'application/json',
-				headers: { Authorization: `Bearer ${userInfo.token}` },
-			};
+				Authorization: `Bearer ${userInfo?.token}`,
+			},
+		};
 
-			const { data }: any = await axios.put(
-				`${import.meta.env.VITE_API_URL}/orders/${id}/pay`,
-				paymentResult,
-				config
-			);
-			console.log(data);
-			return data;
-		} catch (error: any) {
-			if (error.response && error.response.data.message) {
-				console.log(error.response.data.message);
-				return rejectWithValue(error.response.data.message);
-			} else {
-				return rejectWithValue(error.message);
-			}
+		const response = await axios.put<PayOrderResponse>(
+			`${import.meta.env.VITE_API_URL}/orders/${id}/pay`,
+			paymentResult,
+			config
+		);
+
+		return response.data;
+	} catch (error: unknown) {
+		const axiosError = error as AxiosError<{ message: string }>;
+		if (axiosError.response && axiosError.response.data.message) {
+			return rejectWithValue(axiosError.response.data.message);
+		} else {
+			return rejectWithValue(axiosError.message);
 		}
 	}
-);
+});

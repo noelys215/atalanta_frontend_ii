@@ -32,9 +32,6 @@ const AccountScreen: React.FC = () => {
 	// Access user info from Redux state
 	const { userInfo } = useSelector((state: RootState) => state.userInfo);
 
-	// Log userInfo for debugging
-	console.log('Current userInfo in component:', userInfo);
-
 	// Mutation for updating user profile
 	const mutation = useMutation({
 		mutationFn: async (userData: RegisterProps) => {
@@ -47,9 +44,6 @@ const AccountScreen: React.FC = () => {
 			// Fetch the latest user profile to ensure state is up-to-date
 			dispatch(fetchUserProfile())
 				.unwrap()
-				.then(() => {
-					console.log('User profile successfully refetched');
-				})
 				.catch((error) => {
 					console.error('Failed to refetch user profile:', error);
 				});
@@ -79,8 +73,6 @@ const AccountScreen: React.FC = () => {
 
 	// Prefill user data on form fields
 	useEffect(() => {
-		console.log('UserInfo before prefill:', userInfo);
-
 		if (userInfo) {
 			setValue('firstName', userInfo.first_name || '');
 			setValue('lastName', userInfo.last_name || '');
@@ -93,24 +85,9 @@ const AccountScreen: React.FC = () => {
 			setValue('city', userInfo.city || '');
 			setValue('postalCode', userInfo.postal_code || '');
 		}
-
-		console.log('Form values after prefill:', {
-			firstName: userInfo?.first_name,
-			lastName: userInfo?.last_name,
-			email: userInfo?.email,
-			telephone: userInfo?.telephone,
-			country: userInfo?.country,
-			address: userInfo?.address,
-			addressCont: userInfo?.addressCont,
-			state: userInfo?.state,
-			city: userInfo?.city,
-			postalCode: userInfo?.postal_code,
-		});
 	}, [userInfo, setValue]);
 
 	const submitHandler = (data: RegisterProps) => {
-		console.log('Form data submitted:', data);
-
 		mutation.mutate(data);
 	};
 

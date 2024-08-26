@@ -25,7 +25,6 @@ export const fetchUserProfile = createAsyncThunk(
 	async (_, { rejectWithValue }) => {
 		try {
 			let token = Cookies.get('userToken');
-			console.log('Token before fetch:', token);
 
 			if (!token) {
 				throw new Error('User is not authenticated');

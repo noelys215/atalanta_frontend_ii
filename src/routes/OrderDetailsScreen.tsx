@@ -87,8 +87,6 @@ const OrderDetailsScreen = () => {
 			</Typography>
 		);
 
-	console.log(order);
-
 	// Convert the Unix timestamp to a readable date format
 	const orderDate = new Date((order?.order_date ?? 0) * 1000).toLocaleDateString('en-US', {
 		weekday: 'long',

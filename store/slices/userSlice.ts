@@ -81,8 +81,6 @@ export const userSlice = createSlice({
 			.addCase(
 				updateUserProfile.fulfilled,
 				(state, action: PayloadAction<UserProfileResponse>) => {
-					console.log('State before update:', state.userInfo);
-
 					if (!action.payload || !action.payload.user) {
 						console.error('Invalid API response:', action.payload);
 						state.error = 'Invalid API response';
@@ -111,10 +109,8 @@ export const userSlice = createSlice({
 							action.payload.user.postalCode || state.userInfo?.postal_code || '',
 					};
 
-					console.log('Updated User Info:', updatedUserInfo);
 					state.userInfo = updatedUserInfo;
 
-					console.log('State after update:', state.userInfo);
 					state.loading = false;
 					state.error = null;
 				}
@@ -127,7 +123,6 @@ export const userSlice = createSlice({
 				state.loading = true;
 			})
 			.addCase(fetchUserProfile.fulfilled, (state, action: PayloadAction<UserInfo>) => {
-				console.log('Fetched User Profile:', action.payload);
 				state.userInfo = action.payload;
 				state.loading = false;
 				state.error = null;
