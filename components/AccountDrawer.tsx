@@ -81,11 +81,16 @@ const AccountDrawer = () => {
 	const signInHandler = async () => {
 		try {
 			await handleSubmit(submitHandler)();
-			setOpenDrawer(false);
-			navigate('/account');
+
+			if (userInfo) {
+				setOpenDrawer(false);
+				navigate('/account');
+			} else {
+				toast.error('Login Failed: Invalid credentials');
+			}
 		} catch (error) {
-			console.error(error);
-			toast('Sign-in failed');
+			console.error('Sign-in error:', error);
+			toast.error('Sign-in failed');
 		}
 	};
 
