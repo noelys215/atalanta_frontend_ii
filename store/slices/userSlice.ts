@@ -1,29 +1,8 @@
-import Cookies from 'js-cookie';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { registerUser } from '../actions/userActions';
 import { loginUser } from '../actions/loginAction';
 import { updateUserProfile, UserProfileResponse } from '../actions/updateUserProfile';
-
-interface CartItem {
-	_id: string;
-	name: string;
-	price: number;
-	quantity: number;
-	image: string;
-	selectedSize: string;
-}
-
-export interface ShippingAddress {
-	firstName: string;
-	lastName: string;
-	phone: string;
-	country: string;
-	address: string;
-	addressCont?: string;
-	state: string;
-	city: string;
-	postalCode: string;
-}
+import { fetchUserProfile } from '../actions/userActions';
 
 interface UserInfo {
 	last_name: string;
@@ -34,7 +13,7 @@ interface UserInfo {
 	email: string;
 	token: string;
 	address: string;
-	addressCont: string;
+	addressCont?: string;
 	country: string;
 	state: string;
 	city: string;
@@ -42,30 +21,16 @@ interface UserInfo {
 }
 
 interface UserState {
-	cart: {
-		cartItems?: CartItem[];
-		shippingAddress: ShippingAddress | object;
-		paymentMethod: string;
-	};
 	userInfo: UserInfo | null;
-	users: UserInfo[];
 	loading: boolean;
 	error: string | null;
-	success: boolean;
 }
 
 // Initial state
 const initialState: UserState = {
-	cart: {
-		cartItems: Cookies.get('cartItems') ? JSON.parse(Cookies.get('cartItems') as string) : [],
-		shippingAddress: {},
-		paymentMethod: Cookies.get('paymentMethod') || '',
-	},
-	userInfo: null, // No longer stored in cookies
-	users: [],
+	userInfo: null,
 	loading: false,
 	error: null,
-	success: false,
 };
 
 // User Slice
@@ -77,19 +42,14 @@ export const userSlice = createSlice({
 			return Object.assign(state, initialState);
 		},
 		logoutUser: (state) => {
-			Cookies.remove('userToken');
-			Cookies.remove('cartItems');
-			Cookies.remove('paymentMethod');
 			return {
 				...state,
 				userInfo: null,
-				cart: { cartItems: [], shippingAddress: {}, paymentMethod: '' },
 			};
 		},
 	},
 	extraReducers: (builder) => {
 		builder
-			// Register User
 			.addCase(registerUser.pending, (state) => {
 				state.loading = true;
 				state.error = null;
@@ -121,31 +81,60 @@ export const userSlice = createSlice({
 			.addCase(
 				updateUserProfile.fulfilled,
 				(state, action: PayloadAction<UserProfileResponse>) => {
-					state.loading = false;
+					console.log('State before update:', state.userInfo);
 
-					// Transform UserProfileResponse into UserInfo
+					if (!action.payload || !action.payload.user) {
+						console.error('Invalid API response:', action.payload);
+						state.error = 'Invalid API response';
+						state.loading = false;
+						return;
+					}
+
 					const updatedUserInfo: UserInfo = {
-						last_name: action.payload.user.lastName,
-						first_name: action.payload.user.firstName,
-						id: state.userInfo?.id || '', // Preserve id if it's already in state
-						telephone: action.payload.user.telephone,
-						name: `${action.payload.user.firstName} ${action.payload.user.lastName}`,
-						email: action.payload.user.email,
-						token: action.payload.token,
-						address: action.payload.user.address,
-						addressCont: action.payload.user.addressCont || '',
-						country: action.payload.user.country,
-						state: action.payload.user.state,
-						city: action.payload.user.city,
-						postal_code: action.payload.user.postalCode,
+						last_name: action.payload.user.lastName || state.userInfo?.last_name || '',
+						first_name:
+							action.payload.user.firstName || state.userInfo?.first_name || '',
+						id: state.userInfo?.id || '',
+						telephone: action.payload.user.telephone || state.userInfo?.telephone || '',
+						name: `${action.payload.user.firstName || ''} ${
+							action.payload.user.lastName || ''
+						}`,
+						email: action.payload.user.email || state.userInfo?.email || '',
+						token: action.payload.token || state.userInfo?.token || '',
+						address: action.payload.user.address || state.userInfo?.address || '',
+						addressCont:
+							action.payload.user.addressCont || state.userInfo?.addressCont || '',
+						country: action.payload.user.country || state.userInfo?.country || '',
+						state: action.payload.user.state || state.userInfo?.state || '',
+						city: action.payload.user.city || state.userInfo?.city || '',
+						postal_code:
+							action.payload.user.postalCode || state.userInfo?.postal_code || '',
 					};
 
+					console.log('Updated User Info:', updatedUserInfo);
 					state.userInfo = updatedUserInfo;
+
+					console.log('State after update:', state.userInfo);
+					state.loading = false;
+					state.error = null;
 				}
 			)
 			.addCase(updateUserProfile.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.error.message || 'Update failed';
+			})
+			.addCase(fetchUserProfile.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(fetchUserProfile.fulfilled, (state, action: PayloadAction<UserInfo>) => {
+				console.log('Fetched User Profile:', action.payload);
+				state.userInfo = action.payload;
+				state.loading = false;
+				state.error = null;
+			})
+			.addCase(fetchUserProfile.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload as string;
 			});
 	},
 });

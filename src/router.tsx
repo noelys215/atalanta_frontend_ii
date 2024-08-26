@@ -21,6 +21,7 @@ import OrderHistoryScreen from './routes/OrderHistoryScreen';
 import OrderSearchScreen from './routes/OrderSearchScreen';
 import ForgotPasswordScreen from './routes/ForgotPasswordScreen';
 import ResetPasswordScreen from './routes/ResetPasswordScreen';
+import VerificationSuccessScreen from './routes/VerificationSuccessScreen';
 
 export const router = createBrowserRouter([
 	{
@@ -45,6 +46,7 @@ export const router = createBrowserRouter([
 			{ path: '/orderhistory', element: <OrderHistoryScreen /> },
 			{ path: '/ordersearch', element: <OrderSearchScreen /> },
 			{ path: '/forgot-password', element: <ForgotPasswordScreen /> },
+			{ path: '/verified', element: <VerificationSuccessScreen /> },
 			{ path: '/reset-password', element: <ResetPasswordScreen /> },
 			{
 				path: '/:department/:category/:slug',

@@ -46,17 +46,17 @@ export const updateUserProfile = createAsyncThunk<
 	{ rejectValue: string }
 >('user/updateUserProfile', async (user, { rejectWithValue }) => {
 	try {
-		// Get the user token from the cookies and remove quotes
 		let userToken = Cookies.get('userToken');
 
-		// Remove the surrounding quotes, if present
+		// Remove quotes from the token if they exist
 		if (userToken) {
-			userToken = userToken.replace(/"/g, ''); // Removes any quotes
+			userToken = userToken.replace(/"/g, ''); // Remove quotes
 		}
 
 		if (!userToken) throw new Error('User is not authenticated');
 
-		// Configure the authorization header with the user's token
+		console.log('Using token:', userToken);
+
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
@@ -64,23 +64,24 @@ export const updateUserProfile = createAsyncThunk<
 			},
 		};
 
-		// Make the API call to update the user profile
+		console.log('Request Headers:', config.headers);
+
 		const { data } = await axios.put<UserProfileResponse>(
 			`${import.meta.env.VITE_API_URL}/profile`,
 			user,
 			config
 		);
 
-		// Optionally, update the userInfo in the cookies or state if needed
-		Cookies.set('userInfo', JSON.stringify(data.user));
+		console.log('API Response:', data);
 
 		return data;
 	} catch (error) {
-		// Handle Axios errors with explicit typing
 		if (axios.isAxiosError(error) && error.response) {
 			const errorMessage = (error.response.data as ErrorResponse).message;
+			console.error('API Error:', errorMessage);
 			return rejectWithValue(errorMessage);
 		} else {
+			console.error('Unexpected Error:', error);
 			return rejectWithValue('An unexpected error occurred');
 		}
 	}

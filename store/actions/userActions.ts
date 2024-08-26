@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
+import Cookies from 'js-cookie';
 interface RegisterUserArgs {
 	email: string;
 	password: string;
@@ -19,6 +19,44 @@ interface ErrorResponse {
 	message: string;
 }
 
+// Fetch User Profile Thunk
+export const fetchUserProfile = createAsyncThunk(
+	'user/fetchUserProfile',
+	async (_, { rejectWithValue }) => {
+		try {
+			let token = Cookies.get('userToken');
+			console.log('Token before fetch:', token);
+
+			if (!token) {
+				throw new Error('User is not authenticated');
+			}
+
+			// Remove any quotation marks around the token
+			token = token.replace(/"/g, '');
+
+			const config = {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					'Content-Type': 'application/json',
+				},
+			};
+
+			const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/profile`, config);
+
+			return data;
+		} catch (error) {
+			const err = error as AxiosError<ErrorResponse>;
+			console.error('Fetch user profile failed:', err.response || err.message);
+			if (err.response && err.response.data && typeof err.response.data === 'object') {
+				return rejectWithValue((err.response.data as ErrorResponse).message);
+			} else {
+				return rejectWithValue(err.message);
+			}
+		}
+	}
+);
+
+// Register User Thunk
 export const registerUser = createAsyncThunk(
 	'user/register',
 	async (

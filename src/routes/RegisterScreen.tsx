@@ -10,15 +10,13 @@ import {
 	Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useForm, Controller } from 'react-hook-form';
 import jsCookie from 'js-cookie';
 import { getError } from '../../utils/error';
 import toast from 'react-hot-toast';
-import Layout from '../../components/Layout'; // Import the Layout component
-// Redux Toolkit
+import Layout from '../../components/Layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { registerUser } from '../../store/actions/userActions';
@@ -31,31 +29,30 @@ interface RegisterProps {
 	telephone: string;
 	country: string;
 	address: string;
-	addressCont: string; // Ensure addressCont is a string
+	addressCont: string;
 	state: string;
 	city: string;
 	postalCode: string;
 }
 
 const RegisterScreen: React.FC = () => {
-	const navigate = useNavigate();
-
 	// Toolkit
 	const dispatch = useDispatch<AppDispatch>();
 	const { userInfo } = useSelector((state: RootState) => state.userInfo);
 
 	useEffect(() => {
 		if (userInfo) {
-			navigate('/');
+			// Optionally handle user info here if needed
 		}
-	}, [navigate, userInfo]);
+	}, [userInfo]);
 
 	const {
 		handleSubmit,
 		control,
 		formState: { errors, isValid },
+		reset, // Add this line
 	} = useForm<RegisterProps>({
-		mode: 'onChange', // This ensures validation is triggered on each change
+		mode: 'onChange',
 		defaultValues: {
 			email: '',
 			password: '',
@@ -72,7 +69,6 @@ const RegisterScreen: React.FC = () => {
 	});
 
 	const [verified, setVerified] = useState(false);
-
 	const [values, setValues] = useState({ password: '', showPassword: false });
 	const [telephone, setTelephone] = useState('');
 
@@ -106,9 +102,29 @@ const RegisterScreen: React.FC = () => {
 			const payload = { ...data, addressCont: data.addressCont || '' };
 			await dispatch(registerUser(payload));
 			jsCookie.set('userInfo', JSON.stringify(payload));
-			navigate('/');
+
+			// Display a success toast message
+			toast.success('Thank you! Please check your email to verify your account.');
+
+			// Clear the form fields
+			reset({
+				email: '',
+				password: '',
+				firstName: '',
+				lastName: '',
+				telephone: '',
+				country: '',
+				address: '',
+				addressCont: '',
+				state: '',
+				city: '',
+				postalCode: '',
+			});
+
+			setTelephone(''); // Clear telephone field
+			setVerified(false); // Reset the reCAPTCHA
 		} catch (error) {
-			toast(getError(error));
+			toast.error(getError(error));
 		}
 	};
 
@@ -316,7 +332,7 @@ const RegisterScreen: React.FC = () => {
 											value={telephone}
 											onChange={(e) => {
 												handleTelephoneChange(e);
-												field.onChange(e); // Trigger react-hook-form's change handler
+												field.onChange(e);
 											}}
 											sx={{ mb: 2.5 }}
 											className="register"

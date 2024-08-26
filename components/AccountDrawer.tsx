@@ -82,6 +82,7 @@ const AccountDrawer = () => {
 		try {
 			await handleSubmit(submitHandler)();
 			setOpenDrawer(false);
+			navigate('/account');
 		} catch (error) {
 			console.error(error);
 			toast('Sign-in failed');
