@@ -22,6 +22,7 @@ import OrderSearchScreen from './routes/OrderSearchScreen';
 import ForgotPasswordScreen from './routes/ForgotPasswordScreen';
 import ResetPasswordScreen from './routes/ResetPasswordScreen';
 import VerificationSuccessScreen from './routes/VerificationSuccessScreen';
+import NotFoundScreen from './routes/NotFoundScreen';
 
 export const router = createBrowserRouter([
 	{
@@ -55,6 +56,10 @@ export const router = createBrowserRouter([
 			{
 				path: '/return',
 				element: <OrderDetailsScreen />,
+			},
+			{
+				path: '*',
+				element: <NotFoundScreen />,
 			},
 		],
 	},
