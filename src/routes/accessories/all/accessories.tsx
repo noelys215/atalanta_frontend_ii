@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Container, Divider, Typography, Button } from '@mui/material';
+import { Box, Container, Divider, Typography, Button, CircularProgress } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import Layout from '../../../../components/Layout';
 import ProductsCat from '../../../../components/ProductsCat';
@@ -19,9 +19,23 @@ const Accessories: React.FC = () => {
 		queryFn: () => getProducts('accessories', 'all'),
 	});
 
-	if (isLoading) return <div>Loading...</div>;
+	if (isLoading)
+		return (
+			<Container maxWidth="xl" sx={{ mb: 'auto' }}>
+				<Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+					<CircularProgress />
+				</Box>
+			</Container>
+		);
 
-	if (isError) return <div>Error loading products.</div>;
+	if (isError)
+		return (
+			<Container maxWidth="xl" sx={{ mb: 'auto' }}>
+				<Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+					<Typography>Error loading products.</Typography>
+				</Box>
+			</Container>
+		);
 
 	return (
 		<Layout title="Accessories">

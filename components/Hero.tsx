@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, CircularProgress } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -22,7 +22,21 @@ const Hero: React.FC<HeroProps> = ({ slug }) => {
 		queryFn: fetchHeroCard,
 	});
 
-	if (isLoading) return <p>Loading...</p>;
+	if (isLoading)
+		return (
+			<Box
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'center',
+					alignItems: 'center',
+					height: '100%', // Full height of the parent container
+					minHeight: '400px', // Minimum height to ensure the spinner is centered even if content is short
+				}}>
+				<CircularProgress />
+			</Box>
+		);
+
 	if (error) return <p>An error occurred: {error.message}</p>;
 
 	return (

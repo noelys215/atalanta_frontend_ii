@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Divider, Typography } from '@mui/material';
+import { Box, Button, Divider, Typography, CircularProgress } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import Layout from '../../../components/Layout';
 import ProductsCat from '../../../components/ProductsCat';
@@ -37,9 +37,19 @@ const ManTops: React.FC = () => {
 		queryFn: () => getProducts('man', 'jackets'),
 	});
 
-	if (isLoadingTanks || isLoadingShirts || isLoadingJackets) return <div>Loading...</div>;
+	if (isLoadingTanks || isLoadingShirts || isLoadingJackets)
+		return (
+			<Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+				<CircularProgress />
+			</Box>
+		);
 
-	if (isErrorTanks || isErrorShirts || isErrorJackets) return <div>Error loading products.</div>;
+	if (isErrorTanks || isErrorShirts || isErrorJackets)
+		return (
+			<Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+				<Typography>Error loading products.</Typography>
+			</Box>
+		);
 
 	return (
 		<Layout title={`MAN | TOPS`}>

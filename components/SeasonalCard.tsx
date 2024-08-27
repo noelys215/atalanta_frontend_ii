@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography, CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -19,7 +19,26 @@ export const SeasonalCard: React.FC<SeasonalCardProps> = ({ slug }) => {
 		queryFn: () => fetchSeasonalCard(slug),
 	});
 
-	if (isLoading) return <p>Loading...</p>;
+	if (isLoading) {
+		return (
+			<Paper
+				sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'center',
+					alignItems: 'center',
+					width: '100%',
+					height: 'auto',
+					backgroundColor: '#fffcf7',
+					mb: 10,
+					p: 2.5,
+					minHeight: '300px',
+				}}>
+				<CircularProgress />
+			</Paper>
+		);
+	}
+
 	if (error) return <p>An error occurred: {error.message}</p>;
 
 	return (

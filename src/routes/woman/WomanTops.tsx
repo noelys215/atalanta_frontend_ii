@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Typography } from '@mui/material';
+import { Box, Button, Divider, Typography, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -37,9 +37,19 @@ const WomanTops: React.FC = () => {
 		queryFn: () => getProducts('woman', 'jackets'),
 	});
 
-	if (isLoadingTanks || isLoadingShirts || isLoadingJackets) return <div>Loading...</div>;
+	if (isLoadingTanks || isLoadingShirts || isLoadingJackets)
+		return (
+			<Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+				<CircularProgress />
+			</Box>
+		);
 
-	if (isErrorTanks || isErrorShirts || isErrorJackets) return <div>Error loading products.</div>;
+	if (isErrorTanks || isErrorShirts || isErrorJackets)
+		return (
+			<Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+				<Typography>Error loading products.</Typography>
+			</Box>
+		);
 
 	return (
 		<Layout title={`WOMAN | TOPS`}>
