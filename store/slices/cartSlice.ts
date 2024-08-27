@@ -7,7 +7,7 @@ export interface StockItem {
 
 export interface CartItem {
 	_id: number;
-	_key: string; // you may eventually remove this if unnecessary
+	_key: string;
 	name: string;
 	slug: string;
 	price: number;

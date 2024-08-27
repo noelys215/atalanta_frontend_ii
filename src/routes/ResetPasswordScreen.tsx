@@ -38,7 +38,7 @@ const ResetPasswordScreen: React.FC = () => {
 		setValue,
 		watch,
 	} = useForm<ResetPasswordProps>({
-		mode: 'onChange', // Ensures validation is triggered on each change
+		mode: 'onChange',
 		defaultValues: {
 			token: '',
 			email: '',
@@ -47,7 +47,6 @@ const ResetPasswordScreen: React.FC = () => {
 		},
 	});
 
-	// Set the token value from the URL in the form state
 	useEffect(() => {
 		if (token) {
 			setValue('token', token);

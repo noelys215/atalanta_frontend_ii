@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import Layout from '../../components/Layout'; // Import the Layout component
+import Layout from '../../components/Layout';
 
 interface ForgotPasswordProps {
 	email: string;
@@ -16,9 +16,9 @@ const ForgotPasswordScreen: React.FC = () => {
 		control,
 		formState: { errors, isValid },
 	} = useForm<ForgotPasswordProps>({
-		mode: 'onChange', // Ensures validation is triggered on each change
+		mode: 'onChange',
 		defaultValues: {
-			email: '', // Initialize email as an empty string to avoid uncontrolled input
+			email: '',
 		},
 	});
 

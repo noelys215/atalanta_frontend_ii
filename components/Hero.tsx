@@ -30,8 +30,8 @@ const Hero: React.FC<HeroProps> = ({ slug }) => {
 					flexDirection: 'column',
 					justifyContent: 'center',
 					alignItems: 'center',
-					height: '100%', // Full height of the parent container
-					minHeight: '400px', // Minimum height to ensure the spinner is centered even if content is short
+					height: '100%',
+					minHeight: '400px',
 				}}>
 				<CircularProgress />
 			</Box>

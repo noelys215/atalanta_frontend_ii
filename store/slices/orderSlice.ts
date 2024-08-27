@@ -5,7 +5,6 @@ import { getOrderDetails } from '../actions/getOrderDetails';
 // Define types for the state
 interface Order {
 	id: string;
-	// Add more fields based on your order structure
 }
 
 interface OrderState {

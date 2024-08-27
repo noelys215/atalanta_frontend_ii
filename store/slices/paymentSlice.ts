@@ -7,7 +7,7 @@ export interface ShippingAddress {
 }
 
 interface CartState {
-	cartItems: []; // Assuming this will be managed elsewhere
+	cartItems: [];
 	shippingAddress: ShippingAddress;
 	paymentMethod: string;
 }
@@ -24,17 +24,16 @@ interface PaymentState {
 	userInfo: UserInfo | null;
 }
 
-// Initialize the state with types
 const initialState: PaymentState = {
 	cart: {
-		cartItems: [], // Initialize with an empty array
+		cartItems: [],
 		shippingAddress: {
 			firstName: '',
 			lastName: '',
-		}, // Initialize with an empty object
-		paymentMethod: '', // Initialize with an empty string
+		},
+		paymentMethod: '',
 	},
-	userInfo: null, // Initialize with null
+	userInfo: null,
 };
 
 export const paymentSlice = createSlice({

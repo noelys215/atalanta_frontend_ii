@@ -1,33 +1,48 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
+import { RootState } from '../store';
 
-export const getOrderDetails = createAsyncThunk(
+interface UserInfo {
+	token: string;
+}
+
+interface OrderDetails {
+	id: string;
+}
+
+interface ErrorResponse {
+	message: string;
+}
+
+// Get Order Details Thunk
+export const getOrderDetails = createAsyncThunk<OrderDetails, string, { rejectValue: string }>(
 	'user/getOrderDetails',
-	async (id: string, { getState, rejectWithValue }: any) => {
+	async (id: string, { getState, rejectWithValue }) => {
 		try {
-			// get user data from store
+			// Get user data from store
 			const {
 				userInfo: { userInfo },
-			} = getState();
+			} = getState() as RootState & { userInfo: { userInfo: UserInfo } };
 
-			// configure authorization header with user's token
+			// Configure authorization header with user's token
 			const config = {
 				headers: { Authorization: `Bearer ${userInfo.token}` },
 			};
 
-			const { data }: any = await axios.get(
+			const { data } = await axios.get<OrderDetails>(
 				`${import.meta.env.VITE_API_URL}/orders/${id}`,
 				config
 			);
 
 			Cookies.set('orders', JSON.stringify(data));
 			return data;
-		} catch (error: any) {
-			if (error.response && error.response.data.message) {
-				return rejectWithValue(error.response.data.message);
+		} catch (error) {
+			const err = error as AxiosError<ErrorResponse>;
+			if (err.response && err.response.data.message) {
+				return rejectWithValue(err.response.data.message);
 			} else {
-				return rejectWithValue(error.message);
+				return rejectWithValue(err.message);
 			}
 		}
 	}

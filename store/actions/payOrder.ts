@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
-import { RootState } from '../../store/store'; // Adjust the import path based on your project structure
+import { RootState } from '../../store/store';
 
 interface PayOrderInput {
 	orderId: string;

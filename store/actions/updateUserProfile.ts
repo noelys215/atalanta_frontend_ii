@@ -2,7 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-// Define the shape of the user data
 interface UserProfileUpdate {
 	firstName: string;
 	lastName: string;
@@ -18,7 +17,6 @@ interface UserProfileUpdate {
 	confirmPassword?: string;
 }
 
-// Define the shape of the response data
 export interface UserProfileResponse {
 	user: {
 		firstName: string;
@@ -35,7 +33,6 @@ export interface UserProfileResponse {
 	token: string;
 }
 
-// Define the shape of the error response
 interface ErrorResponse {
 	message: string;
 }

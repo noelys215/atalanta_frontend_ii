@@ -26,7 +26,6 @@ export default function ShippingScreen() {
 	const { shippingAddress } = useSelector((state: RootState) => state.payment.cart);
 
 	useEffect(() => {
-		// Set form values based on existing shipping address or userInfo
 		setValue('firstName', shippingAddress.firstName || userInfo?.first_name || '');
 		setValue('lastName', shippingAddress.lastName || userInfo?.last_name || '');
 		setValue('country', shippingAddress.country || userInfo?.country || '');
@@ -38,9 +37,7 @@ export default function ShippingScreen() {
 	}, [setValue, userInfo, shippingAddress]);
 
 	const submitHandler = (data: ShippingAddress) => {
-		// Save shipping address to the Redux state
 		dispatch(saveShippingAddress(data));
-		// Navigate to the payment screen
 		navigate('/payment');
 	};
 

@@ -98,12 +98,10 @@ const RegisterScreen: React.FC = () => {
 
 	const submitHandler = async (data: RegisterProps) => {
 		try {
-			// Ensure addressCont is provided as an empty string if undefined
 			const payload = { ...data, addressCont: data.addressCont || '' };
 			await dispatch(registerUser(payload));
 			jsCookie.set('userInfo', JSON.stringify(payload));
 
-			// Display a success toast message
 			toast.success('Thank you! Please check your email to verify your account.');
 
 			// Clear the form fields

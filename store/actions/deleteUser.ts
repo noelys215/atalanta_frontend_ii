@@ -1,26 +1,39 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+import { RootState } from '../store';
+interface UserInfo {
+	token: string;
+}
 
+interface ErrorResponse {
+	message: string;
+}
+
+// Delete User Thunk
 export const deleteUser = createAsyncThunk(
-	'user/getUserProfile',
-	async (id: string, { getState, rejectWithValue }: any) => {
+	'user/deleteUser',
+	async (id: string, { getState, rejectWithValue }) => {
 		try {
-			// get user data from store
+			// Get user data from store
 			const {
 				userInfo: { userInfo },
-			} = getState();
-			// configure authorization header with user's token
+			} = getState() as RootState & { userInfo: { userInfo: UserInfo } };
+
+			// Configure authorization header with user's token
 			const config = {
 				headers: { Authorization: `Bearer ${userInfo.token}` },
 			};
 
-			await axios.delete(`${import.meta.env.VITE_API_URL}/users/${id}`, config);
-		} catch (error: any) {
-			if (error.response && error.response.data.message) {
-				return rejectWithValue(error.response.data.message);
+			await axios.delete(`/users/${id}`, config);
+		} catch (error) {
+			const err = error as AxiosError<ErrorResponse>;
+			if (err.response && err.response.data.message) {
+				return rejectWithValue(err.response.data.message);
 			} else {
-				return rejectWithValue(error.message);
+				return rejectWithValue(err.message);
 			}
 		}
 	}
 );
+
+// TODO Orphaned code, will decide in the future on ways to implement this functionality

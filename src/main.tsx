@@ -1,5 +1,5 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client'; // Import createRoot instead of ReactDOM
+import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './router';
@@ -9,8 +9,8 @@ import { persistor, store } from '../store/store';
 
 const queryClient = new QueryClient();
 
-const container = document.getElementById('root'); // Get the root element
-const root = createRoot(container!); // Create a root for React
+const container = document.getElementById('root');
+const root = createRoot(container!);
 
 root.render(
 	<React.StrictMode>

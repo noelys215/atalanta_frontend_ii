@@ -7,7 +7,6 @@ interface Order {
 	createdAt: string;
 	totalPrice: number;
 	isPaid: boolean;
-	// Add other relevant fields
 }
 
 interface OrderHistoryState {
@@ -25,7 +24,7 @@ const initialState: OrderHistoryState = {
 export const orderHistory = createSlice({
 	name: 'orderHistory',
 	initialState,
-	reducers: {}, // Provide an empty object here
+	reducers: {},
 	extraReducers: (builder) => {
 		builder
 			.addCase(getOrderHistory.pending, (state) => {
