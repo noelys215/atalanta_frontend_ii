@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Box, CircularProgress, Divider, Grid, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, CircularProgress, Divider, Grid, Typography, Modal, Button } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
@@ -11,6 +11,7 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as 
 const PlaceOrderScreen: React.FC = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
+	const [open, setOpen] = useState(true);
 
 	const sessionId = new URLSearchParams(location.search).get('sessionId');
 	const clientSecret = location.state?.clientSecret;
@@ -21,6 +22,8 @@ const PlaceOrderScreen: React.FC = () => {
 			navigate('/cart');
 		}
 	}, [sessionId, clientSecret, navigate]);
+
+	const handleClose = () => setOpen(false);
 
 	return (
 		<Layout title="Checkout">
@@ -59,6 +62,49 @@ const PlaceOrderScreen: React.FC = () => {
 							<EmbeddedCheckout />
 						</EmbeddedCheckoutProvider>
 					</Grid>
+
+					{/* Modal for Dummy Credit Card Details */}
+					<Modal
+						open={open}
+						onClose={handleClose}
+						aria-labelledby="modal-title"
+						aria-describedby="modal-description">
+						<Box
+							sx={{
+								position: 'absolute',
+								top: '50%',
+								left: '50%',
+								transform: 'translate(-50%, -50%)',
+								width: 400,
+								bgcolor: 'background.paper',
+								boxShadow: 24,
+								p: 4,
+								borderRadius: 2,
+							}}>
+							<Typography id="modal-title" variant="h6" component="h2" gutterBottom>
+								Test Card Details
+							</Typography>
+							<Divider sx={{ mb: 2 }} />
+							<Typography id="modal-description" sx={{ mb: 2 }}>
+								Please use the following dummy credit card details for testing:
+							</Typography>
+							<Typography sx={{ mb: 1 }}>
+								<strong>Credit Card Number:</strong> 4242 4242 4242 4242
+							</Typography>
+							<Typography sx={{ mb: 1 }}>
+								<strong>Expiry Date:</strong> Any future date
+							</Typography>
+							<Typography sx={{ mb: 2 }}>
+								<strong>CVC:</strong> Any three digits
+							</Typography>
+							<Button
+								onClick={handleClose}
+								variant="contained"
+								sx={{ width: '100%' }}>
+								Got it!
+							</Button>
+						</Box>
+					</Modal>
 				</Box>
 			)}
 		</Layout>
