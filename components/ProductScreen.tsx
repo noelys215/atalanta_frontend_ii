@@ -90,7 +90,6 @@ const ProductScreen: React.FC = () => {
 		navigate('/cart');
 	};
 
-	// Use the custom type here
 	const swiperStyle: SwiperCustomStyle = {
 		'--swiper-navigation-color': 'black',
 		'--swiper-navigation-size': '25px',

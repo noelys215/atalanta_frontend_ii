@@ -13,7 +13,6 @@ import { RootState } from '../store/store';
 const TopBar = () => {
 	const [openSearch, setOpenSearch] = useState(false);
 
-	// Specify the RootState type for the state
 	const cart = useSelector((state: RootState) => state.cart);
 	const cartItems = cart?.cartItems || [];
 
@@ -26,7 +25,7 @@ const TopBar = () => {
 				top: 0,
 				zIndex: 99,
 				backgroundColor: '#F6F1EB',
-				paddingY: 2, // Adjust padding to increase the height of the top bar
+				paddingY: 2,
 			}}>
 			{openSearch ? (
 				<MobileSearch setOpenSearch={setOpenSearch} />
@@ -41,7 +40,7 @@ const TopBar = () => {
 							justifyContent: 'space-between',
 							alignItems: 'center',
 							height: 'auto',
-							py: 2, // Adjust padding to increase the height of the top bar
+							py: 2,
 						}}>
 						{/* Search/Menu Bar */}
 						<Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>

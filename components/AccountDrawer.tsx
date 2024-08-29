@@ -28,7 +28,6 @@ import { cartClear } from '../store/slices/cartSlice';
 import { RootState } from '../store/store';
 import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
 
-// Define the types for the form inputs
 interface LoginFormInputs {
 	email: string;
 	password: string;
@@ -53,7 +52,6 @@ const AccountDrawer = () => {
 		formState: { errors },
 	} = useForm<LoginFormInputs>();
 
-	// The submit handler now expects the correct types
 	const submitHandler: SubmitHandler<LoginFormInputs> = async ({ email, password }) => {
 		try {
 			if (userInfo) {
