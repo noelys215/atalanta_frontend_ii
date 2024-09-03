@@ -25,8 +25,12 @@ jobs:
                   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   aws-region: us-east-1
 
-            - name: Give execute permissions to deploy script
-              run: chmod +x deploy.sh
+            - name: Create deploy.sh script
+              run: |
+                  echo '#!/bin/bash' > deploy.sh
+                  echo 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 533267071464.dkr.ecr.us-east-1.amazonaws.com' >> deploy.sh
+                  echo 'docker buildx build --platform linux/amd64 -t 533267071464.dkr.ecr.us-east-1.amazonaws.com/atalanta-frontend:latest --push .' >> deploy.sh
+                  chmod +x deploy.sh
 
             - name: Run deployment
               run: ./deploy.sh
