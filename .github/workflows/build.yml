@@ -13,6 +13,13 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v2
 
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v1
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: us-east-1
+
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v1
 
@@ -38,7 +45,3 @@ jobs:
               run: |
                   aws apprunner update-service --service-arn arn:aws:apprunner:us-east-1:533267071464:service/atalanta-laravel-client/3ebb62f0edff4b2cb697d46766422063 \
                   --source-configuration ImageRepository={"ImageIdentifier":"533267071464.dkr.ecr.us-east-1.amazonaws.com/atalanta-frontend:latest","ImageConfiguration":{"Port":"80"}}
-              env:
-                  AWS_REGION: us-east-1
-                  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
