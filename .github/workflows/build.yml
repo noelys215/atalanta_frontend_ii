@@ -21,16 +21,6 @@ jobs:
               with:
                   node-version: '16.x'
 
-            - name: Add environment variables
-              run: |
-                  echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
-                  echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
-                  echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-                  echo "VITE_PAYPAL_CLIENT_ID=${{ secrets.VITE_PAYPAL_CLIENT_ID }}" >> .env
-                  echo "VITE_STRIPE_PUBLISHABLE_KEY=${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}" >> .env
-                  echo "RECAPTCHA_SITE_KEY=${{ secrets.RECAPTCHA_SITE_KEY }}" >> .env
-                  echo "RECAPTCHA_SECRET_KEY=${{ secrets.RECAPTCHA_SECRET_KEY }}" >> .env
-
             - name: Log in to Amazon ECR
               id: login-ecr
               run: |
@@ -44,6 +34,14 @@ jobs:
               id: build-and-push
               run: |
                   docker buildx build --platform linux/amd64 --tag 533267071464.dkr.ecr.us-east-1.amazonaws.com/atalanta-frontend:latest --push .
+              env:
+                  NODE_ENV: ${{ secrets.NODE_ENV }}
+                  VITE_API_URL: ${{ secrets.VITE_API_URL }}
+                  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+                  VITE_PAYPAL_CLIENT_ID: ${{ secrets.VITE_PAYPAL_CLIENT_ID }}
+                  VITE_STRIPE_PUBLISHABLE_KEY: ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
+                  RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
+                  RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
 
             - name: Deploy to AWS App Runner
               id: deploy-apprunner
