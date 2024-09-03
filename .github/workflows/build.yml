@@ -11,7 +11,7 @@ jobs:
 
         env:
             NODE_ENV: ${{ secrets.NODE_ENV || 'production' }}
-            VITE_API_URL: ${{ secrets.VITE_API_URL }}
+            VITE_API_URL: https://xcsxl54zs4ew4uvyyfnk5j6eey0ojwpv.lambda-url.us-east-1.on.aws/api
             JWT_SECRET: ${{ secrets.JWT_SECRET }}
             VITE_PAYPAL_CLIENT_ID: ${{ secrets.VITE_PAYPAL_CLIENT_ID }}
             VITE_STRIPE_PUBLISHABLE_KEY: ${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}
