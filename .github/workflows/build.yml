@@ -28,6 +28,9 @@ jobs:
               run: |
                   aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 533267071464.dkr.ecr.us-east-1.amazonaws.com
 
+            - name: List files in the workspace
+              run: ls -R
+
             - name: Build and Push Docker Image to ECR
               id: build-and-push
               env:
