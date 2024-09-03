@@ -10,7 +10,7 @@ jobs:
         runs-on: ubuntu-latest
 
         env:
-            NODE_ENV: ${{ secrets.NODE_ENV }}
+            NODE_ENV: ${{ secrets.NODE_ENV || 'production' }}
             VITE_API_URL: ${{ secrets.VITE_API_URL }}
             JWT_SECRET: ${{ secrets.JWT_SECRET }}
             VITE_PAYPAL_CLIENT_ID: ${{ secrets.VITE_PAYPAL_CLIENT_ID }}
