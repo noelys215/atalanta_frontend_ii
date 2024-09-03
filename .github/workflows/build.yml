@@ -1,4 +1,4 @@
-name: Deploy to AWS App Runner
+name: CI/CD Pipeline
 
 on:
     push:
@@ -6,45 +6,27 @@ on:
             - main
 
 jobs:
-    build-and-deploy:
+    deploy:
         runs-on: ubuntu-latest
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
-            - name: Configure AWS credentials
-              uses: aws-actions/configure-aws-credentials@v1
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '22'
+
+            - name: Set up AWS CLI
+              uses: aws-actions/configure-aws-credentials@v3
               with:
                   aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
                   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   aws-region: us-east-1
 
-            - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@v1
+            - name: Give execute permissions to deploy script
+              run: chmod +x deploy.sh
 
-            - name: Log in to Amazon ECR
-              id: login-ecr
-              run: |
-                  aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 533267071464.dkr.ecr.us-east-1.amazonaws.com
-
-            - name: List files in the workspace
-              run: ls -R
-
-            - name: Build and Push Docker Image to ECR
-              id: build-and-push
-              env:
-                  VITE_API_URL: ${{ secrets.VITE_API_URL }}
-                  NODE_ENV: production
-              run: |
-                  docker buildx build --platform linux/amd64 \
-                    --tag 533267071464.dkr.ecr.us-east-1.amazonaws.com/atalanta-frontend:latest \
-                    --build-arg VITE_API_URL=$VITE_API_URL \
-                    --build-arg NODE_ENV=$NODE_ENV \
-                    --push .
-
-            - name: Deploy to AWS App Runner
-              id: deploy-apprunner
-              run: |
-                  aws apprunner update-service --service-arn arn:aws:apprunner:us-east-1:533267071464:service/atalanta-laravel-client/3ebb62f0edff4b2cb697d46766422063 \
-                  --source-configuration ImageRepository={"ImageIdentifier":"533267071464.dkr.ecr.us-east-1.amazonaws.com/atalanta-frontend:latest","ImageConfiguration":{"Port":"80"}}
+            - name: Run deployment
+              run: ./deploy.sh
