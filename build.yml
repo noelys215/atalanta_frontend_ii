@@ -1,0 +1,36 @@
+name: Deploy to AWS App Runner
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v1
+
+            - name: Log in to Amazon ECR
+              id: login-ecr
+              run: |
+                  aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 533267071464.dkr.ecr.us-east-1.amazonaws.com
+
+            - name: Build and Push Docker Image to ECR
+              id: build-and-push
+              run: |
+                  docker buildx build --platform linux/amd64 --tag 533267071464.dkr.ecr.us-east-1.amazonaws.com/atalanta-frontend:latest --push .
+
+            - name: Deploy to AWS App Runner
+              id: deploy-apprunner
+              run: |
+                  aws apprunner update-service --service-arn <your-service-arn> --source-configuration ImageRepository={"ImageIdentifier":"533267071464.dkr.ecr.us-east-1.amazonaws.com/atalanta-frontend:latest","ImageConfiguration":{"Port":"80"}}
+              env:
+                  AWS_REGION: us-east-1
+                  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
