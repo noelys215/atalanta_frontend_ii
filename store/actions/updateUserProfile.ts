@@ -46,9 +46,7 @@ export const updateUserProfile = createAsyncThunk<
 		let userToken = Cookies.get('userToken');
 
 		// Remove quotes from the token if they exist
-		if (userToken) {
-			userToken = userToken.replace(/"/g, ''); // Remove quotes
-		}
+		if (userToken) userToken = userToken.replace(/"/g, '');
 
 		if (!userToken) throw new Error('User is not authenticated');
 
@@ -59,12 +57,15 @@ export const updateUserProfile = createAsyncThunk<
 			},
 		};
 
+		// Log request configuration and payload
+
 		const { data } = await axios.put<UserProfileResponse>(
 			`${import.meta.env.VITE_API_URL}/profile`,
 			user,
 			config
 		);
 
+		console.log('Profile update successful:', data);
 		return data;
 	} catch (error) {
 		if (axios.isAxiosError(error) && error.response) {

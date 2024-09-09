@@ -57,11 +57,33 @@ const AccountDrawer = () => {
 			if (userInfo) {
 				return;
 			} else {
-				await dispatch(loginUser({ email, password }));
+				// Dispatch the loginUser action and get the result
+				const resultAction = await dispatch(loginUser({ email, password }));
+
+				// Check if the login was successful
+				if (loginUser.fulfilled.match(resultAction)) {
+					// Login successful
+					toast.success('Login Successful');
+					setOpenDrawer(false);
+					navigate('/account');
+				} else {
+					// Login failed
+					toast.error('Login Failed: Invalid credentials');
+				}
 			}
 		} catch (error) {
 			console.error(error);
-			toast('Login Failed');
+			toast.error('Sign-in failed');
+		}
+	};
+
+	const signInHandler = async () => {
+		try {
+			// Handle form submission and login logic
+			await handleSubmit(submitHandler)();
+		} catch (error) {
+			console.error('Sign-in error:', error);
+			toast.error('Sign-in failed');
 		}
 	};
 
@@ -74,22 +96,6 @@ const AccountDrawer = () => {
 
 	const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
-	};
-
-	const signInHandler = async () => {
-		try {
-			await handleSubmit(submitHandler)();
-
-			if (userInfo) {
-				setOpenDrawer(false);
-				navigate('/account');
-			} else {
-				toast.error('Login Failed: Invalid credentials');
-			}
-		} catch (error) {
-			console.error('Sign-in error:', error);
-			toast.error('Sign-in failed');
-		}
 	};
 
 	const signOutHandler = () => {
