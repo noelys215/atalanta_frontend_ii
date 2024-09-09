@@ -62,12 +62,10 @@ const AccountDrawer = () => {
 
 				// Check if the login was successful
 				if (loginUser.fulfilled.match(resultAction)) {
-					// Login successful
 					toast.success('Login Successful');
 					setOpenDrawer(false);
 					navigate('/account');
 				} else {
-					// Login failed
 					toast.error('Login Failed: Invalid credentials');
 				}
 			}
@@ -79,7 +77,6 @@ const AccountDrawer = () => {
 
 	const signInHandler = async () => {
 		try {
-			// Handle form submission and login logic
 			await handleSubmit(submitHandler)();
 		} catch (error) {
 			console.error('Sign-in error:', error);
