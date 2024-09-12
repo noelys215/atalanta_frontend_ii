@@ -65,7 +65,6 @@ export const updateUserProfile = createAsyncThunk<
 			config
 		);
 
-		console.log('Profile update successful:', data);
 		return data;
 	} catch (error) {
 		if (axios.isAxiosError(error) && error.response) {
