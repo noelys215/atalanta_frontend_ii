@@ -46,7 +46,6 @@
    <img src="https://github.com/user-attachments/assets/c32b3eb6-b17e-4943-af88-7e37255dd83b" alt="home-ezgif com-optimize">
 </div>
 
-
 **Atalanta A.C.** is a sportswear platform that brings you the latest in trendy styles and athletic equipment. Designed with a sleek user interface, secure payment processing, and robust order management, it offers a hassle-free shopping experience for all users.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -57,6 +56,11 @@
 -   [![Vite]][Vite-url]
 -   [![Material UI]][Material-url]
 -   [![AWS]][AWS-url]
+-   [![Stripe]][Stripe-url]
+-   [![TypeScript]][TypeScript-url]
+-   [![Redux]][Redux-url]
+-   [![React-Query]][React-Query-url]
+-   [![Framer]][Framer-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -194,3 +198,13 @@ Atalanta A.C. is structured into two core components:
 [Material-url]: https://mui.com/material-ui/
 [AWS]: https://img.shields.io/badge/Amazon_AWS-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white
 [AWS-url]: https://aws.amazon.com/
+[Stripe]: https://img.shields.io/badge/Stripe-626CD9?style=for-the-badge&logo=Stripe&logoColor=white
+[Stripe-url]: https://stripe.com/
+[TypeScript]: https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white
+[TypeScript-url]: https://www.typescriptlang.org/
+[Redux]: https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white
+[Redux-url]: https://redux.js.org/
+[React-Query]: https://img.shields.io/badge/React_Query-FF4154?style=for-the-badge&logo=ReactQuery&logoColor=white
+[React-Query-url]: https://tanstack.com/query/v3
+[Framer]: https://img.shields.io/badge/Framer-black?style=for-the-badge&logo=framer&logoColor=blue
+[Framer-url]: https://img.shields.io/badge/Framer-black?style=for-the-badge&logo=framer&logoColor=blue
