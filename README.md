@@ -42,7 +42,10 @@
 
 ## About The Project
 
-[![Atalanta A.C. Homepage Screenshot][product-screenshot]](https://example.com)
+<div align="center">
+   <img src="https://github.com/user-attachments/assets/c32b3eb6-b17e-4943-af88-7e37255dd83b" alt="home-ezgif com-optimize">
+</div>
+
 
 **Atalanta A.C.** is a sportswear platform that brings you the latest in trendy styles and athletic equipment. Designed with a sleek user interface, secure payment processing, and robust order management, it offers a hassle-free shopping experience for all users.
 
