@@ -11,7 +11,7 @@
   <p align="center">
     Atalanta A.C. – Your ultimate destination for cutting-edge sportswear, offering a sleek, seamless shopping experience with secure payments and real-time order tracking.
     <br />
-    <a href="/"><strong>Explore the docs »</strong></a>
+    <!-- <a href="/"><strong>Explore the docs »</strong></a> -->
     <br />
     <br />
     <a href="https://www.atalanta.world">View Demo</a>
